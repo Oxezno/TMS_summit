@@ -1,0 +1,99 @@
+﻿@model IEnumerable<TMS.Models.WebsiteUserTraining>
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>View</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PayPalID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TrainingStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GUID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.payerID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Discount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserInvoiceID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TrainingCours.TrainingCourseName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WebsiteUser.FName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PayPalID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TrainingStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GUID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.payerID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Discount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserInvoiceID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TrainingCours.TrainingCourseName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WebsiteUser.FName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.WebsiteUserTrainingID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.WebsiteUserTrainingID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.WebsiteUserTrainingID })
+        </td>
+    </tr>
+}
+
+</table>

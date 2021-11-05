@@ -1,0 +1,452 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="description" content="Responsive Admin Template" />
+    <meta name="author" content="TMS" />
+
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <!-- icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="images/favicon.ico" />
+</head>
+<body class="page-header-fixed sidemenu-closed-hidelogo page-container-bg-solid page-content-white page-md">
+    <div class="page-wrapper">
+        <!-- start header -->
+        <div class="page-header navbar navbar-fixed-top">
+            <div class="page-header-inner ">
+                <!-- logo start -->
+                <div class="page-logo">
+                    <a href="javascript:void(0)">
+                        <!--<img src="images/logo.png" alt="logo" class="logo-default" />--> <h3>TMS</h3>
+                    </a>
+                    <div class="menu-toggler sidebar-toggler">
+                        <span></span>
+                    </div>
+                </div>
+                <!-- logo end -->
+                @*<form class="search-form-opened" action="#" method="GET">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search..." name="query">
+                            <span class="input-group-btn">
+                                <a href="javascript:;" class="btn submit">
+                                    <i class="icon-magnifier"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </form>*@
+                <!-- start mobile menu -->
+                <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span></span>
+                </a>
+                <!-- end mobile menu -->
+                <!-- start header menu -->
+                <div class="top-menu">
+
+                    <ul class="pull-left">
+                        <img height="50" src="~/images/logo.png" />
+                    </ul>
+
+                    <ul class="nav navbar-nav pull-right">
+
+                        <!-- start notification dropdown -->
+                        @*<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    <i class="fa fa-bell-o"></i>
+                                    <span class="badge orange-bgcolor"> 6 </span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="external">
+                                        <h3><span class="bold">Notifications</span></h3>
+                                        <span class="notification-label purple-bgcolor">New 6</span>
+                                    </li>
+                                    <li>
+                                        <ul class="dropdown-menu-list small-slimscroll-style" data-handle-color="#637283">
+                                            <li>
+                                                <a href="javascript:;">
+                                                    <span class="time">just now</span>
+                                                    <span class="details">
+                                                        <span class="notification-icon circle green-bgcolor"><i class="fa fa-check"></i></span> Congratulations!.
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:;">
+                                                    <span class="time">3 mins</span>
+                                                    <span class="details">
+                                                        <span class="notification-icon circle purple-bgcolor"><i class="fa fa-user o"></i></span>
+                                                        <b>John Micle </b>is now following you.
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:;">
+                                                    <span class="time">7 mins</span>
+                                                    <span class="details">
+                                                        <span class="notification-icon circle blue-bgcolor"><i class="fa fa-comments-o"></i></span>
+                                                        <b>Sneha Jogi </b>sent you a message.
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:;">
+                                                    <span class="time">12 mins</span>
+                                                    <span class="details">
+                                                        <span class="notification-icon circle pink"><i class="fa fa-heart"></i></span>
+                                                        <b>Ravi Patel </b>like your photo.
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:;">
+                                                    <span class="time">15 mins</span>
+                                                    <span class="details">
+                                                        <span class="notification-icon circle yellow"><i class="fa fa-warning"></i></span> Warning!
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:;">
+                                                    <span class="time">10 hrs</span>
+                                                    <span class="details">
+                                                        <span class="notification-icon circle red"><i class="fa fa-times"></i></span> Application error.
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <div class="dropdown-menu-footer">
+                                            <a href="javascript:void(0)"> All notifications </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>*@
+                        <!-- end notification dropdown -->
+                        <!-- start manage user dropdown -->
+                        <li class="dropdown dropdown-user">
+
+
+
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <img alt="" class="img-circle " src="~/images/dp.svg" />
+                                <span class="username username-hide-on-mobile"> @Session["LoginFullName"] </span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-default">
+                                @if (Session["RolesId"].ToString() == "6")
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ChangePwd", new { controller = "Home", iFlag = 1 })">
+                                            <i class="fa fa-key"></i> Change Password
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ChangePwd", new { controller = "Home", iFlag = 2 })">
+                                            <i class="fa fa-key"></i> Change Password
+                                        </a>
+                                    </li>
+                                }
+                                <li>
+                                    <a href="@Url.Action("LogOff","Home")">
+                                        <i class="icon-logout"></i> Log Out
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- end manage user dropdown -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- end header -->
+        <div class="clearfix"> </div>
+        <!-- start page container -->
+        <div class="page-container">
+            <!-- start sidebar menu -->
+            <div class="sidebar-container">
+                <div class="sidemenu-container navbar-collapse collapse fixed-menu">
+                    <div id="remove-scroll">
+                        <ul class="sidemenu  page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+                            <li class="sidebar-toggler-wrapper hide">
+                                <div class="sidebar-toggler">
+                                    <span></span>
+                                </div>
+                            </li>
+                            <li class="sidebar-user-panel">
+                                <div class="user-panel">
+                                    <div class="pull-left image">
+                                        <img src="~/images/dp.svg" class="img-circle user-img-circle" alt="User Image" />
+                                    </div>
+                                    <div class="pull-left info">
+                                        <p>@Session["RoleName"]</p>
+                                        @*<a href="#"><i class="fa fa-circle user-online"></i><span class="txtOnline"> Online</span></a>*@
+                                    </div>
+                                </div>
+                            </li>
+                            @if (Convert.ToBoolean(Session["Dashboard"]) == true)
+                            {
+                                <li class="nav-item start active open">
+                                    <a href="@Url.Action("Index", "Home")" class="nav-link ">
+                                        <i class="fa fa-tachometer"></i> <span class="title">Dashboard</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (Convert.ToBoolean(Session["BatchList"]) == true)
+                            {
+                                <li class="nav-item">
+                                    <a href="@Url.Action("BatchesList", "Home")" class="nav-link nav-toggle">
+                                        <i class="fa fa-user-o"></i>
+                                        <span class="title">Batch List</span> <span class="arrow"></span>
+                                    </a>
+                                </li>
+                            }
+                            @if (Convert.ToBoolean(Session["Placements"]) == true)
+                            {
+                                <li class="nav-item">
+                                    <a href="@Url.Action("PlacementList", "Home")" class="nav-link nav-toggle">
+                                        <i class="fa fa-map-marker"></i>
+                                        <span class="title">Placement</span> <span class="arrow"></span>
+                                    </a>
+                                </li>
+                            }
+                            @if (Convert.ToBoolean(Session["TraineePortal"]) == true)
+                            {
+                                <li class="nav-item">
+                                    <a href="@Url.Action("TraineePortal", "Trainee")" class="nav-link nav-toggle">
+                                        <i class="fa fa-user"></i>
+                                        <span class="title">Trainee Portal</span> <span class="arrow"></span>
+                                    </a>
+                                </li>
+                            }
+                            @if (Convert.ToBoolean(Session["AdminPortal"]) == true)
+                            {
+                                <li class="nav-item">
+                                    <a href="" class="nav-link nav-toggle">
+                                        <i class="fa fa-user-circle"></i>
+                                        <span class="title">Admin Portal</span> <span class="arrow"></span>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li><a href="@Url.Action("AttendanceReport", "Home")">Attendance</a></li>
+                                        <li><a href="@Url.Action("GrossMarginReport", "Home")">Gross Margin</a></li>
+                                        <li><a href="@Url.Action("PayingTrainee", "Home")">Paying Trainees</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            @if (Convert.ToBoolean(Session["Settings"]) == true)
+                            {
+                                <li class="nav-item">
+                                    <a href="" class="nav-link nav-toggle">
+                                        <i class="fa fa-cogs"></i>
+                                        <span class="title">Settings</span> <span class="arrow"></span>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li><a href="@Url.Action("CompanyList", "Company")">Companies</a></li>
+                                        <li><a href="@Url.Action("RecruiterList", "Recruiter")">Recruiters</a></li>
+                                        <li><a href="@Url.Action("UsersList", "Home")">Users</a></li>
+                                        <li><a href="@Url.Action("ReasonList", "Settings")">Reason</a></li>
+                                        <li><a href="@Url.Action("PositionList", "Settings")">Position</a></li>
+                                        <li><a href="@Url.Action("UserRoles", "Settings")">Role Permissions</a></li>
+
+                                    </ul>
+                                </li>
+                            }
+
+                            @if (Convert.ToBoolean(Session["WebsiteDashboard"]) == true)
+                            {
+
+                                <li class="nav-item start active open">
+                                    <a href="@Url.Action("Index", "WebsiteDashboard")" class="nav-link ">
+                                        <i class="fa fa-tachometer"></i> <span class="title">Dashboard</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (Convert.ToBoolean(Session["AdminWebsite"]) == true)
+                            {
+
+                                <li class="nav-item">
+                                    <a href="" class="nav-link nav-toggle">
+                                        <i class="fa fa-globe"></i>
+                                        <span class="title">Admin Website </span> <span class="arrow"></span>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li><a href="@Url.Action("Index", "WebsiteDashboard")">Website Dashboard</a></li>
+                                        <li><a href="@Url.Action("FormList", "Forms")">Forms</a></li>
+                                        <li><a href="@Url.Action("TrainingCoursesList", "TrainingCours")">Training Courses Website</a></li>
+                                        <li><a href="@Url.Action("WebsiteUsersList", "WebsiteUsers")">Website Users</a></li>
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- end sidebar menu -->
+            <!-- start page content -->
+            <div class="page-content-wrapper">
+                <div class="page-content" style="min-height:0px; padding:0px">
+                    <div id="MessageModal" style="display:none;">
+                        <div id="divAlert">
+                            <i></i><p><b id="TxtHeaderMessageModal"></b> &nbsp; <span id="TxtMessageModal"></span></p>
+                        </div>
+                    </div>
+
+                    @*<div id="MessageModal" class="confirm-msg" style="display:none;">
+                            <div id="divAlert" class="alert alert-success animated shake">
+                                <i></i><p><b id="TxtHeaderMessageModal"></b> &nbsp; <span id="TxtMessageModal"></span></p>
+                            </div>
+                        </div>*@
+                </div>
+
+                @RenderBody()
+            </div>
+            <!-- end page content -->
+
+            @*<div class="modal fade" id="modal-container" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    </div>
+                </div>
+            </div>*@
+        </div>
+        <!-- end page container -->
+        <!-- start footer -->
+        <div class="page-footer">
+            <div class="page-footer-inner">
+                Copyright &copy; @DateTime.Now.Year SummitWorks Technologies Inc. All rights reserved.
+
+            </div>
+            <div class="scroll-to-top">
+                <i class="icon-arrow-up"></i>
+            </div>
+        </div>
+        <!-- end footer -->
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/jquery.min.js"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script src="~/Scripts/app.js"></script>
+    <script src="~/Scripts/layout.js"></script>
+    @RenderSection("scripts", required: false)
+
+    <script>
+        //$(document).ready(function () {
+        //    if ((document.location.href.match(/[^\/]+$/)[0]).startsWith("Index")) {
+        //        $("#dDashBoard").addClass("start active open");
+        //    }
+        //    else if ((document.location.href.match(/[^\/]+$/)[0]).startsWith("PlacementList")) {
+        //        $("#dDashBoard").addClass("start active open");
+        //    }
+        //    else if (((document.location.href.match(/[^\/]+$/)[0]).startsWith("AttendanceReport")) || ((document.location.href.match(/[^\/]+$/)[0]).startsWith("GrossMarginReport"))) {
+        //        $("#dDashBoard").addClass("start active open");
+        //    }
+        //    else if (((document.location.href.match(/[^\/]+$/)[0]).startsWith("UsersList")) || ((document.location.href.match(/[^\/]+$/)[0]).startsWith("ReasonList")) ||
+        //        ((document.location.href.match(/[^\/]+$/)[0]).startsWith("PositionList")) || ((document.location.href.match(/[^\/]+$/)[0]).startsWith("UserRoles"))) {
+        //        $("#dDashBoard").addClass("start active open");
+        //    }
+        //    else {
+        //        $("#dDashBoard").addClass("start active open");
+        //    }
+        //})
+
+        $(function () {
+            $('body').on('click', '.modal-link', function (e) {
+                e.preventDefault();
+                console.log('Load1')
+                $(this).attr('data-target', '#modal-container');
+                $(this).attr('data-toggle', 'modal');
+                console.log('Load2')
+            });
+            $('body').on('click', '.modal-Confirmlink', function (e) {
+                e.preventDefault();
+                console.log('Confirm1')
+                $(this).attr('data-target', '#modal-Confirmcontainer');
+                $(this).attr('data-toggle', 'modal');
+                console.log('Confirm1')
+            });
+            // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+
+
+            $('body').on('click', '.modal-close-btn', function () {
+                console.log('Close1')
+                $('#modal-container').modal('hide');
+                console.log('Close2')
+            });
+
+            //clear modal cache, so that new content can be loaded
+            $('#modal-container').on('hidden.bs.modal', function () {
+                console.log('Clear1')
+                $(this).removeData('bs.modal');
+                console.log('Clear2')
+            });
+
+            $('#modal-Confirmcontainer').on('hidden.bs.modal', function () {
+                console.log('Clear3')
+                $(this).removeData('bs.modal');
+                console.log('Clear4')
+            });
+
+            $('#CancelModal').on('click', function () {
+                console.log('Cancel1')
+                return false;
+            });
+        });
+
+        var idleTime = 0;
+        $(document).ready(function () {
+            //Increment the idle time counter every minute.
+            var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+
+            //Zero the idle timer on mouse movement.
+            $(this).mousemove(function (e) {
+                idleTime = 0;
+            });
+            $(this).keypress(function (e) {
+                idleTime = 0;
+            });
+        });
+
+        function timerIncrement() {
+            idleTime = idleTime + 1;
+            if (idleTime >= 60) { // 60 minutes
+                //alert("host " + window.location.host)
+                $.ajax({
+                    url: "../../tms/Home/LogOff",
+                    success: function () {
+                        //$('#emailModal').modal('hide');
+                        alert((idleTime + 1) + " minutes of inactivity, redirecting to login...")
+                        window.location = "https://" + window.location.host + "/tms/Home/Login";
+                    },
+                    error: function (result) {
+                        toastr.error('Something wrong happened!');
+                    }
+                });
+
+            }
+        }
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
+    <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css" />
+
+</body>
+</html>

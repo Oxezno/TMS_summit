@@ -1,0 +1,594 @@
+﻿@model TMS.Models.Profile_users_Custom
+
+@{
+    ViewBag.Title = "Contactform";
+    Layout = "~/Views/Shared/_Layout_Ext.cshtml";
+
+    List<SelectListItem> listYears = new List<SelectListItem>();
+    List<SelectListItem> listMonths = new List<SelectListItem>();
+    List<SelectListItem> listDays = new List<SelectListItem>();
+    List<SelectListItem> listYN = new List<SelectListItem>();
+    List<SelectListItem> listExp = new List<SelectListItem>();
+
+    var initDate = DateTime.Now.Year - 60;
+    var endDate = DateTime.Now.Year-19;
+
+    for (var i= initDate; i<= endDate; i++ )
+    {
+        listYears.Add(new SelectListItem { Text = i.ToString(), Value = i.ToString() });
+    }
+
+    for (int i = 0; i < 12; i++)
+    {
+        listMonths.Add(new SelectListItem { Text = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i], Value = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i] });
+    }
+
+    for (var i = 1; i <= 31; i++)
+    {
+        listDays.Add(new SelectListItem { Text = i.ToString(), Value = i.ToString() });
+    }
+
+    listYN.Add(new SelectListItem { Text = "Yes", Value = "1" });
+    listYN.Add(new SelectListItem { Text = "No", Value = "0" });
+
+    listExp.Add(new SelectListItem { Text = "0-1 yrs", Value = "0-1 yrs" });
+    listExp.Add(new SelectListItem { Text = "1-5 yrs", Value = "1-5 yrs" });
+    listExp.Add(new SelectListItem { Text = "5-10 yrs", Value = "5-10 yrs" });
+    listExp.Add(new SelectListItem { Text = "10+ yrs", Value = "10+ yrs" });
+
+}
+
+
+<body class="hold-transition login-page">
+
+    <div class="col-md-2">
+    </div>
+
+    <div class="col-md-8">
+        <div class="box">
+            <div class="page-bar">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="~/Images/companyLogo/@ViewBag.Company.CAPTION" style="max-height:100px; width:auto;" />
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <div class="page-title">@ViewBag.Company.COMPANY_NAME </div>
+                        <i class="fa fa-check"></i>
+                        <i class="fa fa-address-book"></i>
+                        <div class="page-title">@ViewBag.Form.FormName</div>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                </div>
+
+            </div>
+
+            <div>
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        @using (Ajax.BeginForm("SaveProfile", "Forms", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "FileForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="card-body" id="bar-parent1">
+                                <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                BatchID:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Html.EditorFor(model => model.BatchId, new { htmlAttributes = new { @class = "form-control", @required = "required", maxlength = "20", @Value = @ViewBag.ID_BATCH } })
+                                                @Html.ValidationMessageFor(model => model.BatchId, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                FormID:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Html.EditorFor(model => model.FormID, new { htmlAttributes = new { @class = "form-control", @required = "required", maxlength = "20", @Value = @ViewBag.Form.FormID } })
+                                                @Html.ValidationMessageFor(model => model.FormID, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <h3>General Info</h3>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Name:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.Fname, new { htmlAttributes = new { @class = "form-control", @required = "required", maxlength = "20" } })
+                                                @Html.ValidationMessageFor(model => model.Fname, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Last Name:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.LName, new { htmlAttributes = new { @class = "form-control", @required = "required", maxlength = "20" } })
+                                                @Html.ValidationMessageFor(model => model.LName, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Phone Number:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control", @required = "required", maxlength = "15", onkeypress = "return isNumberKey(event)" } })
+                                                @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Email:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @required = "required", maxlength = "80", type = "email" } })
+                                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Skype ID:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.SkypeID, new { htmlAttributes = new { @class = "form-control", @required = "required", maxlength = "20" } })
+                                                @Html.ValidationMessageFor(model => model.SkypeID, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Birthday:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <div class="col-md-4">
+                                                    @Html.DropDownListFor(model => model.BirthdayMonth, listMonths, "Month", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                                </div>
+                                                <div class="col-md-4">
+                                                    @Html.DropDownListFor(model => model.BirthdayDay, listDays, "Day", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                                </div>
+                                                <div class="col-md-4">
+                                                    @Html.DropDownListFor(model => model.BirthdayYear, listYears, "Year", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                                </div>
+
+                                                @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Address:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = 1, @required = "required" })
+                                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Nationality or Visa Status:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.NationalityStatus, new { htmlAttributes = new { @class = "form-control", @required = "required", maxlength = "20" } })
+                                                @Html.ValidationMessageFor(model => model.NationalityStatus, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Gender:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(model => model.SexTypeID, ViewData["ID_GENDER"] as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(model => model.SexTypeID, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Do you need us to help get a working visa?:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(model => model.VisaHelpOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(model => model.NationalityStatus, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Recruiter:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(model => model.RecruiterID, ViewData["ID_RECRUITER"] as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(model => model.RecruiterID, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Are you willing to undergo a background check, in accordance with local law/regulations?
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(model => model.BackgroundCheckOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(model => model.BackgroundCheck, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Education:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.Education, new { htmlAttributes = new { @class = "form-control", @required = "required", maxlength = "80" } })
+                                                @Html.ValidationMessageFor(model => model.Education, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Applied via:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.Applied_Via, new { htmlAttributes = new { @class = "form-control", @required = "required", maxlength = "20" } })
+                                                @Html.ValidationMessageFor(model => model.Applied_Via, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Do you need help with finding accommodations for the first week?:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(model => model.AccommodationHelpOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(model => model.AccommodationHelp, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                How years of work general work experience do you have?:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(model => model.ExperienceYears, listExp, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(model => model.ExperienceYears, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <h3>Coding Experience</h3>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                Rate your experience coding in computer languages before coming here?
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>1</th>
+                                                        <th>2</th>
+                                                        <th>3</th>
+                                                        <th>4</th>
+                                                        <th>5</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>I have no prior background.</th>
+                                                        <th>
+                                                            @Html.RadioButtonFor(model => model.CodingExperienceBefore, "1", new { @class = "custom-radio", @Name = "CodingExperienceBefore", @required = "required" })
+                                                        </th>
+                                                        <th>
+                                                            @Html.RadioButtonFor(model => model.CodingExperienceBefore, "2", new { @class = "custom-radio", @Name = "CodingExperienceBefore", @required = "required" })
+                                                        </th>
+                                                        <th>
+                                                            @Html.RadioButtonFor(model => model.CodingExperienceBefore, "3", new { @class = "custom-radio", @Name = "CodingExperienceBefore", @required = "required" })
+                                                        </th>
+                                                        <th>
+                                                            @Html.RadioButtonFor(model => model.CodingExperienceBefore, "4", new { @class = "custom-radio", @Name = "CodingExperienceBefore", @required = "required" })
+                                                        </th>
+                                                        <th>
+                                                            @Html.RadioButtonFor(model => model.CodingExperienceBefore, "5", new { @class = "custom-radio", @Name = "CodingExperienceBefore", @required = "required" })
+                                                        </th>
+                                                        <th>I am an awesome coder.</th>
+                                                    </tr>
+                                                </table>
+
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>YES</th>
+                                                        <th>NO</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I Taught Myself Coding:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.TaughtMyselfCoding, true, new { @class = "custom-radio", @Name = "TaughtMyselfCoding", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.TaughtMyselfCoding, false, new { @class = "custom-radio", @Name = "TaughtMyselfCoding", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I Attended a Computer BootCamp:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.AttendedComputerBootCamp, true, new { @class = "custom-radio", @Name = "AttendedComputerBootCamp", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.AttendedComputerBootCamp, false, new { @class = "custom-radio", @Name = "AttendedComputerBootCamp", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I studied some coding in college:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.StudiedCodingCollege, true, new { @class = "custom-radio", @Name = "StudiedCodingCollege", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.StudiedCodingCollege, false, new { @class = "custom-radio", @Name = "StudiedCodingCollege", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I come from a Liberal Arts background
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.LiberalArtsBackground, true, new { @class = "custom-radio", @Name = "LiberalArtsBackground", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.LiberalArtsBackground, false, new { @class = "custom-radio", @Name = "LiberalArtsBackground", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I come from Science/Math/Engineering Background
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.ScienceBackground, true, new { @class = "custom-radio", @Name = "ScienceBackground", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.ScienceBackground, false, new { @class = "custom-radio", @Name = "ScienceBackground", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I studied online at Free Code Camp
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.StudiedOnlineCodeCamp, true, new { @class = "custom-radio", @Name = "StudiedOnlineCodeCamp", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.StudiedOnlineCodeCamp, false, new { @class = "custom-radio", @Name = "StudiedOnlineCodeCamp", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I studied at W3 Schools:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.StudiedW3Schools, true, new { @class = "custom-radio", @Name = "StudiedW3Schools", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.StudiedW3Schools, false, new { @class = "custom-radio", @Name = "StudiedW3Schools", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I studied watching Youtube Videos
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.StudiedYoutubeVideos, true, new { @class = "custom-radio", @Name = "StudiedYoutubeVideos", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.StudiedYoutubeVideos, false, new { @class = "custom-radio", @Name = "StudiedYoutubeVideos", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I have research Stack OverFlow:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.ResearchStackOverFlow, true, new { @class = "custom-radio", @Name = "ResearchStackOverFlow", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.ResearchStackOverFlow, false, new { @class = "custom-radio", @Name = "ResearchStackOverFlow", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I studied online at Udemy:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.StudiedOnlineUdemy, true, new { @class = "custom-radio", @Name = "StudiedOnlineUdemy", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.StudiedOnlineUdemy, false, new { @class = "custom-radio", @Name = "StudiedOnlineUdemy", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I have practiced Algorithms:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.PracticedAlgorithms, true, new { @class = "custom-radio", @Name = "PracticedAlgorithms", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.PracticedAlgorithms, false, new { @class = "custom-radio", @Name = "PracticedAlgorithms", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I love to google for answers:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.GoogleAnswers, true, new { @class = "custom-radio", @Name = "GoogleAnswers", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.GoogleAnswers, false, new { @class = "custom-radio", @Name = "GoogleAnswers", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">
+                                                I have no experience at all:
+                                                <span class="required" aria-required="true"> * </span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th>@Html.RadioButtonFor(model => model.NoExperience, true, new { @class = "custom-radio", @Name = "NoExperience", @required = "required" })</th>
+                                                        <th>@Html.RadioButtonFor(model => model.NoExperience, false, new { @class = "custom-radio", @Name = "NoExperience", @required = "required" })</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="col-md-12 text-center">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</body>
+
+<script>
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+</script>

@@ -1,0 +1,96 @@
+﻿@model dynamic
+@{
+    Layout = null;
+}
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>Training Program</th>
+            <th>Technology</th>
+            <th>Date</th>
+            <th>Performance</th>
+            <th>Interviewer(s)</th>
+            <th>Notes/Comments</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.Mocks)
+        {
+            var classX = "success";
+
+            if (@item.Status == "1")
+            {
+                classX = "danger";
+            }
+            if (@item.Status == "2")
+            {
+                classX = "active";
+            }
+            if (@item.Status == "3")
+            {
+                classX = "warning";
+            }
+            if (@item.Status == "4")
+            {
+                classX = "info";
+            }
+            if (@item.Status == "5")
+            {
+                classX = "success";
+            }
+
+        <tr class="@classX">
+            <td>
+                @{ var TC = "N/A";
+
+                    if (item.TrainingCours != null)
+                    {
+                        @item.TrainingCours.TrainingCourseName;
+                    }
+                    else
+                    {
+                        @TC;
+                    }
+                }
+
+            </td>
+            <td>
+                @item.Technology
+            </td>
+            <td>
+                @Convert.ToDateTime(item.InterviewDate).ToString("MM/dd/yyyy")
+            </td>
+            <td>
+                @item.Performance
+            </td>
+            <td>
+                @{ 
+                    var interviewers = "";
+                    interviewers = interviewers + item.User1.FullName;
+                    if(item.User2 != null)
+                    {
+                        interviewers = interviewers+", " + item.User2.FullName;
+                    }
+                    if(item.User3 != null)
+                    {
+                        interviewers = interviewers+", " + item.User3.FullName;
+                    }
+
+                }
+                @interviewers
+            </td>
+            <td>
+                @item.Notes
+            </td>
+            <td class="text-right">
+                <a href="@Url.Action("DeleteMockInterview",  new {  controller = "TrainingCours", mockID = item.MockInterviewID })" class="modal-link btn btn-xs btn-danger" title="Remove mock Interview.">
+                    <i class="fa fa-times"></i>
+                </a>
+            </td>
+        </tr>
+        }
+
+    </tbody>
+</table>

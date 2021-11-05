@@ -1,0 +1,14 @@
+﻿@model TMS.Models.ContractTemplate
+
+@{
+    ViewBag.Title = "Contract Template Preview";
+    Layout = null;
+}
+
+
+<div class="col-md-12 text-center-sm">
+    <img src="~/Images/companyLogo/@Model.Company.CAPTION" style="max-height:100px; width:auto; margin-top:5px;" />
+</div>
+
+
+@Html.Raw(Model.TemplateContent)

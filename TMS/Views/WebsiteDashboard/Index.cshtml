@@ -1,0 +1,326 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Website Dashboard";
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Dashboard</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Dashboard</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="state-overview">
+            <div class="col-lg-3 col-sm-6">
+                <div class="overview-panel green-bgcolor">
+                    <div class="symbol">
+                        <i class="fa fa-laptop"></i>
+                    </div>
+                    <div class="value white">
+                        <p class="sbold addr-font-h1" data-counter="counterup" data-value="48">@ViewBag.tcCount</p>
+                        <p>Training Programs</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="overview-panel orange">
+                    <div class="symbol">
+                        <i class="fa fa-users usr-clr"></i>
+                    </div>
+                    <div class="value white">
+                        <p class="sbold addr-font-h1" data-counter="counterup" data-value="14">@ViewBag.TotalUsers</p>
+                        <p>Total Users</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="overview-panel blue-bgcolor">
+                    <div class="symbol">
+                        <i class="fa fa-address-card"></i>
+                    </div>
+                    <div class="value white">
+                        <p class="sbold addr-font-h1" data-counter="counterup" data-value="3421">@ViewBag.RegisteredToday</p>
+                        <p>Registered Today</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="overview-panel green">
+                    <div class="symbol">
+                        <i class="fa fa-user-plus"></i>
+                    </div>
+                    <div class="value white">
+                        <p class="sbold addr-font-h1" data-counter="counterup" data-value="23">@ViewBag.EnrolledToday</p>
+                        <p>Enrolled Today<p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end widget -->
+    <!-- chart start -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-topline-aqua">
+                <div class="card-head">
+                    <header>Last @ViewBag.TotalTC Training Programs</header>
+                </div>
+
+                <div class="card-head">
+                    <div class="input-group col-md-9" style="margin-top:10px; margin-left:10px">
+                        @using (Html.BeginForm("TrainingCoursesSearch", "WebsiteDashboard", new { @class = "form-inline" }))
+                        {
+                            <div class="input-group">
+                                @Html.TextBox("txtSearch", (string)ViewBag.Search, new { @class = "form-control", placeholder = "Search Training Program" })
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </span>
+                            </div>
+                        }
+                    </div>
+
+                    <span class="pull-right paddingtop">
+
+                        <a href="@Url.Action("TrainingProgramsExcel", new { controller = "TrainingCours" })" class="btn btn-primary btn-add" title="Click to Export" data-toggle="tooltip">
+                            <i class="fa fa-file-excel-o"></i> Export
+                        </a>
+
+                        @*@if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin")
+                            {
+                                <a href="@Url.Action("CreateTrainingCourse", new { controller = "TrainingCours", id = 0 })" class="btn btn-primary btn-add" title="Click to Add Form" data-toggle="tooltip">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                            }*@
+
+                    </span>
+                </div>
+
+                <div class="card-body no-padding height-9">
+                    <div class="fullresponsivetable">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.ActionLink("Training Program " + (Convert.ToString(ViewBag.NameSortParm) == "name" ? "↑" : "↓"), "Index", new { sortOrderTC = ViewBag.NameSortParm })
+                                    </th>
+                                    <th class="text-right">
+                                        @Html.ActionLink("Starting Date " + (Convert.ToString(ViewBag.StartDate1SortParm) == "startdate1" ? "↑" : "↓"), "Index", new { sortOrderTC = ViewBag.StartDate1SortParm })
+                                    </th>
+                                    @*<th class="text-right">
+                                            @Html.ActionLink("1st Payment " + (Convert.ToString(ViewBag.Payment1SortParm) == "payment1" ? "↑" : "↓"), "Index", new { sortOrderTC = ViewBag.Payment1SortParm })
+                                        </th>
+                                        <th class="text-right">
+                                            @Html.ActionLink("2nd Payment " + (Convert.ToString(ViewBag.Payment2SortParm) == "payment2" ? "↑" : "↓"), "Index", new { sortOrderTC = ViewBag.Payment2SortParm })
+                                        </th>*@
+                                    <th class="text-right">
+                                        @Html.ActionLink("Cost " + (Convert.ToString(ViewBag.TotalSortParm) == "total" ? "↑" : "↓"), "Index", new { sortOrderTC = ViewBag.TotalSortParm })
+                                    </th>
+                                    <th class="text-right">
+                                        @Html.ActionLink("Enrolled " + (Convert.ToString(ViewBag.EnrolledSortParm) == "enrolled" ? "↑" : "↓"), "Index", new { sortOrderTC = ViewBag.EnrolledSortParm })
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.TrainingCourses)
+                                {
+                                    var date1 = "";
+                                    if (item.StartDate1 != null)
+                                    {
+                                        date1 = Convert.ToDateTime(item.StartDate1).ToString("MM/dd/yyyy");
+                                    }
+
+                                    <tr>
+                                        <td data-title="Training Course">@item.TrainingCourseName</td>
+                                        <td class="text-right" data-title="StartDate1">@date1</td>
+                                        @*<td class="text-right" data-title="FirstPayment">$ @string.Format("{0:#.00}", Convert.ToDecimal(item.FirstPayment)) </td>
+                                            <td class="text-right" data-title="SecondPayment">$ @string.Format("{0:#.00}", Convert.ToDecimal(item.SecondPayment)) </td>*@
+                                        <td class="text-right" data-title="Price">$ @string.Format("{0:#.00}", Convert.ToDecimal(item.Price)) </td>
+
+                                        <td class="text-right" data-title="Enrolled">@item.TotalEnrolled</td>
+
+                                        <td class="text-right">
+                                            <a href="@Url.Action("ViewTrainingCourse", new { controller = "TrainingCours", id = item.TrainingCourseID})" class="btn btn-xs btn-new" title="Click to View" data-toggle="tooltip">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+
+                                            @if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin")
+                                            {
+                                                if (item.TotalEnrolled == 0)
+                                                {
+                                                    <a href="@Url.Action("DeleteTrainingCourse",  new {  controller = "TrainingCours", id = item.TrainingCourseID})" class="modal-link btn btn-xs btn-danger" title="Delete Training Course.">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                }
+                                            }
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-topline-aqua">
+                <div class="card-head">
+                    <header>
+                        Last 10 Registered Users
+                    </header>
+
+                    <header class="pull-right">
+                        <a href="@Url.Action("WebsiteUsersList", new { controller = "WebsiteUsers" })">
+                            View all users
+                        </a>
+                    </header>
+
+                </div>
+
+                <div class="card-head">
+                    <div class="input-group col-md-9" style="margin-top:10px; margin-left:10px">
+                        @using (Html.BeginForm("WebsiteUsersSearch", "WebsiteDashboard", new { @class = "form-inline" }))
+                        {
+                            <div class="input-group">
+                                @Html.TextBox("txtSearch", (string)ViewBag.Search, new { @class = "form-control", placeholder = "Search Website Users" })
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </span>
+                            </div>
+                        }
+                    </div>
+
+                    <span class="pull-right paddingtop">
+                        <a href="@Url.Action("WebsiteUsersExcel", new { controller = "WebsiteUsers" })" class="btn btn-primary btn-add" title="Click to Export" data-toggle="tooltip">
+                            <i class="fa fa-file-excel-o"></i> Export
+                        </a>
+                    </span>
+                </div>
+
+                <div class="card-body no-padding height-9">
+                    <div class="fullresponsivetable">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.ActionLink("Name " + (Convert.ToString(ViewBag.NameUSortParm) == "nameU" ? "↑" : "↓"), "Index", new { sortOrderU = ViewBag.NameUSortParm })
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Last Name " + (Convert.ToString(ViewBag.LastNameSortParm) == "lastname" ? "↑" : "↓"), "Index", new { sortOrderU = ViewBag.LastNameSortParm })
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Email " + (Convert.ToString(ViewBag.EmailSortParm) == "email" ? "↑" : "↓"), "Index", new { sortOrderU = ViewBag.EmailSortParm })
+                                    </th>
+                                    <th>Phone #</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.WebsiteUsers)
+                                {
+
+                                    var regDate = "";
+                                    if (item.RegisterDate != null)
+                                    {
+                                        regDate = Convert.ToDateTime(item.RegisterDate).ToString("MM/dd/yyyy");
+                                    }
+                                    <tr>
+                                        <td data-title="Name">@item.FName</td>
+                                        <td data-title="Last Name">@item.LName</td>
+                                        <td data-title="Email">@item.Email</td>
+                                        <td data-title="Phone">@item.Phone</td>
+
+                                        <td class="text-right">
+
+                                            <a href="@Url.Action("ViewWebsiteUser", new { controller = "WebsiteUsers", id = item.WebsiteUserID})" class="btn btn-xs btn-new" title="Click to View" data-toggle="tooltip">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-topline-aqua">
+                <div class="card-head">
+                    <header>Scheduler</header>
+                </div>
+
+                <div class="card-head">
+                    <div id="scheduler-dashboard">
+                        @*@Html.Partial("GetScheduler")*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-topline-aqua">
+                <div class="card-head">
+                    <header>Top 5 Training Most Enrolled Users</header>
+                </div>
+
+                <div class="card-head">
+
+
+                </div>
+
+                <div class="card-body no-padding height-9">
+                    <div class="fullresponsivetable text-center">
+                        <img src="@Url.Action("EnrolledUsersChart")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<script>
+
+    $(document).ready(function () {
+        fnLoadScheduler();
+    });
+
+    function fnLoadScheduler() {
+        $.ajax({
+            url: '@Url.Action("GetScheduleView", "TrainingCours")',
+            //data: { },
+            success: function (data) {
+                //alert(data)
+                $("#scheduler-dashboard").html(data);
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,285 @@
+﻿@model TMS.Models.Trainee
+
+@{
+    ViewBag.Title = "View Profile";
+}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script>
+    $.getJSON("http://jsonip.com?callback=?", function (data) {
+        if ((data.ip != "173.12.35.109") && (data.ip != "141.150.59.235"))
+        { window.location.href = "http://104.238.111.129:96/Home/NoAccess"; }
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#divSelected').hide();
+        $('#chkAbsent').change(function () {
+            if (this.checked) {
+                $('#divSelected').show();
+            }
+            else {
+                $('#divSelected').hide();
+            }
+        })
+    })
+</script>
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Profile</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Trainee Protal</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-body" id="bar-parent1" style="padding-bottom:0px !important;">
+                    <form action="#" id="form_sample_1" class="form-horizontal profile-form" novalidate>
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    First Name: @Html.HiddenFor(model => model.pu.PID, new { @id = "hdnPid" }) @Html.HiddenFor(model => model.pu.BatchId)
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Fname)
+                                </div>
+
+                                <label class="control-label col-md-2">
+                                    Last Name:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.LName)
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Contact #:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Contact)
+                                </div>
+
+                                <label class="control-label col-md-2">
+                                    Email:
+                                </label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        @Html.DisplayFor(model => model.pu.Email)
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Address:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Address)
+                                </div>
+
+                                <label class="control-label col-md-2">
+                                    Education:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Education)
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Referred by:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Referred_by)
+                                </div>
+
+                                <label class="control-label col-md-2">
+                                    Applied Via:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Applied_Via)
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Notes:
+                                </label>
+                                <div class="col-md-10">
+                                    @Html.DisplayFor(model => model.pu.Notes)
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Attachment:
+                                </label>
+                                <div class="col-md-10">
+                                    <a target='_blank' href='@ViewBag.FileFolderPath@Model.pu.Resume'>@Model.pu.Resume</a>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#DailyAttendance">Daily Attendance</a></li>
+                        <li><a data-toggle="tab" href="#ClientsInterview">Clients Interview</a></li>
+                        <li><a data-toggle="tab" href="#Downloadable">Downloadable</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="DailyAttendance" class="tab-pane fade in active">
+                            @if (Model.taId > 0)
+                            {
+                                <p>Thanks for submiting your attendance, Have a nice day.</p>
+                            }
+
+                            @if(Model.taId == 0)
+                            {                            
+                                using (Ajax.BeginForm("TraineePortal", "Trainee", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "FileForm" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <div class="card-body" id="bar-parent1">
+                                        <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">
+                                                        Date
+                                                    </label>
+                                                    <div class="col-md-9">
+                                                        @String.Format("{0:MM/dd/yyyy}", Model.taDt)
+                                                        @Html.HiddenFor(model => model.taDt)
+                                                        @Html.HiddenFor(model => model.taId)
+                                                        @Html.HiddenFor(model => model.taProfileId)
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">
+                                                        Absent?
+                                                    </label>
+                                                    <div class="col-md-4">
+                                                        @Html.CheckBoxFor(model => model.taAbsent, htmlAttributes: new { @class = "chkbox pull-left", @id = "chkAbsent" })
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+
+                                                <div class="form-group" id="divSelected">
+                                                    <label class="control-label col-md-3">
+                                                        Reason
+                                                    </label>
+                                                    <div class="col-md-4">
+                                                        @*@Html.ValidationMessageFor(model => model.taReasonId, "", new { @class = "field-validation-error" })*@
+                                                        @Html.DropDownListFor(model => model.taReasonId, (SelectList)ViewBag.AbsentReasons, "Select Reason", new { @class = "form-control m-bot15", @id = "ddlReason" })
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="form-actions">
+                                                <div class="col-md-12 text-center">
+                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                }
+                            }
+
+                            <p><a class="parent-item" href="@Url.Action("AttendanceCal","Trainee")">Click here</a> to view full attendance callendar </p>
+                        </div>
+                        <div id="ClientsInterview" class="tab-pane fade">
+                            <div class="fullresponsivetable">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Interview Dt</th>
+                                            <th>Client Name</th>
+                                            <th>Notes</th>
+                                            <th>
+                                                <span class="pull-right">
+                                                    <a href="@Url.Action("ClientInterview", new { controller = "Trainee", Id = Model.pu.PID, ciId = 0 })" class="btn btn-primary btn-add" title="Click to Add Client Interview" data-toggle="tooltip">
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
+                                                </span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.pci)
+                                        {
+                                            <tr>
+                                                <td data-title="Interview Dt">@String.Format("{0:MM/dd/yyyy}", item.InverviewDt)</td>
+                                                <td data-title="Client Name">@Html.DisplayFor(modelItem => item.ClientName)</td>
+                                                <td data-title="Notes">@Html.DisplayFor(modelItem => item.Notes)</td>
+                                                <td class="text-right">
+                                                    <a href="@Url.Action("ClientInterview", new { controller = "Trainee", Id =item.ProfileUserId, ciId = item.pcId })" class="btn btn-xs btn-new" title="Click to Edit" data-toggle="tooltip">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="Downloadable" class="tab-pane fade">
+                            <p>Coming Soon</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        debugger;
+      $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+           var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").alert();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+
+    });
+</script>

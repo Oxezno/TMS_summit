@@ -1,0 +1,444 @@
+﻿@model PagedList.IPagedList<TMS.Models.getProfileList_Result>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Profile List";
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Profiles (Batch: @ViewBag.BatchName)</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("BatchesList","Home")">Batches</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Profile List</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-head">
+                    <div class="input-group col-md-11" style="margin-top:10px;margin-left:0px;">
+                        <div class="col-md-4">
+                            @using (Ajax.BeginForm("ProfileSearch", "Home", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "FileForm" }))
+                            {
+                                <div class="input-group">
+                                    @Html.TextBox("txtSearch", (string)ViewBag.Search, new { @class = "form-control", placeholder = "Search Profile" })
+                                    @Html.Hidden("txtBatchId", (int)ViewBag.BatchId)
+                                    @Html.Hidden("txtffilter", (string)ViewBag.Filter)
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary">Search</button>
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                            @*<div class="col-md-3 text-center">
+                <h5>Batch: @ViewBag.BatchName</h5>
+            </div>*@
+                        <div class="col-md-4 text-center">
+                            @using (Ajax.BeginForm("ProfileFilter", "Home", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "FilterForm" }))
+                            {
+                                <div class="input-group">
+                                    @Html.DropDownList("ddlFilter", new SelectList(ViewBag.ProfileListFilter, "Value", "Text", (string)ViewBag.Filter), new { @class = "form-control", @id = "ddlFilter" })
+                                    @Html.Hidden("txtBId", (int)ViewBag.BatchId)
+                                    @Html.Hidden("txtfSearch", (string)ViewBag.Search)
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary">GO</button>
+                                    </span>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="col-md-4 text-right">
+
+                            @*<a href="@Url.Action("MemberProfileGoogle", new { controller = "Home", BatchId = (int)ViewBag.BatchId})" class="btn btn-primary btn-add" title="Click to Export to Google" data-toggle="tooltip">
+                                <i class="fa fa-google"></i>
+                            </a>*@
+
+                            <a href="@Url.Action("MemberProfileExcel", new { controller = "Home", BatchId = (int)ViewBag.BatchId})" class="btn btn-primary btn-add" title="Click to Export" data-toggle="tooltip">
+                                <i class="fa fa-file-excel-o"></i>
+                            </a>
+
+                            <a href="@Url.Action("MemberProfile", new { controller = "Home", id = 0, BatchId = (int)ViewBag.BatchId})" class="btn btn-primary btn-add" title="Click to Add Profile" data-toggle="tooltip">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+                <div class="@(Model.Count > 0 ? "PanelShow card-body" : "PanelHide")">
+                    <div class="fullresponsivetable">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>@Html.ActionLink("First Name", "ProfileList", new { Page = ViewBag.PageNum, BatchId = (int)ViewBag.BatchId, sortOrder = ViewBag.CurrentSort == "FName_Asc" ? "FName_Desc" : "FName_Asc", searchString = ViewBag.Search, filter = ViewBag.Filter }, new { @class = "PoPrint" })</th>
+                                    <th>@Html.ActionLink("Last Name", "ProfileList", new { Page = ViewBag.PageNum, BatchId = (int)ViewBag.BatchId, sortOrder = ViewBag.CurrentSort == "LName_Asc" ? "LName_Desc" : "LName_Asc", searchString = ViewBag.Search, filter = ViewBag.Filter }, new { @class = "PoPrint" })</th>
+                                    <th>@Html.ActionLink("Contact #", "ProfileList", new { Page = ViewBag.PageNum, BatchId = (int)ViewBag.BatchId, sortOrder = ViewBag.CurrentSort == "Contact_Asc" ? "Contact_Desc" : "Contact_Asc", searchString = ViewBag.Search, filter = ViewBag.Filter }, new { @class = "PoPrint" })</th>
+                                    <th>@Html.ActionLink("Email", "ProfileList", new { Page = ViewBag.PageNum, BatchId = (int)ViewBag.BatchId, sortOrder = ViewBag.CurrentSort == "Email_Asc" ? "Email_Desc" : "Email_Asc", searchString = ViewBag.Search, filter = ViewBag.Filter }, new { @class = "PoPrint" })</th>
+
+                                    @if ((ViewBag.EvalDt <= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                    {
+                                        <th>Sal Start Dt</th>
+                                    }
+
+                                    @if ((ViewBag.BatchStDt <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                    { <th>1<sup>st</sup><br/>Day</th> }
+
+                                    @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(1) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                    {
+                                    <th>2<sup>nd</sup><br />Day</th> }
+
+                                    @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(2) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                    {
+                                    <th>3<sup>rd</sup><br />Day</th> }
+
+                                    @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(3) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                    {
+                                    <th>4<sup>th</sup><br />Day</th> }
+
+                                    @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(4) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                    {
+                                        <th>5<sup>th</sup><br />Day</th> }
+
+                                    @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(5) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                    {
+                                        <th>6<sup>th</sup><br />Day</th> }
+
+                                    @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(6) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                    {
+                                    <th>7<sup>st</sup><br />Day</th> }
+
+                                    @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(7) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                    {
+                                        <th>8<sup>nd</sup><br />Day</th> }
+
+                                    @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(8) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                    {
+                                        <th>9<sup>rd</sup><br />Day</th> }
+
+                                    @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(9) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                    {
+                                        <th>10<sup>th</sup><br />Day</th> }
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                            <tr>
+                                <td data-title="First Name">
+                                    @Html.DisplayFor(modelItem => item.Fname) @Html.HiddenFor(model => item.PID)
+                                </td>
+                                <td data-title="Last Name">
+                                    @Html.DisplayFor(modelItem => item.LName)
+                                </td>
+                                <td data-title="Contact #">
+                                    @Html.DisplayFor(modelItem => item.Contact)
+                                </td>
+                                <td data-title="Email">
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                
+                                @if ((ViewBag.EvalDt <= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                {
+                                    if (item.EvalSelected == true)
+                                    {
+                                        if (item.SalStartDt == "Not Yet")
+                                        {
+                                            <td data-title="Sal Start Dt">@Html.ActionLink(item.SalStartDt, "ProfileSalStartDt", new { Controller = "Home", id = item.PID, BatchId = (int)ViewBag.BatchId, Filter = (string)ViewBag.Filter }, new { @class = "text-green modal-link" })</td>
+                                        }
+                                        else
+                                        {
+                                            <td data-title="Sal Start Dt">@Html.DisplayFor(modelItem => item.SalStartDt)</td> 
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+
+                                @if ((ViewBag.BatchStDt <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                {
+                                    <td class="text-center">
+                                        @if ((Convert.ToDateTime(ViewBag.BatchStDt).DayOfWeek.ToString() == "Saturday") || (Convert.ToDateTime(ViewBag.BatchStDt).DayOfWeek.ToString() == "Sunday"))
+                                        { <i class="fa fa-exclamation-triangle" title="@Convert.ToDateTime(ViewBag.BatchStDt).DayOfWeek.ToString()"></i> }
+                                        else if (item.attended == true)
+                                        {
+                                        <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 1, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link  btn btn-xs ">
+                                            <i class="fa fa-check-square-o"></i>
+                                        </a>
+                                        }
+                                        else
+                                        {
+                                        <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 1, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link btn btn-xs ">
+                                            <i class="fa fa fa-square-o"></i>
+                                        </a>
+                                        }
+                                    </td>
+                                }
+
+                                @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(1) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                {
+                                    <td class="text-center">
+                                        @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(1).DayOfWeek.ToString() == "Saturday") || (Convert.ToDateTime(ViewBag.BatchStDt).AddDays(1).DayOfWeek.ToString() == "Sunday"))
+                                        { <i class="fa fa-exclamation-triangle" title="@Convert.ToDateTime(ViewBag.BatchStDt).AddDays(1).DayOfWeek.ToString()"></i> }
+                                        else if (item.SecondDayShowup == true)
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 2, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link  btn btn-xs ">
+                                                <i class="fa fa-check-square-o"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 2, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link btn btn-xs ">
+                                                <i class="fa fa fa-square-o"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                }
+
+                                @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(2) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                {
+                                    <td class="text-center">
+                                        @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(2).DayOfWeek.ToString() == "Saturday") || (Convert.ToDateTime(ViewBag.BatchStDt).AddDays(2).DayOfWeek.ToString() == "Sunday"))
+                                        { <i class="fa fa-exclamation-triangle" title="@Convert.ToDateTime(ViewBag.BatchStDt).AddDays(2).DayOfWeek.ToString()"></i> }
+                                        else if (item.ThirdDayShowup == true)
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 3, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link  btn btn-xs ">
+                                                <i class="fa fa-check-square-o"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 3, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link btn btn-xs ">
+                                                <i class="fa fa fa-square-o"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                }
+
+                                @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(3) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                {
+                                    <td class="text-center">
+                                        @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(3).DayOfWeek.ToString() == "Saturday") || (Convert.ToDateTime(ViewBag.BatchStDt).AddDays(3).DayOfWeek.ToString() == "Sunday"))
+                                        { <i class="fa fa-exclamation-triangle" title="@Convert.ToDateTime(ViewBag.BatchStDt).AddDays(3).DayOfWeek.ToString()"></i> }
+                                        else if (item.FouthDayShowup == true)
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 4, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link  btn btn-xs ">
+                                                <i class="fa fa-check-square-o"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 4, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link btn btn-xs ">
+                                                <i class="fa fa fa-square-o"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                }
+
+                                @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(4) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                {
+                                    <td class="text-center">
+                                        @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(4).DayOfWeek.ToString() == "Saturday") || (Convert.ToDateTime(ViewBag.BatchStDt).AddDays(4).DayOfWeek.ToString() == "Sunday"))
+                                        { <i class="fa fa-exclamation-triangle" title="@Convert.ToDateTime(ViewBag.BatchStDt).AddDays(4).DayOfWeek.ToString()"></i> }
+                                        else if (item.FifthDayShowup == true)
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 5, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link  btn btn-xs ">
+                                                <i class="fa fa-check-square-o"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 5, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link btn btn-xs ">
+                                                <i class="fa fa fa-square-o"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                }
+
+                                @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(5) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                {
+                                    <td class="text-center">
+                                        @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(5).DayOfWeek.ToString() == "Saturday") || (Convert.ToDateTime(ViewBag.BatchStDt).AddDays(5).DayOfWeek.ToString() == "Sunday"))
+                                        { <i class="fa fa-exclamation-triangle" title="@Convert.ToDateTime(ViewBag.BatchStDt).AddDays(5).DayOfWeek.ToString()"></i> }
+                                        else if (item.SixthDayShowup == true)
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 6, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link  btn btn-xs ">
+                                                <i class="fa fa-check-square-o"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 6, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link btn btn-xs ">
+                                                <i class="fa fa fa-square-o"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                }
+
+                                @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(6) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                {
+                                    <td class="text-center">
+                                        @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(6).DayOfWeek.ToString() == "Saturday") || (Convert.ToDateTime(ViewBag.BatchStDt).AddDays(6).DayOfWeek.ToString() == "Sunday"))
+                                        { <i class="fa fa-exclamation-triangle" title="@Convert.ToDateTime(ViewBag.BatchStDt).AddDays(6).DayOfWeek.ToString()"></i> }
+                                        else if (item.SeventhDayShowup == true)
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 7, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link  btn btn-xs ">
+                                                <i class="fa fa-check-square-o"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 7, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link btn btn-xs ">
+                                                <i class="fa fa fa-square-o"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                }
+
+                                @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(7) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                {
+                                    <td class="text-center">
+                                        @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(7).DayOfWeek.ToString() == "Saturday") || (Convert.ToDateTime(ViewBag.BatchStDt).AddDays(7).DayOfWeek.ToString() == "Sunday"))
+                                        { <i class="fa fa-exclamation-triangle" title="@Convert.ToDateTime(ViewBag.BatchStDt).AddDays(7).DayOfWeek.ToString()"></i> }
+                                        else if (item.EightDayShowup == true)
+                                        {
+                                            <a href = "@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 8, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link  btn btn-xs ">
+                                                <i class="fa fa-check-square-o"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 8, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link btn btn-xs ">
+                                                <i class="fa fa fa-square-o"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                }
+
+                                @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(8) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                {
+                                    <td class="text-center">
+                                        @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(8).DayOfWeek.ToString() == "Saturday") || (Convert.ToDateTime(ViewBag.BatchStDt).AddDays(8).DayOfWeek.ToString() == "Sunday"))
+                                        { <i class="fa fa-exclamation-triangle" title="@Convert.ToDateTime(ViewBag.BatchStDt).AddDays(8).DayOfWeek.ToString()"></i> }
+                                        else if (item.NinthDayShowup == true)
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 9, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link  btn btn-xs ">
+                                                <i class="fa fa-check-square-o"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 9, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link btn btn-xs ">
+                                                <i class="fa fa fa-square-o"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                }
+
+                                @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(9) <= Convert.ToDateTime(DateTime.Now.ToShortDateString())) && (ViewBag.EvalDt >= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                {
+                                    <td class="text-center">
+                                        @if ((Convert.ToDateTime(ViewBag.BatchStDt).AddDays(9).DayOfWeek.ToString() == "Saturday") || (Convert.ToDateTime(ViewBag.BatchStDt).AddDays(9).DayOfWeek.ToString() == "Sunday"))
+                                        { <i class="fa fa-exclamation-triangle" title="@Convert.ToDateTime(ViewBag.BatchStDt).AddDays(9).DayOfWeek.ToString()"></i> }
+                                        else if (item.TenthDayShowup == true)
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 10, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link  btn btn-xs ">
+                                                <i class="fa fa-check-square-o"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("OpenAttendanceConfirm", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, Dayflag = 10, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search })" class="modal-link btn btn-xs ">
+                                                <i class="fa fa fa-square"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                }
+
+                                
+                                <td class="text-right">
+                                    @if ((ViewBag.EvalDt <= Convert.ToDateTime(DateTime.Now.ToShortDateString())))
+                                    {
+                                        if (item.EvalSelected == true)
+                                        {
+                                            if (item.LeftOffice == true)
+                                            {
+                                                <a href="@Url.Action("LeftOfficePopup", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search,Filter = (string)ViewBag.Filter })" class="modal-link btn btn-xs btn-success" title="Changes from active to inactive.">
+                                                    <i class="fa fa fa-check"></i>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action("LeftOfficePopup", new { controller = "Home", id = item.PID, BId = (int)ViewBag.BatchId, page = Model.PageNumber, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search,Filter = (string)ViewBag.Filter })" title="Changes from inactive to active." class="modal-link  btn btn-xs btn-danger">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            }
+                                        }
+                                    }
+                                    
+                                    <a href="@Url.Action("ViewProfile", new { controller = "Home", Id = item.PID })" class="btn btn-xs btn-new" title="Click to View" data-toggle="tooltip">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+
+                                    <a href="@Url.Action("MemberProfile", new { controller = "Home", id = item.PID, BatchId = (int)ViewBag.BatchId })" class="btn btn-xs btn-new" title="Click to Edit" data-toggle="tooltip">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+                    @Html.PagedListPager(Model, page => Url.Action("ProfileList", new { page, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search, BatchId = (int)ViewBag.BatchId, filter = ViewBag.Filter }))
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+           var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").show();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+
+    });
+</script>

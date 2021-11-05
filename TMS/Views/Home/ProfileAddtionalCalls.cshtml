@@ -1,0 +1,105 @@
+﻿@model TMS.Models.ProfileAdditionalCalls
+
+@{
+    ViewBag.Title = "Profile Interaction";
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Profile Interaction</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("BatchesList","Home")">Batches</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("ProfileList","Home", new { BatchId = 1 })">Profile List</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("ViewProfile","Home", new { Id = Model.Profile_users_PID })">View Profile</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Profile Interaction</li>
+            </ol>
+        </div>
+    </div>
+    @using (Ajax.BeginForm("ProfileAddtionalCalls", "Home", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "FileForm" }))
+    {
+        @Html.AntiForgeryToken()
+    <!-- start widget -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-head">
+                        <div class="col-md-6">
+
+                        </div>
+
+                        <div class="col-md-6 pull-right text-right" style="margin-top:5px;">
+                            <h5>Profile Name: @Model.ProfileName @Html.HiddenFor(model => model.Profile_users_PID) &nbsp;&nbsp;</h5>
+                        </div>
+                    </div>
+                    <div class="card-body" id="bar-parent1">
+                        <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Contacted On
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            @Html.ValidationMessageFor(model => model.ContactedOn, "", new { @class = "field-validation-error" })
+
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                            @Html.TextBoxFor(model => model.ContactedOn, "{0:yyyy-MM-dd}", htmlAttributes: new { @class = "form-control", @type = "date", placeholder = "MM/dd/yyyy", @id = "txtRecruitmentInterviewOn" })
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Contacted by
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.ValidationMessageFor(model => model.ContactedBy, "", new { @class = "field-validation-error" })
+                                        @Html.DropDownListFor(model => model.ContactedBy, (SelectList)ViewBag.UsersList, "Select Contacted by", new { @class = "form-control m-bot15", @id = "ddlContactedby" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Notes
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "field-validation-error" })
+                                        @Html.TextAreaFor(model => model.Notes, htmlAttributes: new { @class = "form-control sw-placeholder", placeholder = "Notes", @id = "txtNotes" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                                        @Html.ActionLink("Cancel", "ViewProfile", new { controller = "Home", Id = Model.Profile_users_PID }, new { @class = "btn btn-default" })
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

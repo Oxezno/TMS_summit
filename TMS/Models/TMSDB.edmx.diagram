@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8430576efca2499fbaefe045c199bd5f" Name="Diagram1" ZoomLevel="82">
+        <EntityTypeShape EntityType="TMSModel.Company" Width="1.5" PointX="12.75" PointY="2.375" />
+        <EntityTypeShape EntityType="TMSModel.TrainingResource" Width="1.5" PointX="8.25" PointY="14.25" />
+        <EntityTypeShape EntityType="TMSModel.TrainingSession" Width="1.5" PointX="5.25" PointY="40" />
+        <EntityTypeShape EntityType="TMSModel.WebsiteusersAssignment" Width="1.5" PointX="5.25" PointY="28" />
+        <EntityTypeShape EntityType="TMSModel.TrainingTrainer" Width="1.5" PointX="8.25" PointY="19" />
+        <EntityTypeShape EntityType="TMSModel.TrainingType" Width="1.5" PointX="0.75" PointY="15.25" />
+        <EntityTypeShape EntityType="TMSModel.WebsiteUserDetail" Width="1.5" PointX="8.25" PointY="6.375" />
+        <EntityTypeShape EntityType="TMSModel.WebsiteUser" Width="1.5" PointX="3" PointY="5.375" />
+        <AssociationConnector Association="TMSModel.FK__WebsiteUs__Websi__5A4F643B" />
+        <AssociationConnector Association="TMSModel.FK__TrainingR__Creat__7FB5F314" />
+        <EntityTypeShape EntityType="TMSModel.WebsiteUserAttendance" Width="1.5" PointX="5.25" PointY="13.375" />
+        <AssociationConnector Association="TMSModel.FK__WebsiteUs__Websi__3429BB531" />
+        <EntityTypeShape EntityType="TMSModel.Recruiter" Width="1.5" PointX="15" PointY="5" />
+        <AssociationConnector Association="TMSModel.FK__Recruiter__ID_CO__75035A77" />
+        <EntityTypeShape EntityType="TMSModel.MockInterview" Width="1.5" PointX="5.25" PointY="18.125" />
+        <EntityTypeShape EntityType="TMSModel.User" Width="1.5" PointX="0.75" PointY="18" />
+        <AssociationConnector Association="TMSModel.FK__MockInter__Creat__26CFC035" />
+        <AssociationConnector Association="TMSModel.FK__MockInter__Inter__25DB9BFC" />
+        <AssociationConnector Association="TMSModel.FK__TrainingR__Creat__43A1090D" />
+        <AssociationConnector Association="TMSModel.FK__TrainingT__Train__0EF836A4" />
+        <EntityTypeShape EntityType="TMSModel.TrainingCours" Width="1.5" PointX="3" PointY="14.375" />
+        <AssociationConnector Association="TMSModel.FK__MockInter__Train__24E777C3" />
+        <AssociationConnector Association="TMSModel.FK__TrainingC__Creat__22401542" />
+        <AssociationConnector Association="TMSModel.FK__TrainingC__Train__22CA2527" />
+        <AssociationConnector Association="TMSModel.FK__TrainingR__Train__42ACE4D4" />
+        <AssociationConnector Association="TMSModel.FK__TrainingS__Train__55BFB948" />
+        <AssociationConnector Association="TMSModel.FK__TrainingT__Train__0E04126B" />
+        <AssociationConnector Association="TMSModel.FK__WebsiteUs__Train__351DDF8C" />
+        <EntityTypeShape EntityType="TMSModel.WebsiteUserTraining" Width="1.5" PointX="5.25" PointY="23" />
+        <AssociationConnector Association="TMSModel.FK__WebsiteUs__Train__69C6B1F5" />
+        <AssociationConnector Association="TMSModel.FK__WebsiteUs__Websi__6ABAD62E" />
+        <EntityTypeShape EntityType="TMSModel.WebsiteInvoice" Width="1.5" PointX="8.25" PointY="21.875" />
+        <AssociationConnector Association="TMSModel.FK__WebsiteIn__Train__2CBDA3B5" />
+        <AssociationConnector Association="TMSModel.FK__WebsiteIn__Websi__2BC97F7C" />
+        <EntityTypeShape EntityType="TMSModel.RolePermission" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="TMSModel.CountryState" Width="1.5" PointX="6" PointY="10.125" />
+        <EntityTypeShape EntityType="TMSModel.ResumeSendApproval" Width="1.5" PointX="10.5" PointY="11.125" />
+        <AssociationConnector Association="TMSModel.FK__WebsiteUs__State__60FC61CA" />
+        <AssociationConnector Association="TMSModel.FK__ResumeSen__Submi__39E294A9" />
+        <AssociationConnector Association="TMSModel.FK__ResumeSen__Submi__3AD6B8E2" />
+        <AssociationConnector Association="TMSModel.FK__ResumeSen__Websi__38EE7070" />
+        <EntityTypeShape EntityType="TMSModel.ContractTemplate" Width="1.5" PointX="15" PointY="10.625" />
+        <AssociationConnector Association="TMSModel.FK__ContractT__Compa__7226EDCC" />
+        <AssociationConnector Association="TMSModel.FK__ContractT__Creat__703EA55A" />
+        <AssociationConnector Association="TMSModel.FK__ContractT__Updat__7132C993" />
+        <EntityTypeShape EntityType="TMSModel.WebsiteUserResume" Width="1.5" PointX="11.25" PointY="15.375" />
+        <AssociationConnector Association="TMSModel.FK__ResumeSen__Resum__37FA4C37" />
+        <AssociationConnector Association="TMSModel.FK__WebsiteUs__UserC__351DDF8C" />
+        <AssociationConnector Association="TMSModel.FK__WebsiteUs__Websi__3429BB534" />
+        <AssociationConnector Association="TMSModel.FK__MockInter__Inter__70FDBF69" />
+        <AssociationConnector Association="TMSModel.FK__MockInter__Inter__71F1E3A2" />
+        <EntityTypeShape EntityType="TMSModel.Schedule" Width="1.5" PointX="11.25" PointY="20.625" />
+        <AssociationConnector Association="TMSModel.FK__Schedule__Create__19FFD4FC" />
+        <AssociationConnector Association="TMSModel.FK__Schedule__Traini__1AF3F935" />
+        <AssociationConnector Association="TMSModel.FK__Schedule__Websit__190BB0C3" />
+        <EntityTypeShape EntityType="TMSModel.InterviewQuestion" Width="1.5" PointX="3.375" PointY="0.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,1316 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Training Program Setup";
+}
+
+@{
+    if (Convert.ToString(Session["RoleName"]) == "Recruiter")
+    {
+        if (@Model.UsersA.Count > 0)
+        {
+            <script>
+                setInterval(function () {
+
+                    var tcID = @ViewBag.TrainingCourseID;
+
+                    $.ajax({
+                        url: '@Url.Action("GetAttendanceListA", "TrainingCours")',
+                        data: { "id": tcID },
+                        success: function (data) {
+                            $("#attendanceA-list").html(data);
+                            toastr.success('Updating attendance list...');
+                        }
+                    });
+
+                }, 900000);
+            </script>
+        }
+
+        if (@Model.UsersB.Count > 0)
+        {
+            <script>
+                setInterval(function () {
+
+                    var tcID = @ViewBag.TrainingCourseID;
+
+                    $.ajax({
+                        url: '@Url.Action("GetAttendanceListB", "TrainingCours")',
+                        data: { "id": tcID },
+                        success: function (data) {
+                            $("#attendanceB-list").html(data);
+                            toastr.success('Updating attendance list Group B...');
+                        }
+                    });
+
+                }, 900000);
+            </script>
+        }
+
+        if (@Model.UsersC.Count > 0)
+        {
+            <script>
+                setInterval(function () {
+
+                    var tcID = @ViewBag.TrainingCourseID;
+
+                    $.ajax({
+                        url: '@Url.Action("GetAttendanceListC", "TrainingCours")',
+                        data: { "id": tcID },
+                        success: function (data) {
+                            $("#attendanceC-list").html(data);
+                            toastr.success('Updating attendance list Group C...');
+                        }
+                    });
+
+                }, 900000);
+            </script>
+        }
+
+    }
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Training Program Setup (@Model.Training.TrainingCourseName)</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("TrainingCoursList","TrainingCours")">Training Programs List</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Training Courses Setup</li>
+            </ol>
+
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Training Program Details</a></li>
+        <li><a data-toggle="tab" href="#users">Enrolled Users</a></li>
+
+        @{ if (Model.Training.TrainingType.TrainingType1 == "Regular Training")
+            {
+
+                if (Convert.ToString(Session["RoleName"]) == "Super Admin" || Convert.ToString(Session["RoleName"]) == "Admin")
+                {
+                    <li><a data-toggle="tab" href="#evaluation">Evaluation</a></li>
+                }
+
+            }
+        }
+
+        @{
+            if (@Model.UsersB.Count == 0 && @Model.UsersC.Count == 0)
+            {
+                <li><a data-toggle="tab" href="#attendanceA">Attendance (@ViewBag.allUsers)</a></li>
+            }
+            else
+            {
+                <li><a data-toggle="tab" href="#attendanceA">Attendance Group A(@ViewBag.allUsersA)</a></li>
+            }
+
+            if (@Model.UsersB.Count > 0)
+            {
+                <li><a data-toggle="tab" href="#attendanceB">Attendance Group B(@ViewBag.allUsersB)</a></li>
+            }
+
+            if (@Model.UsersC.Count > 0)
+            {
+                <li><a data-toggle="tab" href="#attendanceC">Attendance Group C(@ViewBag.allUsersC)</a></li>
+            }
+        }
+
+        <li onclick="fnLoadScheduler()"><a data-toggle="tab" href="#scheduler">Scheduler</a></li>
+
+
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <!-- start widget -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+
+                        @Html.AntiForgeryToken()
+                        <div class="card-body" id="bar-parent1">
+                            <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                                <div class="form-body">
+
+                                    <div class="form-group bg-orange">
+                                        <label class="text-center col-md-12">
+                                            <b>Training Program Details</b>
+                                        </label>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                        </label>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b> Training Course </b>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Model.Training.TrainingCourseName
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>SKU</b>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Model.Training.SKU
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b>Short Description</b>
+                                        </label>
+                                        <div class="col-md-10">
+                                            @Model.Training.ShortDescription
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b> 1st Payment </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @string.Format("{0:#.00}", Convert.ToDecimal(@Model.Training.FirstPayment))
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b> 2nd Payment </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @string.Format("{0:#.00}", Convert.ToDecimal(@Model.Training.SecondPayment))
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b> Total Payment </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @string.Format("{0:#.00}", Convert.ToDecimal(@Model.Training.Price))
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b>  Training Type  </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.TrainingType.TrainingType1
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>  Limit Full Payment  </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @{var sDdate0 = "";
+                                                if (Model.Training.LimitFullPaymentDate != null)
+                                                {
+                                                    sDdate0 = Convert.ToDateTime(Model.Training.LimitFullPaymentDate).ToString("MM/dd/yyyy");
+                                                }
+                                            }
+                                            @sDdate0
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>  Total Full Payment  </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @string.Format("{0:#.00}", Convert.ToDecimal(@Model.Training.PriceFullPayment))
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+
+                                        </label>
+                                        <div class="col-md-2">
+
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>  Max Discount 1st & 2nd Payment  </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.MaxDiscountPayment1%
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>  Max Discount Full Payment  </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.MaxDiscountTotalPayment%
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b> Start Date 1 </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @{var sDdate1 = "";
+                                                if (Model.Training.StartDate1 != null)
+                                                {
+                                                    sDdate1 = Convert.ToDateTime(Model.Training.StartDate1).ToString("MM/dd/yyyy");
+                                                }
+                                            }
+                                            @sDdate1
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b> End Date 1 </b>
+                                        </label>
+                                        <div class="col-md-2">
+
+                                            @{var eDdate1 = "";
+                                                if (Model.Training.EndDate1 != null)
+                                                {
+                                                    eDdate1 = Convert.ToDateTime(Model.Training.EndDate1).ToString("MM/dd/yyyy");
+                                                }
+                                            }
+                                            @eDdate1
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>  Discount Date 1  </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.DiscountDate1%
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b> Start Date 2 </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @{var sDdate2 = "";
+                                                if (Model.Training.StartDate2 != null)
+                                                {
+                                                    sDdate2 = Convert.ToDateTime(Model.Training.StartDate2).ToString("MM/dd/yyyy");
+                                                }
+                                            }
+                                            @sDdate2
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b> End Date 2 </b>
+                                        </label>
+                                        <div class="col-md-2">
+
+                                            @{var eDdate2 = "";
+                                                if (Model.Training.EndDate2 != null)
+                                                {
+                                                    eDdate2 = Convert.ToDateTime(Model.Training.EndDate2).ToString("MM/dd/yyyy");
+                                                }
+                                            }
+                                            @eDdate2
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>  Discount Date 2  </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.DiscountDate2%
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-2">
+                                            <b>   Coupon 1   </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.Coupon1
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>  Discount Coupon 1  </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.DiscountCoupon1%
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+
+                                        </label>
+                                        <div class="col-md-2">
+
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-2">
+                                            <b>   Coupon 2   </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.Coupon2
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>  Discount Coupon 2  </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.DiscountCoupon2%
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+
+                                        </label>
+                                        <div class="col-md-2">
+
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b>   Coupon 3   </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.Coupon3
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>  Discount Coupon 3  </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.DiscountCoupon3%
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+
+                                        </label>
+                                        <div class="col-md-2">
+
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b>   Coupon 4   </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.Coupon4
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>  Discount Coupon 4  </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.DiscountCoupon4%
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+
+                                        </label>
+                                        <div class="col-md-2">
+
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b>   Coupon 5   </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.Coupon5
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>  Discount Coupon 5  </b>
+                                        </label>
+                                        <div class="col-md-2">
+                                            @Model.Training.DiscountCoupon5%
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+
+                                        </label>
+                                        <div class="col-md-2">
+
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-2">
+                                            <b>Active</b>
+                                        </label>
+                                        <div class="col-md-4">
+
+                                            @{ var active = "";
+                                                if (Model.Training.IsActive == true)
+                                                {
+                                                    active = "Yes";
+                                                }
+                                                else if (Model.Training.IsActive == false)
+                                                {
+                                                    active = "No";
+                                                }
+                                            }
+                                            @active
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group bg-orange">
+                                        <label class="text-center col-md-12">
+                                            <b>Meeting Information</b>
+                                        </label>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                        </label>
+
+                                        <div class="col-md-10">
+                                            @Html.Raw(Model.Training.MeetingDetails)
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group bg-orange">
+                                        <label class="text-center col-md-12">
+                                            <b>Trainers</b>
+                                        </label>
+                                    </div>
+
+                                    @foreach (var item in Model.Trainers)
+                                    {
+
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+
+                                            </label>
+
+                                            <div class="col-md-3">
+                                                @item.User.FullName
+                                            </div>
+
+
+
+                                            <div class="col-md-4">
+                                                @item.User.Email
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    }
+
+
+
+                                </div>
+                                <div class="form-actions">
+                                    <div class="col-md-12 text-center">
+
+                                        @if (Convert.ToString(Session["RoleName"]) == "Recruiter")
+                                        {
+                                            @Html.ActionLink("Go Back to Dashboard", "Index", new { controller = "WebsiteDashboard" }, new { @class = "btn btn-default" })
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink("Go Back to Training Programs", "TrainingCoursesList", new { controller = "TrainingCours" }, new { @class = "btn btn-default" })
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="users" class="tab-pane fade">
+            <!-- start widget -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        @*<div class="card-head">
+                                <span class="pull-right paddingtop">
+                                    <a href="@Url.Action("TrainingProgramUsersExcel", new { controller = "TrainingCours", id = (int)ViewBag.TrainingCourseID })" class="btn btn-primary btn-add" title="Click to Export" data-toggle="tooltip">
+                                        <i class="fa fa-file-excel-o"></i>
+                                    </a>
+                                </span>
+                            </div>*@
+                        <div class="PanelShow card-body">
+
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#allUsers">All Enrolled Users (@ViewBag.allUsers)</a></li>
+                                <li><a data-toggle="tab" href="#PaidFull">Paid in Full (@ViewBag.fullUsers)</a></li>
+                                <li><a data-toggle="tab" href="#fPayment">1st Payment (@ViewBag.fUsers)</a></li>
+                                <li><a data-toggle="tab" href="#sPayment">2nd Payment (@ViewBag.sUsers)</a></li>
+                                <li><a data-toggle="tab" href="#nPaid">Not Paid (@ViewBag.nUsers)</a></li>
+                                <li>
+                                    <a href="@Url.Action("RegularTrainingProgramUsersExcel", new { controller = "TrainingCours", id = (int)ViewBag.TrainingCourseID })" class="btn btn-primary btn-add" title="Click to Export" data-toggle="tooltip">
+                                        <i class="fa fa-file-excel-o"></i> Export
+                                    </a>
+                                </li>
+                                <li>
+
+                                    @if (Convert.ToString(Session["RoleName"]) == "Super Admin" || Convert.ToString(Session["RoleName"]) == "Admin")
+                                    {
+                                        <a href="@Url.Action("EnrrollNewUser", new { controller = "TrainingCours", id = (int)ViewBag.TrainingCourseID })" class="modal-link btn btn-primary btn-success" title="Click to Export" data-toggle="tooltip">
+                                            <i class="fa fa-user-plus"></i> Enroll New User
+                                        </a>
+                                    }
+
+
+                                </li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div id="allUsers" class="tab-pane fade in active">
+                                    <div class="fullresponsivetable">
+                                        <div id="enrolled-list">
+                                            @Html.Partial("GetEnrolledUserList")
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="PaidFull" class="tab-pane fade in">
+                                    <div class="fullresponsivetable">
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Last Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    @*<th>SkypeID</th>*@
+                                                    <th>Status</th>
+                                                    <th>Recruiter</th>
+                                                    <th>Enrolled Date</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.UsersAll)
+                                                {
+
+                                                    if (item.PaymentType == 3)
+                                                    {
+                                                        var date1 = "";
+                                                        string payment = item.PaymentStatus;
+
+                                                        if (item.PaymentType == 1)
+                                                        {
+                                                            payment = "Paid Registration Fee";
+                                                        }
+
+                                                        else if (item.PaymentType == 2)
+                                                        {
+                                                            payment = "Paid Last installment";
+                                                        }
+
+                                                        else if (item.PaymentType == 3)
+                                                        {
+                                                            payment = "Paid in Full";
+                                                        }
+
+                                                        else if (item.PaymentType == 4)
+                                                        {
+                                                            payment = "Not Paid";
+                                                        }
+
+                                                        else if (payment.Contains("Free"))
+                                                        {
+                                                            payment = "Not Paid";
+                                                        }
+
+                                                        if (item.PaymentDate != null)
+                                                        {
+                                                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                                                        }
+
+                                                        <tr>
+                                                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                                                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                                                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                                                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                                                            @*<td data-title="SkypeID">@item.WebsiteUser.SkypeID</td>*@
+                                                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+                                                            <td data-title="Payment">@payment</td>
+                                                            <td data-title="Date1">@date1</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div id="fPayment" class="tab-pane fade in">
+                                    <div class="fullresponsivetable">
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Last Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    @*<th>SkypeID</th>*@
+                                                    <th>Status</th>
+                                                    <th>Recruiter</th>
+                                                    <th>Enrolled Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.UsersAll)
+                                                {
+
+                                                    if (item.PaymentType == 1)
+                                                    {
+                                                        var date1 = "";
+                                                        string payment = item.PaymentStatus;
+
+                                                        if (item.PaymentType == 1)
+                                                        {
+                                                            payment = "Paid Registration Fee";
+                                                        }
+
+                                                        else if (item.PaymentType == 2)
+                                                        {
+                                                            payment = "Paid Last installment";
+                                                        }
+
+                                                        else if (item.PaymentType == 3)
+                                                        {
+                                                            payment = "Paid in Full";
+                                                        }
+
+                                                        else if (item.PaymentType == 4)
+                                                        {
+                                                            payment = "Not Paid";
+                                                        }
+
+                                                        else if (payment.Contains("Free"))
+                                                        {
+                                                            payment = "Not Paid";
+                                                        }
+
+                                                        if (item.PaymentDate != null)
+                                                        {
+                                                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                                                        }
+
+                                                        <tr>
+                                                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                                                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                                                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                                                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                                                            @*<td data-title="SkypeID">@item.WebsiteUser.SkypeID</td>*@
+                                                            <td data-title="Payment">@payment</td>
+                                                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+                                                            <td data-title="Date1">@date1</td>
+
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div id="sPayment" class="tab-pane fade in">
+                                    <div class="fullresponsivetable">
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Last Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    @*<th>SkypeID</th>*@
+                                                    <th>Status</th>
+                                                    <th>Recruiter</th>
+                                                    <th>Enrolled Date</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.UsersAll)
+                                                {
+
+                                                    if (item.PaymentType == 2)
+                                                    {
+                                                        var date1 = "";
+                                                        string payment = item.PaymentStatus;
+
+                                                        if (item.PaymentType == 1)
+                                                        {
+                                                            payment = "Paid Registration Fee";
+                                                        }
+
+                                                        else if (item.PaymentType == 2)
+                                                        {
+                                                            payment = "Paid Last installment";
+                                                        }
+
+                                                        else if (item.PaymentType == 3)
+                                                        {
+                                                            payment = "Paid in Full";
+                                                        }
+
+                                                        else if (item.PaymentType == 4)
+                                                        {
+                                                            payment = "Not Paid";
+                                                        }
+
+                                                        else if (payment.Contains("Free"))
+                                                        {
+                                                            payment = "Not Paid";
+                                                        }
+
+                                                        if (item.PaymentDate != null)
+                                                        {
+                                                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                                                        }
+
+                                                        <tr>
+                                                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                                                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                                                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                                                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                                                            @*<td data-title="SkypeID">@item.WebsiteUser.SkypeID</td>*@
+                                                            <td data-title="Payment">@payment</td>
+                                                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+                                                            <td data-title="Data1">@date1</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div id="nPaid" class="tab-pane fade in">
+                                    <div class="fullresponsivetable">
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Last Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    @*<th>SkypeID</th>*@
+                                                    <th>Status</th>
+                                                    <th>Recruiter</th>
+                                                    <th>Enrolled Date</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.UsersAll)
+                                                {
+
+                                                    if (item.PaymentType == 4)
+                                                    {
+                                                        var date1 = "";
+                                                        string payment = item.PaymentStatus;
+
+                                                        if (item.PaymentType == 1)
+                                                        {
+                                                            payment = "Paid Registration Fee";
+                                                        }
+
+                                                        else if (item.PaymentType == 2)
+                                                        {
+                                                            payment = "Paid Last installment";
+                                                        }
+
+                                                        else if (item.PaymentType == 3)
+                                                        {
+                                                            payment = "Paid in Full";
+                                                        }
+
+                                                        else if (item.PaymentType == 4)
+                                                        {
+                                                            payment = "Not Paid";
+                                                        }
+
+                                                        else if (payment.Contains("Free"))
+                                                        {
+                                                            payment = "Not Paid";
+                                                        }
+
+                                                        if (item.PaymentDate != null)
+                                                        {
+                                                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                                                        }
+
+                                                        <tr>
+                                                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                                                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                                                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                                                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                                                            @*<td data-title="SkypeID">@item.WebsiteUser.SkypeID</td>*@
+                                                            <td data-title="Payment">@payment</td>
+                                                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+                                                            <td data-title="Date1">@date1</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="evaluation" class="tab-pane fade">
+            <!-- start widget -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="PanelShow card-body">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#allUsers2">All Enrolled Users (@ViewBag.allUsers)</a></li>
+                                <li>
+                                    <a href="@Url.Action("RegularTrainingProgramUsersExcel", new { controller = "TrainingCours", id = (int)ViewBag.TrainingCourseID })" class="btn btn-primary btn-add" title="Click to Export" data-toggle="tooltip">
+                                        <i class="fa fa-file-excel-o"></i> Export
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div id="allUsers2Excel" class="tab-pane fade in active">
+                                    <div class="fullresponsivetable">
+                                        <div id="eval-list">
+                                            @Html.Partial("GetEvaluationList")
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="attendanceA" class="tab-pane fade">
+            <!-- start widget -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="PanelShow card-body">
+                            <div id="attendanceA-list">
+                                @Html.Partial("GetAttendanceListA")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="attendanceB" class="tab-pane fade">
+            <!-- start widget -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="PanelShow card-body">
+                            <div id="attendanceB-list">
+                                @Html.Partial("GetAttendanceListB")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="attendanceC" class="tab-pane fade">
+            <!-- start widget -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="PanelShow card-body">
+                            <div id="attendanceC-list">
+                                @Html.Partial("GetAttendanceListC")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="scheduler" class="tab-pane fade">
+            <!-- start widget -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="PanelShow card-body">
+                            <div class="tab-content">
+                                <div id="sch" class="tab-pane fade in active">
+                                    <div class="fullresponsivetable">
+                                        <div id="scheduler-grid">
+                                            @*@Html.Partial("GetScheduler")*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id='myModal' class='modal'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        var tabIndex = @ViewBag.Tab;
+
+        if (tabIndex != '') {
+            $('.nav-tabs a[href="#users"]').tab('show');
+        }
+
+    });
+
+    function fnUpdateAttendEval(id, name) {
+        var status = 0;
+
+        if (document.getElementById('wu_attend_' + id).checked == true) {
+            document.getElementById('lblAttend_' + id).innerHTML = 'Yes';
+            document.getElementById('icnAttend_' + id).className = 'fa fa-check-square-o';
+            document.getElementById('icnAttend_' + id).style.color = "green";
+            document.getElementById('wu_pass_fail_' + id).disabled = false;
+            status = 1;
+        }
+        else if (document.getElementById("wu_attend_" + id).checked == false) {
+            document.getElementById('lblAttend_' + id).innerHTML = 'No';
+            document.getElementById('icnAttend_' + id).className = 'fa fa-remove';
+            document.getElementById('icnAttend_' + id).style.color = "red";
+
+            document.getElementById('wu_pass_fail_' + id).checked = false;
+            document.getElementById('wu_pass_fail_' + id).disabled = true;
+            document.getElementById('lblPassFail_' + id).innerHTML = 'Fail';
+            document.getElementById('icnPassFail_' + id).className = 'fa fa-remove';
+            document.getElementById('icnPassFail_' + id).style.color = "red";
+
+        }
+
+        jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("AttendEvaluation", "TrainingCours")',
+                data: { "userID": id, "status": status  },
+                success: function () {
+                    if (status == 0) {
+                        toastr.error(name + ' didnt appear on Evaluation 😮');
+                        document.getElementById('btnDelete_' + id).style.visibility = "visible";
+                        //if (parseInt(document.getElementById('lblAppear').innerHTML) > 0)
+                        //    document.getElementById('lblAppear').innerHTML = parseInt(document.getElementById('lblAppear').innerHTML) - 1;
+
+                        jQuery.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("PassFailEvaluation", "TrainingCours")',
+                            data: { "userID": id, "status": status },
+                            success: function () {
+
+                                //if (parseInt(document.getElementById('lblPassFail').innerHTML) > 0)
+                                //    document.getElementById('lblPassFail').innerHTML = parseInt(document.getElementById('lblPassFail').innerHTML) - 1;
+                            },
+                            error: function (textStatus) {
+                                toastr.error('Error: Something wrong!');
+                            }
+                        });
+
+                    }
+                    if (status == 1) {
+                        toastr.success(name + ' appear on Evaluation 😀');
+                        //document.getElementById('lblAppear').innerHTML = parseInt(document.getElementById('lblAppear').innerHTML) + 1;
+                    }
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+            });
+
+    }
+
+
+    function fnUpdatePassFail(id, name) {
+
+        var status = 0;
+
+        if (document.getElementById('wu_pass_fail_' + id).checked == true) {
+
+            //document.getElementById('btnDelete_' + id).style.visibility = "hidden";
+            document.getElementById('lblPassFail_' + id).innerHTML = 'Pass';
+            document.getElementById('icnPassFail_' + id).className = 'fa fa-check-square-o';
+            document.getElementById('icnPassFail_' + id).style.color = "green";
+            status = 1;
+        }
+        else if (document.getElementById("wu_pass_fail_" + id).checked == false) {
+
+            //document.getElementById('btnDelete_' + id).style.visibility = "visible";
+            document.getElementById('lblPassFail_' + id).innerHTML = 'Fail';
+            document.getElementById('icnPassFail_' + id).className = 'fa fa-remove';
+            document.getElementById('icnPassFail_' + id).style.color = "red";
+        }
+
+        jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("PassFailEvaluation", "TrainingCours")',
+                data: { "userID": id, "status": status },
+                success: function () {
+                    if (status == 0) {
+                        toastr.error(name + ' didnt pass the Evaluation 😮');
+
+                        //if (parseInt(document.getElementById('lblPassFail').innerHTML) > 0)
+                        //    document.getElementById('lblPassFail').innerHTML = parseInt(document.getElementById('lblPassFail').innerHTML) - 1;
+                    }
+                    if (status == 1) {
+                        toastr.success(name + ' passed the Evaluation 😀');
+                        //document.getElementById('lblPassFail').innerHTML = parseInt(document.getElementById('lblPassFail').innerHTML) + 1;
+                    }
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+        });
+
+    }
+
+
+    function fnUpdateSignedContract(id, name) {
+
+        var status = 0;
+
+        if (document.getElementById('wu_signed_' + id).checked == true) {
+            document.getElementById('lblSigned_' + id).innerHTML = 'Signed';
+            document.getElementById('icnSigned_' + id).className = 'fa fa-check-square-o';
+            document.getElementById('icnSigned_' + id).style.color = "green";
+            status = 1;
+        }
+        else if (document.getElementById("wu_signed_" + id).checked == false) {
+
+            //document.getElementById('btnDelete_' + id).style.visibility = "visible";
+            document.getElementById('lblSigned_' + id).innerHTML = 'Not Signed';
+            document.getElementById('icnSigned_' + id).className = 'fa fa-remove';
+            document.getElementById('icnSigned_' + id).style.color = "red";
+        }
+
+        jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("SignedContract", "TrainingCours")',
+                data: { "userID": id, "status": status },
+                success: function () {
+                    if (status == 0) {
+                        toastr.error(name + ' didnt sign the Contract 😮');
+
+                        //if (parseInt(document.getElementById('lblPassFail').innerHTML) > 0)
+                        //    document.getElementById('lblPassFail').innerHTML = parseInt(document.getElementById('lblPassFail').innerHTML) - 1;
+                    }
+                    if (status == 1) {
+                        toastr.success(name + ' signed the Contract 😀');
+                        //document.getElementById('lblPassFail').innerHTML = parseInt(document.getElementById('lblPassFail').innerHTML) + 1;
+                    }
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+        });
+
+    }
+
+    function fnRemoveUserFromList(tcID, userID ) {
+        console.log(tcID);
+        console.log(userID);
+
+        if (tcID != "" && userID != "") {
+
+            jQuery.ajax({
+            type: 'POST',
+                url: '@Url.Action("ConfirmDeleteUserFromTraining2", "TrainingCours")',
+                data: { "uID": userID, "tID": tcID },
+                success: function () {
+                    //toastr.error('OKKKK');
+                    $.ajax({
+                        url: '@Url.Action("GetEvaluationList", "TrainingCours")',
+                        data: { "id": tcID },
+                        success: function (data) {
+                            $("#eval-list").html(data);
+                            toastr.success('User removed successfully');
+                            $("[data-dismiss=modal]").trigger({ type: "click" });
+                        }
+                    });
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+            });
+        }
+
+
+    }
+
+    function fnRemoveEnrolledUserFromList(tcID, userID ) {
+        console.log(tcID);
+        console.log(userID);
+
+        if (tcID != "" && userID != "") {
+
+            jQuery.ajax({
+            type: 'POST',
+                url: '@Url.Action("ConfirmDeleteEnrolledUserFromTraining", "TrainingCours")',
+                data: { "uID": userID, "tID": tcID },
+                success: function () {
+                    //toastr.error('OKKKK');
+                    $.ajax({
+                        url: '@Url.Action("GetEnrolledUserList", "TrainingCours")',
+                        data: { "id": tcID },
+                        success: function (data) {
+                            $("#enrolled-list").html(data);
+                            toastr.success('User removed successfully');
+                            $("[data-dismiss=modal]").trigger({ type: "click" });
+                        }
+                    });
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+            });
+        }
+
+
+    }
+
+    function fnSearchUserToEnrroll(tcID) {
+
+        if (tcID != "" && $('#searchString').val() != "" ) {
+            $('#errorMessage').remove();
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("SearchUserToEnrroll", "TrainingCours")',
+                data: { "tID": tcID, "searchString": $('#searchString').val() },
+                success: function (data) {
+
+                    if (data != "") {
+                        $("#searchUser-list").show();
+                        $("#searchUser-list").html(data);
+                        toastr.success('User(s) found');
+                    }
+                    else {
+                        toastr.error('0 Users not found!');
+                    }
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+            });
+        }
+        else {
+            $('#errorMessage').html('<b>Enter Name / Last Name / Email</b>').css("color", "red");
+            //if (document.getElementById("Name").validity.valueMissing) {
+            //    document.getElementById("Name").reportValidity();
+            //}
+            //if (document.getElementById("LastName").validity.valueMissing) {
+            //    document.getElementById("LastName").reportValidity();
+            //}
+
+        }
+
+    }
+
+    function fnEnrrollSelectedUser(uID, tID) {
+
+        jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("EnrrollSelectedUser", "TrainingCours")',
+                data: { "uID": uID, "tID": tID },
+                success: function (data) {
+
+
+                    $.ajax({
+                        url: '@Url.Action("GetEnrolledUserList", "TrainingCours")',
+                        data: { "id": tID },
+                        success: function (data) {
+                            $("#enrolled-list").html(data);
+                            toastr.success('User Enrolled!');
+                            //$("[data-dismiss=modal]").trigger({ type: "click" });
+                        }
+                    });
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+         });
+    }
+
+    function fnLoadScheduler() {
+        $.ajax({
+            url: '@Url.Action("GetScheduleView", "TrainingCours")',
+            data: { "id": @ViewBag.TrainingCourseID },
+            success: function (data) {
+                $("#scheduler-grid").html(data);
+            }
+        });
+    }
+
+</script>

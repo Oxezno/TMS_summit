@@ -1,0 +1,104 @@
+﻿@model TMS.Models.Message
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                &times;
+            </button>
+
+            <h5 class="modal-title" id="exampleModalLabel"><b>Send Message to:</b> @TempData["UserName"]</h5>
+        </div>
+        <div class="modal-body">
+            @{
+                var Id = ViewBag.ID;
+            }
+            @*@using (Ajax.BeginForm("ConfirmSendMessage", "TrainingCours", new { id = Id }, new AjaxOptions { OnSuccess = "Response" }))*@
+            @*{*@
+                <div class="clearfix m-b-5"></div>
+                <div class="col text-red" style="text-align:center;">
+
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <b>Subject:</b>
+                            </label>
+                            <div class="col-md-10">
+                                @Html.Editor("Subject", new { htmlAttributes = new { id="txt_subject", @class = "form-control", placeholder = "Subject", @required = "required" } })
+                                <h5 class="text-danger"><label id="err_subject"></label></h5>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                <b>Message:</b>
+                            </label>
+                            <div class="col-md-10">
+                                @Html.TextArea("Message", new { id = "txt_message", @class = "form-control", maxlength = "2000", placeholder = "Message", rows = "6" })
+                                <h5 class="text-danger"><label id="err_message"></label></h5>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="clearfix m-b-5"></div>
+
+                <div class="col-lg-12 text-center m-t-10">
+                    <button type="button" class="modal-close-btn btn btn-secondary" data-dismiss="modal">Cancel</button> &nbsp;
+                    @*<input type="submit" value="Send" class="btn btn-primary" />*@
+                    <button type="button" onclick="fnSendMessage(@TempData["ID"], document.getElementById('txt_subject').value, document.getElementById('txt_message').value)" class="btn btn-primary">Send</button>
+
+                </div>
+
+                <div class="clearfix"></div>
+            @*}*@
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    function fnSendMessage(id, sub, mes) {
+
+        if (sub == "") {
+            document.getElementById('err_subject').innerHTML = 'Please enter a subject';
+
+        }
+        else {
+            document.getElementById('err_subject').innerHTML = '';
+        }
+
+        if (mes == "") {
+            document.getElementById('err_message').innerHTML = 'Please enter a message';
+        }
+        else{
+            document.getElementById('err_message').innerHTML = '';
+        }
+
+        if (sub != "" && mes != "") {
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("ConfirmSendMessage", "TrainingCours")',
+                data: { "toID": id, "subject": sub, "message": mes },
+                success: function () {
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    toastr.success('Message was send successfully!');
+                },
+                error: function (textStatus) {
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    toastr.error('Error: Something wrong!');
+                }
+            });
+        }
+
+    }
+</script>

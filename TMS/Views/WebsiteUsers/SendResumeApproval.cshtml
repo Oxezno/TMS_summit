@@ -1,0 +1,132 @@
+﻿@model dynamic
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+
+            <div class="PanelShow card-body">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <div class="panel panel-default">
+
+                            <div class="panel-heading"><b>Resume(s)</b></div>
+
+                            <div class="panel-body">
+                                @using (Ajax.BeginForm("UploadUserResume", "WebsiteUser", new AjaxOptions() { HttpMethod = "POST" }, new
+                                {
+                                    enctype = "multipart/form-data",
+                                    id = "FileR",
+                                    @class = "dropzone"
+                                }))
+                                {
+                                    <div hidden>
+                                        @Html.Editor("WebsiteUserID", new { htmlAttributes = new { @class = "form-control", type = "number", placeholder = "", @Value = @ViewBag.UserID } })
+                                    </div>
+
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<link href="~/Scripts/dropzone/dropzone.min.css" rel="stylesheet" />
+<script src="~/Scripts/dropzone/dropzone.min.js"></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        Dropzone.options['FileR'] = {
+
+            paramName: "file", // The name that will be used to transfer the file
+            maxFilesize: 20, // MB
+            addRemoveLinks: true,
+            dictRemoveFileConfirmation: "Do you really want to remove this file?",
+
+            init: function () {
+                var thisDropzone = this;
+
+                $.getJSON('@Html.Raw(Url.Action("GetUserResume", "WebsiteUsers", new { id = @ViewBag.UserID }))').done(function (data) {
+                    if (data.Data != '') {
+                        $.each(data.Data, function (index, item) {
+                            //alert(item.AttachmentID + " /// " + item.Path)
+                            //// Create the mock file:
+                            var mockFile = {
+                                name: item.FileName,
+                                size: item.FileSize,
+                                id: item.AttachmentID,
+                                path: item.Path
+                            };
+                            // Call the default addedfile event handler
+                            thisDropzone.emit("addedfile", mockFile);
+                            // And optionally show the thumbnail of the file:
+
+                            var ext = item.FileExtension;
+                            if (ext != ".7zip" && ext != ".doc" && ext != ".docx" && ext != ".gif" && ext != ".jpg" && ext != ".js" && ext != ".mp4" && ext != ".pdf" && ext != ".png" && ext != ".ppt" && ext != ".pptx" && ext != ".rar" && ext != ".sql" && ext != ".ts" && ext != ".txt" && ext != ".xls" && ext != ".xlsx" && ext != ".zip" && ext != ".exe")
+                                ext = "other";
+
+                            thisDropzone.emit("thumbnail", mockFile, "../../images/DropzoneFileIcons/" + ext +
+                                ".png");
+                            thisDropzone.emit("complete", mockFile);
+                            // If you use the maxFiles option, make sure you adjust it to the
+                            // correct amount:
+                            //var existingFileCount = 1; // The number of files already uploaded
+                            //myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+                        });
+                    }
+                });
+
+                thisDropzone.on("addedfile", function (file) {
+                    var pathX = file.path;
+
+                    if (pathX == undefined)
+                        pathX = "../../BrightraceResources/Resumes/" + file.name;
+                    else
+                        pathX = file.path;
+
+                    var a = document.createElement('a');
+                    a.setAttribute('href', pathX);
+                    a.setAttribute('class', "dz-remove");
+                    a.setAttribute('style', "width:125px");
+                    a.setAttribute('target', "_blank");
+                    a.innerHTML = file.name;
+                    file.previewTemplate.appendChild(a);
+                });
+            },
+
+            removedfile: function (file) {
+                var fileID = file.id;
+
+                if (fileID == undefined)
+                    fileID = 0;
+                else
+                    fileID = file.id;
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '../../WebsiteUsers/DeleteUserResume',
+                    data: { fID: fileID, uID: @ViewBag.UserID, fName: file.name },
+                    sucess: function (data) {
+                        //console.log('success: ' + data);
+                    }
+                });
+                var _ref;
+                return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+            },
+
+        };
+    });
+</script>

@@ -1,0 +1,102 @@
+﻿@model IEnumerable<TMS.Models.WebsiteUserTraining>
+@{
+    Layout = null;
+    var tID = ViewBag.TEMPLATE_ID;
+    var count = ViewBag.wuCount;
+}
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th class="text-center">
+                <input type="checkbox" id="chkSelectAll" onchange="fnSelectAll()">
+                Select All
+            </th>
+            <th>Name @tID</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">
+                            <input class="chkWU" type="checkbox" value="@item.WebsiteUser.WebsiteUserID" id="wu_@item.WebsiteUser.WebsiteUserID" >
+                        </td>
+                        <td>
+                            @item.WebsiteUser.FName
+                        </td>
+                        <td>
+                            @item.WebsiteUser.LName
+                        </td>
+                        <td>
+                            @item.WebsiteUser.Email
+                        </td>
+                        <td>
+                            <a class="btn btn-xs btn-new" title="Click to Preview" data-toggle="tooltip" , onclick="fnPreviewPDF(@item.WebsiteUser.WebsiteUserID)">
+                                <i class="fa fa-eye"></i>
+                            </a>
+
+                            <a href="@Url.Action("PDFPreview", new { controller = "ContractTemplates", idx = @tID, userIDx = @item.WebsiteUser.WebsiteUserID})" class="btn btn-xs btn-new" title="Click to Preview" data-toggle="tooltip" target="_blank">
+                                <i class="fa fa-eye"></i>
+                            </a>
+
+                            <a href="@Url.Action("PrintViewToPdf", new { controller = "ContractTemplates", id = @tID, userID = @item.WebsiteUser.WebsiteUserID})" class="btn btn-xs btn-new" title="Click to Download" data-toggle="tooltip">
+                                <i class="fa fa-download"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+                }
+            }
+        }
+
+
+    </tbody>
+</table>
+
+<script>
+    function fnSelectAll() {
+        if (document.getElementById("chkSelectAll").checked == true) {
+            var uncheck = document.getElementsByClassName('chkWU');
+            for (var i = 0; i < uncheck.length; i++) {
+                if (uncheck[i].type == 'checkbox') {
+                    uncheck[i].checked = true;
+                }
+            }
+        }
+        else if (document.getElementById("chkSelectAll").checked == false) {
+
+            var uncheck = document.getElementsByClassName('chkWU');
+            for (var i = 0; i < uncheck.length; i++) {
+                if (uncheck[i].type == 'checkbox') {
+                    uncheck[i].checked = false;
+                }
+            }
+
+        }
+    }
+
+    function fnPreviewPDF(id) {
+        $.ajax({
+                url: '@Url.Action("PDFPreview", "ContractTemplates")',
+                data: { "idx": @tID, "userIDx": id },
+                success: function (data) {
+                    $("#users-list").html(data);
+                    //toastr.success('Showing Passed');
+
+                },
+                error: function (data) {
+                    $("#users-list").html(data);
+                    //toastr.error('Please select Training Program and Contract Template!');
+                }
+            });
+    }
+
+    
+</script>

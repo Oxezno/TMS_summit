@@ -1,0 +1,94 @@
+﻿@model PagedList.IPagedList<TMS.Models.Message>
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th></th>
+            <th>From</th>
+            <th>Subject</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var status = item.Status;
+            var classX = "";
+            string subject = item.Subject;
+            string message = item.Message1;
+            string shortSubject = subject;
+            string shortMessage = message;
+
+            if (subject.Length > 50)
+            {
+                shortSubject = message.Substring(0, 50) + "...";
+            }
+
+            if (message.Length > 50)
+            {
+                shortMessage = message.Substring(0, 50) + "...";
+            }
+
+
+            if (@item.Status == "Sent")
+            {
+                status = "Received";
+                classX = "active bold";
+            }
+
+
+        <tr class="@classX">
+            <td></td>
+            <td>@item.User.FullName</td>
+            <td>@shortSubject</td>
+            <td>@shortMessage</td>
+            <td>@item.CreateDate</td>
+            <td>@status</td>
+            <td>
+                
+                <a href="@Url.Action("ViewMessage", new { controller = "Messages", id = item.MessageID })" class="modal-link btn btn-xs btn-new" title="View message" onclick="fnUpdateStatus(@item.MessageID, '@status')">
+
+                    @{ if (status == "Received")
+                        {
+                            <i class="fa fa-envelope-o"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-envelope-open-o"></i>
+                        }
+                    }
+
+                </a>
+
+
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function fnUpdateStatus(id, status) {
+        if (status == "Received") {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("UpdateMessageStatus", "Messages")',
+                data: { "id": id },
+                success: function (data) {
+
+                    $.ajax({
+                        //url: "/LaborCodeMaintenance/LaborMaintenanceList/",
+                        url: '@Url.Action("GetInboxMessages", "Messages")',
+                        //data: { "id": @ViewBag.ID },
+                        success: function (data) {
+                            $("#inbox-list").html(data);
+                        }
+                    });
+
+                }
+            });
+        }
+    }
+</script>

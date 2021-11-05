@@ -1,0 +1,114 @@
+﻿@model PagedList.IPagedList<TMS.Models.GetPlacementList_Result>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Batch";
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Placement</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Placement List</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-head">
+                    <div class="input-group col-md-12" style="margin-top:10px;margin-left:0px;">
+                        <div class="col-md-12">
+                            @using (Ajax.BeginForm("PlacementListSearch", "Home", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "FileForm" }))
+                            {
+                                <div class="input-group">
+                                    @Html.TextBox("txtSearch", (string)ViewBag.Search, new { @class = "form-control", placeholder = "Search by Cadidate Name / Marketer / Technology" })
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary">Search</button>
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="@(Model.Count > 0  ? "PanelShow card-body" : "PanelHide")">
+                    <div class="fullresponsivetable">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Candidate Name</th>
+                                    <th>Marketing Start Dt</th>
+                                    <th>Marketer Name</th>
+                                    <th>Technology</th>
+                                    <th class="center"># of Client Interviews</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                            <tr>
+                                <td data-title="Candidate Name">
+                                    @Html.DisplayFor(modelItem => item.PFullName)
+                                </td>
+                                <td data-title="Marketing Start Dt">
+                                    @String.Format("{0:MM/dd/yyyy}", item.StartDt)
+                                </td>
+                                <td data-title="Marketer Name">@Html.DisplayFor(modelItem => item.Marketer)</td>
+                                <td data-title="Technology">@Html.DisplayFor(modelItem => item.Technology)</td>
+                                <td data-title="# of Client Interviews" class="center">@Html.DisplayFor(modelItem => item.TotalInterviews)</td>
+                                <td class="text-right">
+                                    <a href="@Url.Action("ViewProfile", new { controller = "Home", Id = item.PID })" class="btn btn-xs btn-new" title="Click to view Profile" data-toggle="tooltip">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+                        @Html.PagedListPager(Model, page => Url.Action("PlacementList", new { page, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search }))
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+           var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").show();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+
+    });
+</script>

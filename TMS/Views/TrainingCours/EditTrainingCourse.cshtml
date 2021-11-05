@@ -1,0 +1,1664 @@
+﻿@*@model TMS.Models.TrainingCours*@
+@model dynamic
+
+@{
+    ViewBag.Title = "Training Course Setup";
+    string styleX = "pointer-events:none; opacity: 0.4;";
+    if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin")
+    {
+        styleX = "";
+    }
+
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Training Program Setup (@Model.Training.TrainingCourseName)</div>
+            </div>
+
+            @{
+                if (TempData["updateMessage"] != null)
+                {
+                    string result = TempData["updateMessage"].ToString();
+                    string textR = "";
+
+                    if (result.Contains("OK"))
+                    {
+                        result = "Successfully Updated!";
+                        textR = "success";
+                    }
+
+                    else if (result.Contains("Error"))
+                    {
+                        result = "Error. Something wrong happened!";
+                        textR = "danger";
+                    }
+
+                    <div class=" pull-left">
+                        <h3 class="text-@textR">@result</h3>
+                    </div>
+                }
+            }
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index", "WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-
+
+right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("TrainingCoursesList", "TrainingCours")">Training Programs List</a>&nbsp;<i class="fa fa-angle-
+
+right"></i>
+                </li>
+                <li class="active">Training Program Setup</li>
+            </ol>
+
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Training Program Details</a></li>
+        <li><a data-toggle="tab" href="#meeting">Meeting Information </a></li>
+        <li><a data-toggle="tab" href="#announcements">Special Announcements </a></li>
+        <li><a data-toggle="tab" href="#trainers">Trainers </a></li>
+        <li><a data-toggle="tab" href="#resources">Resources</a></li>
+        @*<p>
+            <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#deleteModal">-</button>
+            <button id="btn-add-tab" type="button" class="btn btn-primary pull-right">+</button>
+        </p>*@
+    </ul>
+
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active" style="@styleX">
+            <!-- start widget -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        @using (Ajax.BeginForm("EditTrainingCourse", "TrainingCours", new AjaxOptions() { HttpMethod = "POST" }, new
+                        {
+                            enctype =
+
+"multipart/form-data",
+                            id = "File"
+                        }))
+                        {
+                            @*@Html.AntiForgeryToken()*@
+                            <div class="card-body" id="bar-parent1">
+                                @{ if (styleX != "")
+                                    {
+                                        <h2 class="text-danger">Only Admin Role has access to edit this information</h2>
+                                    }
+                                }
+                                <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                                    <div class="form-body">
+
+                                        <div class="clearfix"></div>
+                                        <div hidden class="form-group">
+                                            <label class="control-label col-md-2">
+
+                                                @Html.Editor("TrainingCourseID", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value = @Model.Training.TrainingCourseID } })
+                                            </label>
+                                        </div>
+                                        <div class="clearfix"></div>
+
+                                        <div class="form-group">
+                                            <div class="pull-right">
+                                                <a href="@Url.Action("CloneTrainingCourse", new { controller = "TrainingCours", id = @Model.Training.TrainingCourseID })" class="modal-link btn btn-primary" title="Clone Training Course.">
+                                                    <i class="fa fa-files-o"></i>Clone Training Program
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Training Program
+                                            </label>
+                                            <div class="col-md-6">
+                                                @Html.Editor("TrainingCourseName", new { htmlAttributes = new { @class = "form-control", placeholder = "", id
+
+= "TrainingCourse", @Value = @Model.Training.TrainingCourseName, maxlength = "100", @required = "required", onchange = "fnChangeSKU()" } })
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                SKU
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("SKU", new { htmlAttributes = new { @class = "form-control", placeholder = "", id = "SKU",
+
+                                               @Value = @Model.Training.SKU, maxlength = "30", @required = "required" } })
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Short Description
+                                            </label>
+                                            <div class="col-md-10">
+                                                @Html.Editor("ShortDescription", new { htmlAttributes = new { @class = "form-control", placeholder = "",
+
+                                               @Value = @Model.Training.ShortDescription, maxlength = "200", @required = "required" } })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group">
+
+                                            <label class="control-label col-md-2">
+                                                1st Payment
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("FirstPayment", new { htmlAttributes = new { @class = "form-control", placeholder = "", id =
+
+"fPayment", @Value = string.Format("{0:#.00}", Convert.ToDecimal(@Model.Training.FirstPayment)), maxlength = "10", @required = "required", oninput =
+
+"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');", @onkeyup = "fnChangeTotal()" } })
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                2nd Payment
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("SecondPayment", new { htmlAttributes = new { @class = "form-control", placeholder = "", id =
+
+"sPayment", @Value = string.Format("{0:#.00}", Convert.ToDecimal(@Model.Training.SecondPayment)), maxlength = "10", @required = "required", oninput =
+
+"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');", @onkeyup = "fnChangeTotal()" } })
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                Total
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("Price", new { htmlAttributes = new { @class = "form-control", placeholder = "", id =
+
+"tPayment", @readonly = "readonly", @Value = string.Format("{0:#.00}", Convert.ToDecimal(@Model.Training.Price)), maxlength = "10", @required = "required",
+
+                                               oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Training Type:
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.DropDownList("TrainingTypeID", ViewData["TRAINING_TYPE"] as IEnumerable<SelectListItem>, "--Select Type--", htmlAttributes: new { @class = "form-control", @required = "required", id = "tcType" })
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                Limit Full Payment
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("LimitFullPaymentDate", new { htmlAttributes = new { @class = "form-control", placeholder = "",
+
+                                               type = "date", @Value = @Model.Training.LimitFullPaymentDate?.ToString("yyyy-MM-dd") } })
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                Total Full Payment
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("PriceFullPayment", new { htmlAttributes = new { @class = "form-control", placeholder = "",
+
+                                               @Value = string.Format("{0:#.00}", Convert.ToDecimal(@Model.Training.PriceFullPayment)), maxlength = "10", @required = "required", onchange =
+
+"fnChangeFullPrice()", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');", id = "tFullPayment" } })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                            </label>
+                                            <div class="col-md-2">
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                Max Discount 1st & 2nd Payment (%)
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("MaxDiscountPayment1", new { htmlAttributes = new { @class = "form-control", type = "number", @Value = @Model.Training.MaxDiscountPayment1, min = 0, max = 100, id = "discountFirst", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                Max Discount Full Payment (%)
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("MaxDiscountTotalPayment", new { htmlAttributes = new { @class = "form-control", type = "number", @Value = @Model.Training.MaxDiscountTotalPayment, min = 0, max = 100, id = "discountFull", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Start Date
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("StartDate1", new { htmlAttributes = new { @class = "form-control", placeholder = "", type =
+
+"date", @Value = @Model.Training.StartDate1?.ToString("yyyy-MM-dd") } })
+                                            </div>
+                                            <label class="control-label col-md-2">
+                                                1st Payment Date
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("EndDate1", new { htmlAttributes = new { @class = "form-control", placeholder = "", type =
+
+"date", @Value = @Model.Training.EndDate1?.ToString("yyyy-MM-dd") } })
+                                            </div>
+                                            <label class="control-label col-md-2">
+                                                Discount Date 1 (%)
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("DiscountDate1", new { htmlAttributes = new { @class = "form-control", placeholder = "", type =
+
+"number", min = 0, max = 100, @Value = @Model.Training.DiscountDate1,
+                                               oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');"
+                                           } })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Evaluation Date
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("StartDate2", new { htmlAttributes = new { @class = "form-control", placeholder = "", type =
+
+"date", @Value = @Model.Training.StartDate2?.ToString("yyyy-MM-dd") } })
+                                            </div>
+                                            <label class="control-label col-md-2">
+                                                End Date 
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("EndDate2", new { htmlAttributes = new { @class = "form-control", placeholder = "", type =
+
+"date", @Value = @Model.Training.EndDate2?.ToString("yyyy-MM-dd") } })
+                                            </div>
+                                            <label class="control-label col-md-2">
+                                                Discount Date 2 (%)
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("DiscountDate2", new { htmlAttributes = new { @class = "form-control", placeholder = "", type =
+
+"number", min = 0, max = 100, @Value = @Model.Training.DiscountDate2,
+                                               oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');"
+                                           } })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Coupon 1
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("Coupon1", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value =
+
+@Model.Training.Coupon1 } })
+                                            </div>
+                                            <label class="control-label col-md-2">
+                                                Discount Coupon 1 (%)
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("DiscountCoupon1", new { htmlAttributes = new { @class = "form-control", type = "number",
+                                               placeholder = "", @Value = @Model.Training.DiscountCoupon1,
+                                               onchange = "fnCheckDiscount(1)",
+                                               oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');",
+                                               id = "discount1"
+                                           } })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Coupon 2
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("Coupon2", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value =
+
+@Model.Training.Coupon2 } })
+                                            </div>
+                                            <label class="control-label col-md-2">
+                                                Discount Coupon 2 (%)
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("DiscountCoupon2", new { htmlAttributes = new { @class = "form-control", type = "number",
+                                               placeholder = "", @Value = @Model.Training.DiscountCoupon2,
+                                               onchange = "fnCheckDiscount(2)",
+                                               oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');",
+                                               id = "discount2"
+                                           } })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Coupon 3
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("Coupon3", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value =
+
+@Model.Training.Coupon3 } })
+                                            </div>
+                                            <label class="control-label col-md-2">
+                                                Discount Coupon 3 (%)
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("DiscountCoupon3", new { htmlAttributes = new { @class = "form-control", type = "number", @Value
+
+= @Model.Training.DiscountCoupon3,
+                                               onchange = "fnCheckDiscount(3)",
+                                               oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');",
+                                               id = "discount3"
+                                           } })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Coupon 4
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("Coupon4", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value =
+
+@Model.Training.Coupon4 } })
+                                            </div>
+                                            <label class="control-label col-md-2">
+                                                Discount Coupon 4 (%)
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("DiscountCoupon4", new { htmlAttributes = new { @class = "form-control", type = "number", @Value
+
+= @Model.Training.DiscountCoupon4,
+                                               onchange = "fnCheckDiscount(4)",
+                                               oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');",
+                                               id = "discount4"
+                                           } })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Coupon 5
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("Coupon5", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value =
+
+@Model.Training.Coupon5 } })
+                                            </div>
+                                            <label class="control-label col-md-2">
+                                                Discount Coupon 5 (%)
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.Editor("DiscountCoupon5", new { htmlAttributes = new { @class = "form-control", type = "number", @Value
+
+= @Model.Training.DiscountCoupon5,
+                                               onchange = "fnCheckDiscount(5)",
+                                               oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');",
+                                               id = "discount5"
+                                           } })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Image
+                                            </label>
+                                            <div class="col-md-2">
+                                                @Html.TextBox("file", "", new { @class = "form-control", type = "file", accept = ".png,.jpg,.jpeg,.gif,.tif"
+
+                                           })
+                                            </div>
+                                            <label class="control-label col-md-2">
+                                                Active
+                                            </label>
+                                            <div class="col-md-2">
+                                                @if (Model.Training.IsActive == true)
+                                                {
+                                                    @Html.CheckBox("IsActive", htmlAttributes: new { @class = "chkbox pull-left", @checked = true })
+                                                }
+                                                else if (Model.Training.IsActive == false)
+                                                {
+                                                    @Html.CheckBox("IsActive", htmlAttributes: new { @class = "chkbox pull-left" })
+                                                }
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group text-center">
+                                            <label class="control-label col-md-2">
+                                            </label>
+                                            <div class="col-md-4">
+                                                @{var trainingImg = @Model.Training.ImgName; }
+                                                @if (@Model.Training.ImgName != null)
+                                                {
+                                                    trainingImg = @Model.Training.ImgName;
+
+                                                }
+                                                else
+                                                {
+                                                    trainingImg = "noImage.png";
+                                                }
+                                                <img src="~/Images/trainingCourses/@trainingImg" alt="@trainingImg" style="max-height:120px;">
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Full Description
+                                            </label>
+                                            <div class="col-md-10">
+                                                @Html.TextArea("FullDescription", (string)Model.Training.FullDescription, new { @class = "form-control",
+
+                                               @Value = Model.Training.FullDescription })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="form-group">
+
+                                        </div>
+
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="col-md-12 text-center">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                                            @Html.ActionLink("Cancel", "TrainingCoursesList", new { controller = "TrainingCours" }, new { @class = "btn btn-default" })
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                                                    }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="meeting" class="tab-pane fade">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        @using (Ajax.BeginForm("EditMeetingInfo", "TrainingCours", new AjaxOptions() { HttpMethod = "POST" }, new
+                        {
+                            enctype =
+
+"multipart/form-data",
+                            id = "File"
+                        }))
+                        {
+                            <div class="card-body" id="bar-parent1">
+                                <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                                    <div class="form-body">
+
+                                        <div class="clearfix"></div>
+                                        <div hidden class="form-group">
+                                            <label class="control-label col-md-2">
+                                                @Html.Editor("TrainingCourseID", new { htmlAttributes = new { @class = "form-control", placeholder = "",
+
+                                               @Value = @Model.Training.TrainingCourseID } })
+                                            </label>
+                                        </div>
+                                        <div class="clearfix"></div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Meeting Details
+                                            </label>
+                                            <div class="col-md-10">
+                                                @Html.TextArea("MeetingDetails", (string)Model.Training.MeetingDetails, new { @class = "form-control", @Value = Model.Training.MeetingDetails, maxlength = "2000" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="col-md-12 text-center">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                                            @Html.ActionLink("Cancel", "TrainingCoursesList", new { controller = "TrainingCours" }, new { @class = "btn btn-default" })
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="announcements" class="tab-pane fade">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        @using (Ajax.BeginForm("EditAnnouncements", "TrainingCours", new AjaxOptions() { HttpMethod = "POST" }, new
+                        {
+                            enctype =
+
+"multipart/form-data",
+                            id = "File"
+                        }))
+                        {
+                            <div class="card-body" id="bar-parent1">
+                                <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                                    <div class="form-body">
+
+                                        <div class="clearfix"></div>
+                                        <div hidden class="form-group">
+                                            <label class="control-label col-md-2">
+                                                @Html.Editor("TrainingCourseID", new { htmlAttributes = new { @class = "form-control", placeholder = "",
+
+                                               @Value = @Model.Training.TrainingCourseID } })
+                                            </label>
+                                        </div>
+                                        <div class="clearfix"></div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                Special Announcements
+                                            </label>
+                                            <div class="col-md-10">
+                                                @Html.TextArea("SpecialAnnouncements", (string)Model.Training.SpecialAnnouncements, new { @class = "form-control", @Value = Model.Training.SpecialAnnouncements, maxlength = "4000" })
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="col-md-12 text-center">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                                            @Html.ActionLink("Cancel", "TrainingCoursesList", new { controller = "TrainingCours" }, new { @class = "btn btn-default" })
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="trainers" class="tab-pane fade">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="PanelShow card-body">
+                            <div class="fullresponsivetable">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Select Trainer</th>
+                                            <th>Full Name</th>
+                                            <th>Email</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Trainers)
+                                        {
+                                            <tr>
+                                                <th class="text-center">
+                                                    @{var sell = "";
+                                                        foreach (var item2 in Model.SelectedTrainers)
+                                                        {
+                                                            if (item.ID == item2.TrainerID)
+                                                            {
+                                                                sell = "checked";
+
+                                                            }
+                                                        }
+                                                        <input type="checkbox" value="@item.ID" id="trainer_@item.ID" onchange="fnUpdateTrainer(@item.ID)" @sell>
+                                                    }
+                                                </th>
+                                                <td>@item.FullName</td>
+                                                <td>@item.Email</td>
+                                                <th></th>
+                                            </tr>
+                                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="resources" class="tab-pane fade">
+            <p>
+                <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#deleteModal">-</button>
+                <button id="btn-add-tab" type="button" class="btn btn-primary pull-right">+</button>
+            </p>
+            <br /><br />
+            @{ int tabs = 0; int tabsX = 0; int ndx = 0; string ac = "active"; string acX = "active";}
+            <ul id="tab-list" class="nav nav-tabs" role="tablist">
+                @for (var i = 0; i < Model.Training.Sessions; i++)
+                {
+                    if (tabs != 0)
+                    {
+                        <li class="@acX"><a href="#session_@tabs" role="tab" data-toggle="tab"><span>Session @tabs</span></a></li>
+                    }
+                    else
+                    {
+                        <li class="@acX"><a href="#session_@tabs" role="tab" data-toggle="tab"><span>Demo Session </span></a></li>
+                    }
+
+                    tabs++;
+                    acX = "";
+                }
+            </ul>
+
+            <div id="tab-content" class="tab-content">
+
+                @for (var i = 0; i < Model.Training.Sessions; i++)
+                {
+
+                    var sessionN = "Session" + tabsX;
+                    var fileM = "FileM__" + @tabsX;
+                    var fileR = "FileR__" + @tabsX;
+                    var fileA = "FileA__" + @tabsX;
+                    var fileO = "FileO__" + @tabsX;
+                    <div id="session_@tabsX" class="tab-pane fade in @ac">
+                        <div class="row">
+                            <div class="card">
+
+                                <br />
+                                @if (i > 0)
+                                {
+                                    //using (Ajax.BeginForm("EditTrainingSession", "TrainingCours", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "File" }))
+                                    {
+                                        <div class="clearfix"></div>
+                                        <div hidden class="form-group">
+                                            <label class="control-labl col-md-2">
+                                                
+                                                @Html.Editor("TrainingCourseID", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value = Model.Training.TrainingCourseID } })
+                                                @Html.Editor("SessionID", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value = tabsX } })
+                                            </label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                <b>Session @tabsX Title</b>
+                                            </label>
+                                            <div class="col-md-9">
+                                                @foreach (var item in Model.Sessions)
+                                                {
+                                                    if (@item.SessionID == @tabsX)
+                                                    {
+                                                        @Html.Editor("SessionTitle", new { htmlAttributes = new { @class = "form-control", placeholder = "", id = "SessionTitle_" + tabsX, @Value = @item.SessionTitle, maxlength = "200", @required = "required" } })
+                                                    }
+
+                                                }
+                                            </div>
+
+                                            @*<label class="control-label col-md-1">
+                                                <b>Notes</b>
+                                            </label>
+
+                                            <div class="col-md-4">
+                                                @Html.TextArea("SessionNotes", "", new { @class = "form-control", @Value = "", maxlength = "2000" })
+                                            </div>*@
+
+                                            <div class="col-md-1">
+                                                @*<button type="submit" class="btn btn-primary">Update</button>*@
+                                                <button type="button" id="btn-update-title" onclick="fnUpdateTitle(@tabsX, document.getElementById('SessionTitle_@tabsX').value)" class="btn btn-primary">Update</button>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    }
+                                }
+
+
+                                <div class="PanelShow card-body">
+
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+
+                                            <div class="panel panel-default">
+                                                @{
+                                                    if (tabsX != 0)
+                                                    {
+                                                        <div class="panel-heading"><b>Materials Session @tabsX</b></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="panel-heading"><b>Materials Demo Session</b></div>
+                                                    }
+                                                }
+                                                <div class="panel-body">
+                                                    @using (Ajax.BeginForm("UploadMaterials", "TrainingCours", new AjaxOptions() { HttpMethod = "POST" }, new
+                                                    {
+
+                                                        enctype = "multipart/form-data",
+                                                        id = fileM,
+                                                        @class = "dropzone"
+                                                    }))
+                                                    {
+                                                        <div hidden>
+                                                            @Html.Editor("TrainingID", new { htmlAttributes = new { @class = "form-control", type = "number",
+
+                                                           placeholder = "", @Value = @Model.Training.TrainingCourseID } })
+                                                            @Html.Editor("SessionN", new { htmlAttributes = new { @class = "form-control", type = "text",
+
+                                                           placeholder = "", @Value = sessionN } })
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="panel panel-default">
+                                                @{
+                                                    if (tabsX != 0)
+                                                    {
+                                                        <div class="panel-heading"><b>Recordings Session @tabsX</b></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="panel-heading"><b>Recordings Demo Session </b></div>
+                                                    }
+                                                }
+                                                <div class="panel-body">
+                                                    @using (Ajax.BeginForm("UploadRecordings", "TrainingCours", new AjaxOptions() { HttpMethod = "POST" }, new
+                                                    {
+
+                                                        enctype = "multipart/form-data",
+                                                        id = fileR,
+                                                        @class = "dropzone"
+                                                    }))
+                                                    {
+                                                        <div hidden>
+                                                            @Html.Editor("TrainingID", new { htmlAttributes = new { @class = "form-control", type = "number",
+
+                                                           placeholder = "", @Value = @Model.Training.TrainingCourseID } })
+                                                            @Html.Editor("SessionN", new { htmlAttributes = new { @class = "form-control", type = "text",
+
+                                                           placeholder = "", @Value = sessionN } })
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="panel panel-default">
+                                                @{
+                                                    if (tabsX != 0)
+                                                    {
+                                                        <div class="panel-heading"><b>Assignments Session @tabsX</b></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="panel-heading"><b>Assignments Demo Session </b></div>
+                                                    }
+                                                }
+                                                <div class="panel-body">
+                                                    @using (Ajax.BeginForm("UploadAssignments", "TrainingCours", new AjaxOptions() { HttpMethod = "POST" }, new
+                                                    {
+
+                                                        enctype = "multipart/form-data",
+                                                        id = fileA,
+                                                        @class = "dropzone"
+                                                    }))
+                                                    {
+                                                        <div hidden>
+                                                            @Html.Editor("TrainingID", new { htmlAttributes = new { @class = "form-control", type = "number",
+
+                                                           placeholder = "", @Value = @Model.Training.TrainingCourseID } })
+                                                            @Html.Editor("SessionN", new { htmlAttributes = new { @class = "form-control", type = "text",
+
+                                                           placeholder = "", @Value = sessionN } })
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="panel panel-default">
+                                                @{
+                                                    if (tabsX != 0)
+                                                    {
+                                                        <div class="panel-heading"><b>Others Session @tabsX</b></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="panel-heading"><b>Others Demo Session</b> </div>
+                                                    }
+                                                }
+
+                                                <div class="panel-body">
+                                                    @using (Ajax.BeginForm("UploadOthers", "TrainingCours", new AjaxOptions() { HttpMethod = "POST" }, new
+                                                    {
+
+                                                        enctype = "multipart/form-data",
+                                                        id = fileO,
+                                                        @class = "dropzone"
+                                                    }))
+                                                    {
+                                                        <div hidden>
+                                                            @Html.Editor("TrainingID", new { htmlAttributes = new { @class = "form-control", type = "number",
+
+                                                           placeholder = "", @Value = @Model.Training.TrainingCourseID } })
+                                                            @Html.Editor("SessionN", new { htmlAttributes = new { @class = "form-control", type = "text",
+
+                                                           placeholder = "", @Value = sessionN } })
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="PanelShow card-body">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading"><b>Received Assignments</b></div>
+                                                <div class="panel-body">
+                                                    <table class="table table-condensed">
+                                                        <thead>
+                                                            <tr>
+                                                                <th hidden>
+                                                                    ID
+                                                                </th>
+                                                                <th>
+                                                                    Name
+                                                                </th>
+                                                                <th>
+                                                                    Last Name
+                                                                </th>
+                                                                <th>
+                                                                    Email
+                                                                </th>
+                                                                <th hidden>
+                                                                    Session
+                                                                </th>
+                                                                <th>
+                                                                    Date
+                                                                </th>
+                                                                <th>
+                                                                    File Name
+                                                                </th>
+                                                                <th hidden>
+                                                                    Path
+                                                                </th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item in Model.Assignments)
+                                                            {
+                                                                string session = item.SessionN;
+                                                                string nSession = session.Replace("Session", "");
+
+                                                                if (Convert.ToInt32(nSession) == tabsX)
+                                                                {
+                                                                    <tr>
+                                                                        <td hidden>
+                                                                            @item.WebsiteusersAssignmentsID
+                                                                        </td>
+                                                                        <td>
+                                                                            @item.WebsiteUser.FName
+                                                                        </td>
+                                                                        <td>
+                                                                            @item.WebsiteUser.LName
+                                                                        </td>
+                                                                        <td>
+                                                                            @item.WebsiteUser.Email
+                                                                        </td>
+                                                                        <td hidden>
+                                                                            @item.SessionN
+                                                                        </td>
+                                                                        <td>
+                                                                            @item.DateRecord
+                                                                        </td>
+                                                                        <td>
+                                                                            @item.OriginalFileName
+                                                                        </td>
+                                                                        <td hidden>
+                                                                            @item.Path
+                                                                        </td>
+                                                                        <td>
+                                                                            <a href="@Url.Action("DownloadAssignment", new { controller = "TrainingCours", id = item.WebsiteusersAssignmentsID })" class="btn btn-xs btn-new" title="Download" data-toggle="tooltip">
+                                                                                <i class="fa fa-download"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="col-md-12 col-sm-12">
+                                <div class="card">
+                                    <div class="clearfix"></div>
+                                    <div id="mydrop">
+
+                                    </div>
+
+                                    <div id="mydrop">
+
+                                    </div>
+
+                                    <div id="mydrop">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                                                        tabsX++;
+                                                        ndx++;
+                                                        ac = "";
+                                                    }
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal-->
+    <div id="deleteModal" class="modal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        &times;
+                    </button>
+                    <h5 class="modal-title">Confirm</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="clearfix m-b-5"></div>
+                    <div class="col text-red" style="text-align:center;">
+                        <strong>Are you sure you want to Delete this Session? </strong>
+                    </div>
+                </div>
+                <div class="clearfix m-b-5"></div>
+
+                <div class="col-lg-12 text-center m-t-10">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> &nbsp;
+                    <input type="button" value="Confirm" class="btn btn-primary" onclick="fnConfirmDelete()" />
+
+
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>This is a small modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@Scripts.Render("~/bundles/jquery")
+<link href="~/Scripts/dropzone/dropzone.min.css" rel="stylesheet" />
+<script src="~/Scripts/dropzone/dropzone.min.js"></script>
+
+<script src="https://cdn.tiny.cloud/1/9xc9wdopb0ep4oervh62x1e67qfoskkab0sm3i2gajsxxvzo/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+
+<script type="text/javascript">
+
+    tinymce.init({
+        selector: 'textarea', height: 350,
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar: 'undo redo | formatselect | ' +
+            'bold italic backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help'
+
+    });
+
+    var droZoneCount = 0;
+    var counterMaterials = 0;
+    var counterRecordings = 0;
+    var counterAssignments = 0;
+    var counterOthers = 0;
+
+    $(document).ready(function () {
+        var nItems = @ndx;
+        var tID = @Model.Training.TrainingCourseID;
+        listDz = [];
+
+        for (let i = 0; i < nItems; i++)
+        {
+            
+            Dropzone.options['FileM_'+(i)] = {
+
+                paramName: "file", // The name that will be used to transfer the file
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                dictRemoveFileConfirmation: "Do you really want to remove this file?",
+                acceptedFiles: ".pdf",
+
+                init: function () {
+                    var thisDropzone = this;
+                    //Call the action method to load the images from the server
+
+                    @*$.ajax({
+                        type: "POST",
+                        url: "https://brightrace.com/api/api/TrainingResources/GetAttachments",
+                        data: { TrainingCourseID: @Model.Training.TrainingCourseID, SessionN: i, Type: "Materials" },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.Data != '') {
+
+                                Object.keys(data).forEach(function (item) {
+                                    
+                                    var mockFile = {
+                                        name: data[0].FileName,
+                                        size: data[0].FileSize,
+                                        id: data[0].AttachmentID,
+                                        path: data[0].Path
+                                    };
+
+                                    // Call the default addedfile event handler
+                                    thisDropzone.emit("addedfile", mockFile);
+                                    // And optionally show the thumbnail of the file:
+
+                                    var ext = data[0].FileExtension;
+                                    if (ext != ".7zip" && ext != ".doc" && ext != ".docx" && ext != ".gif" && ext != ".jpg" && ext != ".js" && ext != ".mp4" && ext != ".pdf" && ext != ".png" && ext != ".ppt" && ext != ".pptx" && ext != ".rar" && ext != ".sql" && ext != ".ts" && ext != ".txt" && ext != ".xls" && ext != ".xlsx" && ext != ".zip" && ext != ".exe")
+                                        ext = "other";
+
+                                    thisDropzone.emit("thumbnail", mockFile, "../../images/DropzoneFileIcons/" + ext +
+
+                                        ".png");
+                                    thisDropzone.emit("complete", mockFile);
+                                    // If you use the maxFiles option, make sure you adjust it to the
+                                    // correct amount:
+                                    //var existingFileCount = 1; // The number of files already uploaded
+                                    //myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+
+                                });
+
+                                
+                                //);
+                            }
+                        }
+                    });*@
+
+                    $.getJSON('@Html.Raw(Url.Action("GetAttachments", "TrainingCours", new { id = @Model.Training.TrainingCourseID, id2 = "counterMaterials", type = "Materials" }))'.replace("counterMaterials", counterMaterials)).done(function (data) {
+                    @*$.getJSON("../../TrainingCours/GetAttachments/?id=" + @Model.Training.TrainingCourseID + "&id2=" + (i) + "&type=Recordings").done
+
+(function (data) {*@
+                            if (data.Data != '') {
+                            $.each(data.Data, function (index, item) {
+                                    //alert(item.AttachmentID + " /// " + item.Path)
+                                    //// Create the mock file:
+                                    var mockFile = {
+                                    name: item.FileName,
+                                    size: item.FileSize,
+                                    id: item.AttachmentID,
+                                    path: item.Path
+                                };
+                                // Call the default addedfile event handler
+                                thisDropzone.emit("addedfile", mockFile);
+                                // And optionally show the thumbnail of the file:
+
+                                var ext = item.FileExtension;
+                                if (ext != ".7zip" && ext != ".doc" && ext != ".docx" && ext != ".gif" && ext != ".jpg" && ext != ".js" && ext != ".mp4" && ext != ".pdf" && ext != ".png" && ext != ".ppt" && ext != ".pptx" && ext != ".rar" && ext != ".sql" && ext != ".ts" && ext != ".txt" && ext != ".xls" && ext != ".xlsx" && ext != ".zip" && ext != ".exe")
+                                    ext = "other";
+
+                                thisDropzone.emit("thumbnail", mockFile, "../../images/DropzoneFileIcons/" + ext +
+".png");
+                                thisDropzone.emit("complete", mockFile);
+                                // If you use the maxFiles option, make sure you adjust it to the
+                                // correct amount:
+                                //var existingFileCount = 1; // The number of files already uploaded
+                                //myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+                            });
+                        }
+                    });
+                    counterMaterials++;
+                    thisDropzone.on("addedfile", function (file) {
+                        var pathX = file.path;
+
+                        if (pathX == undefined)
+                            pathX = "../../BrightraceResources/@TempData["tName"]@TempData["tID"]/Materials/Session" + (i) + "/" + file.name;
+                        else
+                            pathX = file.path;
+
+                        var a = document.createElement('a');
+                        a.setAttribute('href', pathX);
+                        a.setAttribute('class', "dz-remove");
+                        a.setAttribute('style', "width:125px");
+                        a.setAttribute('target', "_blank");
+                        a.innerHTML = file.name;
+                        file.previewTemplate.appendChild(a);
+                    });
+                },
+
+                removedfile: function (file) {
+                    var fileID = file.id;
+
+                    if (fileID == undefined)
+                        fileID = 0;
+                    else
+                        fileID = file.id;
+
+                    //alert(file.name+"///"+fileID+"//"+@Model.Training.TrainingCourseID)
+
+                    //console.log(file)
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../TrainingCours/DeleteAttachments',
+                        data: { fID: fileID, tID: @Model.Training.TrainingCourseID, fName: file.name },
+                        sucess: function (data) {
+                            //console.log('success: ' + data);
+                        }
+                    });
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                },
+
+            };
+
+            Dropzone.options['FileR_'+(i)] = {
+
+                paramName: "file", // The name that will be used to transfer the file
+                maxFilesize: 2048, // MB
+                addRemoveLinks: true,
+                dictRemoveFileConfirmation: "Do you really want to remove this file?",
+                acceptedFiles: ".mp4",
+
+                init: function () {
+                    var thisDropzone = this;
+                    //Call the action method to load the images from the server
+                    $.getJSON('@Html.Raw(Url.Action("GetAttachments", "TrainingCours", new { id = @Model.Training.TrainingCourseID, id2 = "counterRecordings", type = "Recordings" }))'.replace("counterRecordings", counterRecordings)).done(function (data) {
+                    @*$.getJSON("../../TrainingCours/GetAttachments/?id=" + @Model.Training.TrainingCourseID + "&id2=" + (i) + "&type=Recordings").done
+
+(function (data) {*@
+                            if (data.Data != '') {
+                            $.each(data.Data, function (index, item) {
+                                    //alert(item.AttachmentID + " /// " + item.Path)
+                                    //// Create the mock file:
+                                    var mockFile = {
+                                    name: item.FileName,
+                                    size: item.FileSize,
+                                    id: item.AttachmentID,
+                                    path: item.Path
+                                };
+                                // Call the default addedfile event handler
+                                thisDropzone.emit("addedfile", mockFile);
+                                // And optionally show the thumbnail of the file:
+
+                                var ext = item.FileExtension;
+                                if (ext != ".7zip" && ext != ".doc" && ext != ".docx" && ext != ".gif" && ext != ".jpg" && ext != ".js" && ext != ".mp4" && ext != ".pdf" && ext != ".png" && ext != ".ppt" && ext != ".pptx" && ext != ".rar" && ext != ".sql" && ext != ".ts" && ext != ".txt" && ext != ".xls" && ext != ".xlsx" && ext != ".zip" && ext != ".exe")
+                                    ext = "other";
+
+                                thisDropzone.emit("thumbnail", mockFile, "../../images/DropzoneFileIcons/" + ext +
+
+".png");
+                                thisDropzone.emit("complete", mockFile);
+                                // If you use the maxFiles option, make sure you adjust it to the
+                                // correct amount:
+                                //var existingFileCount = 1; // The number of files already uploaded
+                                //myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+                            });
+                        }
+                    });
+                    counterRecordings++;
+                    thisDropzone.on("addedfile", function (file) {
+
+                        var pathX = file.path;
+
+                        if (pathX == undefined)
+                            pathX = "../../BrightraceResources/@TempData["tName"]@TempData["tID"]/Recordings/Session" + (i) + "/" + file.name;
+                        else
+                            pathX = file.path;
+
+                        var a = document.createElement('a');
+                        a.setAttribute('href', pathX);
+                        a.setAttribute('class', "dz-remove");
+                        a.setAttribute('style', "width:125px");
+                        a.setAttribute('target', "_blank");
+                        a.innerHTML = file.name;
+                        file.previewTemplate.appendChild(a);
+                    });
+                },
+
+                removedfile: function (file) {
+
+                    var fileID = file.id;
+
+                    if (fileID == undefined)
+                        fileID = 0;
+                    else
+                        fileID = file.id;
+
+                    //alert(fileID + " " +@Model.Training.TrainingCourseID)
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../TrainingCours/DeleteAttachments',
+                        data: { fID: fileID, tID: @Model.Training.TrainingCourseID, fName: file.name },
+                        sucess: function (data) {
+                            //console.log('success: ' + data);
+                        }
+                    });
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                }
+            };
+
+            Dropzone.options['FileA_'+(i)] = {
+
+                paramName: "file", // The name that will be used to transfer the file
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                dictRemoveFileConfirmation: "Do you really want to remove this file?",
+
+                init: function () {
+                    var thisDropzone = this;
+                    //Call the action method to load the images from the server
+                    $.getJSON('@Html.Raw(Url.Action("GetAttachments", "TrainingCours", new { id = @Model.Training.TrainingCourseID, id2 = "counterAssignments", type = "Assignments" }))'.replace("counterAssignments", counterAssignments)).done(function (data) {
+                    @*$.getJSON("../../TrainingCours/GetAttachments/?id=" + @Model.Training.TrainingCourseID + "&id2=" + (i) + "&type=Assignments").done
+
+(function (data) {*@
+                            if (data.Data != '') {
+                            $.each(data.Data, function (index, item) {
+                                    //alert(item.AttachmentID + " /// " + item.Path)
+                                    //// Create the mock file:
+                                    var mockFile = {
+                                    name: item.FileName,
+                                    size: item.FileSize,
+                                    id: item.AttachmentID,
+                                    path: item.Path
+                                };
+                                // Call the default addedfile event handler
+                                thisDropzone.emit("addedfile", mockFile);
+                                // And optionally show the thumbnail of the file:
+
+                                var ext = item.FileExtension;
+                                if (ext != ".7zip" && ext != ".doc" && ext != ".docx" && ext != ".gif" && ext != ".jpg" && ext != ".js" && ext != ".mp4" && ext != ".pdf" && ext != ".png" && ext != ".ppt" && ext != ".pptx" && ext != ".rar" && ext != ".sql" && ext != ".ts" && ext != ".txt" && ext != ".xls" && ext != ".xlsx" && ext != ".zip" && ext != ".exe")
+                                    ext = "other";
+
+                                thisDropzone.emit("thumbnail", mockFile, "../../images/DropzoneFileIcons/" + ext +
+
+".png");
+                                thisDropzone.emit("complete", mockFile);
+                                // If you use the maxFiles option, make sure you adjust it to the
+                                // correct amount:
+                                //var existingFileCount = 1; // The number of files already uploaded
+                                //myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+                            });
+                        }
+                    });
+                    counterAssignments++;
+                    thisDropzone.on("addedfile", function (file) {
+
+                        var pathX = file.path;
+
+                        if (pathX == undefined)
+                            pathX = "../../BrightraceResources/@TempData["tName"]@TempData["tID"]/Assignments/Session" + (i) + "/" + file.name;
+                        else
+                            pathX = file.path;
+
+                        var a = document.createElement('a');
+                        a.setAttribute('href', pathX);
+                        a.setAttribute('class', "dz-remove");
+                        a.setAttribute('style', "width:125px");
+                        a.setAttribute('target', "_blank");
+                        a.innerHTML = file.name;
+                        file.previewTemplate.appendChild(a);
+                    });
+                },
+
+                removedfile: function (file) {
+                    var fileID = file.id;
+
+                    if (fileID == undefined)
+                        fileID = 0;
+                    else
+                        fileID = file.id;
+                    //alert(fileID+" "+@Model.Training.TrainingCourseID)
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../TrainingCours/DeleteAttachments',
+                        data: { fID: fileID, tID: @Model.Training.TrainingCourseID, fName: file.name },
+                        sucess: function (data) {
+                            //console.log('success: ' + data);
+                        }
+                    });
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                }
+            };
+
+            Dropzone.options['FileO_'+(i)] = {
+
+                paramName: "file", // The name that will be used to transfer the file
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                dictRemoveFileConfirmation: "Do you really want to remove this file?",
+
+                init: function () {
+                    var thisDropzone = this;
+                    //Call the action method to load the images from the server
+                    $.getJSON('@Html.Raw(Url.Action("GetAttachments", "TrainingCours", new { id = @Model.Training.TrainingCourseID, id2 = "counterOthers", type = "Others" }))'.replace("counterOthers", counterOthers)).done(function (data) {
+                    @*$.getJSON("../../TrainingCours/GetAttachments/?id=" + @Model.Training.TrainingCourseID + "&id2=" + (i) + "&type=Others").done(function
+
+(data) {*@
+                            if (data.Data != '') {
+                            $.each(data.Data, function (index, item) {
+                                    //alert(item.AttachmentID + " /// " + item.Path)
+                                    //// Create the mock file:
+                                    var mockFile = {
+                                    name: item.FileName,
+                                    size: item.FileSize,
+                                    id: item.AttachmentID,
+                                    path: item.Path
+                                };
+                                // Call the default addedfile event handler
+                                thisDropzone.emit("addedfile", mockFile);
+                                // And optionally show the thumbnail of the file:
+
+                                var ext = item.FileExtension;
+                                if (ext != ".7zip" && ext != ".doc" && ext != ".docx" && ext != ".gif" && ext != ".jpg" && ext != ".js" && ext != ".mp4" && ext != ".pdf" && ext != ".png" && ext != ".ppt" && ext != ".pptx" && ext != ".rar" && ext != ".sql" && ext != ".ts" && ext != ".txt" && ext != ".xls" && ext != ".xlsx" && ext != ".zip" && ext != ".exe")
+                                    ext = "other";
+
+                                thisDropzone.emit("thumbnail", mockFile,  "../../images/DropzoneFileIcons/" + ext +
+
+".png");
+                                thisDropzone.emit("complete", mockFile);
+                                // If you use the maxFiles option, make sure you adjust it to the
+                                // correct amount:
+                                //var existingFileCount = 1; // The number of files already uploaded
+                                //myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
+                            });
+                        }
+                    });
+                    counterOthers++;
+                    thisDropzone.on("addedfile", function (file) {
+
+                        var pathX = file.path;
+
+                        if (pathX == undefined)
+                            pathX = "../../BrightraceResources/@TempData["tName"]@TempData["tID"]/Others/Session" + (i) + "/" + file.name;
+                        else
+                            pathX = file.path;
+
+                        var a = document.createElement('a');
+                        a.setAttribute('href', pathX);
+                        a.setAttribute('class', "dz-remove");
+                        a.setAttribute('style', "width:125px");
+                        a.setAttribute('target', "_blank");
+                        a.innerHTML = file.name;
+                        file.previewTemplate.appendChild(a);
+                    });
+                },
+
+                removedfile: function (file) {
+
+                    var fileID = file.id;
+
+                    if (fileID == undefined)
+                        fileID = 0;
+                    else
+                        fileID = file.id;
+                    //alert(fileID+" "+@Model.Training.TrainingCourseID)
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../TrainingCours/DeleteAttachments',
+                        data: { fID: fileID, tID: @Model.Training.TrainingCourseID, fName: file.name },
+                        sucess: function (data) {
+                            //console.log('success: ' + data);
+                        }
+                    });
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                }
+            };
+        }
+
+        
+
+    });
+
+
+    var tIndex = 0;
+    var tabID = 0;
+
+    //$(document).ready(function () {
+
+
+        //var nextSession = @Model.Training.Sessions + 1;
+
+            $('#btn-add-tab').click(function () {
+
+                tIndex++;
+                jQuery.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("ReturnTabIndex", "TrainingCours")',
+                    data: { "tabIndex": tIndex - 1, trainingID : @Model.Training.TrainingCourseID },
+                    success: function (data) {
+                        codeX = data;
+                        $('#tab-list').append($('<li><a href="#tab_' + (tIndex) + '" role="tab" data-toggle="tab"><span>Session</span></a></li>'));
+                        $('#tab-content').append($('<div class="tab-pane fade" id="tab_' + (tIndex) + '">' + codeX + ' </div>'));
+                        //tabID++;
+                        resetTab();
+                        //nextSession++;
+
+                    }
+                });
+
+            });
+
+    //});
+
+    //var button = '<i onclick="fnConfirmDelete()" class="fa fa-times fa-xs text-danger" ></i>';
+
+    function fnConfirmDelete() {
+
+        //var modal = document.getElementById('deleteModal');
+
+        var lenTab = document.getElementById('tab-list').childElementCount;
+
+        if (lenTab > 1) {
+            var select = document.getElementById('tab-list');
+            select.removeChild(select.lastElementChild);
+
+            var select2 = document.getElementById('tab-content');
+            select2.removeChild(select2.lastElementChild);
+
+            //display first tab
+            var tabFirst = $('#tab-list a:first');
+            resetTab();
+            //tabID--;
+            //tIndex--;
+            //tabFirst.tab('show');
+            $("[data-dismiss=modal]").trigger({ type: "click" });
+
+            //modal.hidden
+
+            $.ajax({
+                url: "../../TrainingCours/DeleteTrainingSession/",
+                //data: formData2,
+                data: { "id": @Model.Training.TrainingCourseID },
+                success: function (data) {
+
+                }
+            });
+        }
+    }
+
+    function resetTab() {
+            var tabs = $("#tab-list li:not(:first)");
+            var len = 0
+            $(tabs).each(function (k, v) {
+                len++;
+                $(this).find('a').html('Session ' + len );
+            })
+    }
+
+
+    function fnChangeTotal() {
+        var f = document.getElementById("fPayment").value;
+        var s = document.getElementById("sPayment").value;
+
+        var res = parseFloat(f) + parseFloat(s);
+
+        document.getElementById("tPayment").value = res;
+    }
+
+    function fnChangeFullPrice() {
+
+        var full = document.getElementById("tFullPayment").value;
+        var total = document.getElementById("tPayment").value;
+
+        if (parseFloat(total) < parseFloat(full)) {
+            alert("Full payment shoul be less than Total Payment")
+            document.getElementById("tFullPayment").value = "0.00";
+        }
+    }
+
+    function fnChangeSKU() {
+
+        var tc = document.getElementById("TrainingCourse").value;
+        var firstWord = tc.replace(/ .*/, '').toUpperCase();
+        var random = Math.floor(Math.random() * 100) + 1;
+        var sku = firstWord + random;
+
+
+        if (document.getElementById("SKU").value == "") {
+            document.getElementById("SKU").value = sku;
+        }
+    }
+
+    function fnCheckDiscount(id) {
+        var d1 = parseInt(document.getElementById("discountFirst").value);
+        var df = parseInt(document.getElementById("discountFull").value);
+
+        var max = "";
+
+        if (d1 == "0" && df == "0") {
+            alert("Please Set Max Discounts")
+        }
+        else {
+            if (d1 > df)
+                max = d1;
+            else if (df > d1)
+                max = df;
+
+            var discount = parseInt(document.getElementById("discount" + id).value);
+
+            if (discount > max) {
+                alert("Discont should be less than: " + max);
+                document.getElementById("discount" + id).value = "0";
+            }
+        }
+
+    }
+
+    function fnUpdateTrainer(id) {
+        if (document.getElementById("trainer_" + id).checked == true) {
+            jQuery.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("SaveTrainingTrainer", "TrainingCours")',
+                    data: { "trainerID": id, "TrainingID": @Model.Training.TrainingCourseID  },
+                    success: function (data) {
+                        //alert('ok')
+                    }
+            });
+        }
+        else if (document.getElementById("trainer_" + id).checked == false) {
+            //alert(id + "Not Selected")
+            jQuery.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DeleteTrainingTrainer", "TrainingCours")',
+                    data: { "trainerID": id, "TrainingID": @Model.Training.TrainingCourseID  },
+                    success: function (data) {
+                        //alert('ok')
+                    }
+            });
+        }
+    }
+
+
+
+    function fnUpdateTitle(id, title) {
+
+        jQuery.ajax({
+            type: 'POST',
+            url: '@Url.Action("EditTrainingSession2", "TrainingCours")',
+            data: { "sessionID": id, "TrainingID": @Model.Training.TrainingCourseID, "Title": title  },
+            success: function () {
+                toastr.success('Title was updated successfully');
+            },
+            error: function (textStatus) {
+                toastr.error('Error: Something wrong!');
+            }
+        });
+    }
+
+    //function activaTab(tab) {
+    //    //sessionStorage.test1 = tab;
+    //    alert('bef')
+    //    //location.reload(true);
+    //    alert('after')
+    //    $('.nav-tabs a[href="#' + sessionStorage.test1 + '"]').tab('show');
+    //};
+
+
+</script>
+
+
+
+
+

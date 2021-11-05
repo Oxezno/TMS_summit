@@ -1,0 +1,71 @@
+﻿@model TMS.Models.InterviewQuestion
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                &times;
+            </button>
+
+            <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+        </div>
+        <div class="modal-body">
+            @{
+                var Id = ViewBag.ID;
+            }
+            @*@using (Ajax.BeginForm("ConfirmDeleteScheduledEvent", "TrainingCours", new { id = Id }, new AjaxOptions { OnSuccess = "Response" }))*@
+            @*{*@
+                <div class="clearfix m-b-5"></div>
+                <div class="col text-red" style="text-align:center;">
+                    @if (@ViewBag.ConfMsg != null)
+                {
+                        <strong>@ViewBag.ConfMsg</strong>
+                    }
+                    else
+                    { <strong>Are you sure you want to Delete this Scheduled Event?</strong>}
+                </div>
+                <div class="clearfix m-b-5"></div>
+
+                <div class="col-lg-12 text-center m-t-10">
+                    <button type="button" id="btnClose" class="btn btn-secondary" data-dismiss="modal">Close</button> &nbsp;
+                    <input type="submit" value="Confirm" class="btn btn-primary" onclick="fnConfirmDeleteScheduledEvent()" />
+
+
+                </div>
+
+                <div class="clearfix"></div>
+            @*}*@
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    function fnConfirmDeleteScheduledEvent() {
+        $('#delModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+        $('#pageloaddiv').show();
+        $.ajax({
+            url: '@Url.Action("ConfirmDeleteScheduledEvent", "TrainingCours")',
+            data: { "id": parseInt(@ViewBag.ID) },
+            type: 'POST',
+            success: function (data) {
+
+                $.ajax({
+                    url: '@Url.Action("GetScheduleView", "TrainingCours")',
+                    data: { "id": @ViewBag.tID },
+                    success: function (data) {
+                        $("#scheduler-grid").html(data);
+                        $('#pageloaddiv').hide();
+                        toastr.success('Updating Scheduler');
+                    }
+                });
+
+            }
+        });
+    }
+</script>

@@ -1,0 +1,312 @@
+﻿@model dynamic
+@{
+    Layout = null;
+    var num = 1;
+}
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            @*<th>SkypeID</th>*@
+            <th>Recruiter</th>
+            <th class="text-center">Appear on Evaluation @*(<label id="lblAppear">@ViewBag.TotalAppear</label>)*@</th>
+            <th class="text-center">Pass/Fail Evaluation @*(<label id="lblPassFail">@ViewBag.TotalPass</label>)*@</th>
+            <th class="text-center">Signed Contract</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.UsersA)
+        {
+            var date1 = "";
+
+            if (item.PaymentDate != null)
+            {
+                date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+            }
+
+        <tr>
+            <td data-title="Number">@num</td>
+            <td data-title="Fname">@item.WebsiteUser.FName</td>
+            <td data-title="LName">@item.WebsiteUser.LName</td>
+            <td data-title="Email">@item.WebsiteUser.Email</td>
+            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+            @*<td data-title="SkypeID">@item.WebsiteUser.SkypeID</td>*@
+            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+
+            <td class="text-center">
+
+                @{ var sell1 = "";
+                    var sell2 = "";
+                    var sell3 = "";
+                    var labelAttend = "No";
+                    var labelPassFail = "Fail";
+                    var labelSigned = "Not Signed";
+                    var iconClass1 = "fa fa-remove";
+                    var iconStyle1 = "color: red";
+                    var iconClass2 = "fa fa-remove";
+                    var iconStyle2 = "color: red";
+                    var iconClass3 = "fa fa-remove";
+                    var iconStyle3 = "color: red";
+                    var disabled = "disabled";
+
+                    if (item.WebsiteUser.TakeEvaluation == true)
+                    {
+                        sell1 = "checked";
+                        labelAttend = "Yes";
+                        iconClass1 = "fa fa-check-square-o";
+                        iconStyle1 = "color: green";
+                        disabled = "";
+                    }
+
+                    if (item.WebsiteUser.EvaluationStatus == true)
+                    {
+                        sell2 = "checked";
+                        labelPassFail = "Pass";
+                        iconClass2 = "fa fa-check-square-o";
+                        iconStyle2 = "color: green";
+                        disabled = "";
+                    }
+
+                    if (item.WebsiteUser.SignedContract == true)
+                    {
+                        sell3 = "checked";
+                        labelSigned = "Signed";
+                        iconClass3 = "fa fa-check-square-o";
+                        iconStyle3 = "color: green";
+                    }
+
+                }
+
+                <input type="checkbox" id="wu_attend_@item.WebsiteUser.WebsiteUserID" onchange="fnUpdateAttendEval(@item.WebsiteUser.WebsiteUserID, '@item.WebsiteUser.FName @item.WebsiteUser.LName')" @sell1 />
+                <label id="lblAttend_@item.WebsiteUser.WebsiteUserID">@labelAttend</label>
+                <i id="icnAttend_@item.WebsiteUser.WebsiteUserID" class="@iconClass1" style="@iconStyle1"></i>
+            </td>
+
+            <td class="text-center">
+                <input type="checkbox" id="wu_pass_fail_@item.WebsiteUser.WebsiteUserID" onchange="fnUpdatePassFail(@item.WebsiteUser.WebsiteUserID, '@item.WebsiteUser.FName @item.WebsiteUser.LName')" @sell2 @disabled />
+                <label id="lblPassFail_@item.WebsiteUser.WebsiteUserID">@labelPassFail</label>
+                <i id="icnPassFail_@item.WebsiteUser.WebsiteUserID" class="@iconClass2" style="@iconStyle2"></i>
+            </td>
+
+            <td class="text-center">
+                <input type="checkbox" id="wu_signed_@item.WebsiteUser.WebsiteUserID" onchange="fnUpdateSignedContract(@item.WebsiteUser.WebsiteUserID, '@item.WebsiteUser.FName @item.WebsiteUser.LName')" @sell3 />
+                <label id="lblSigned_@item.WebsiteUser.WebsiteUserID">@labelSigned</label>
+                <i id="icnSigned_@item.WebsiteUser.WebsiteUserID" class="@iconClass3" style="@iconStyle3"></i>
+            </td>
+
+            <td class="text-right">
+
+                @if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin")
+                {
+                    if (item.PaymentType == 4 || item.PaymentType == 5)
+                    {
+                        if (item.WebsiteUser.EvaluationStatus == false || item.WebsiteUser.EvaluationStatus == null)
+                        {
+                            <a id="btnDelete_@item.WebsiteUser.WebsiteUserID" href="@Url.Action("DeleteUserFromTraining2",  new {  controller = "TrainingCours", userID = item.WebsiteUser.WebsiteUserID, tID = (int)ViewBag.TrainingCourseID})" class="modal-link btn btn-xs btn-danger" title="Remove @item.WebsiteUser.FName from Training.">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        }
+                    }
+                }
+
+                <a href="@Url.Action("ViewWebsiteUser", new { controller = "WebsiteUsers", id = item.WebsiteUserID})" class="btn btn-xs btn-new" title="View @item.WebsiteUser.FName Details" data-toggle="tooltip">
+                    <i class="fa fa-eye"></i>
+                </a>
+
+
+            </td>
+        </tr>
+        num++;
+        }
+    </tbody>
+</table>
+
+<script>
+
+    function fnUpdateAttendEval(id, name) {
+        var status = 0;
+
+        if (document.getElementById('wu_attend_' + id).checked == true) {
+            document.getElementById('lblAttend_' + id).innerHTML = 'Yes';
+            document.getElementById('icnAttend_' + id).className = 'fa fa-check-square-o';
+            document.getElementById('icnAttend_' + id).style.color = "green";
+            document.getElementById('wu_pass_fail_' + id).disabled = false;
+            status = 1;
+        }
+        else if (document.getElementById("wu_attend_" + id).checked == false) {
+            document.getElementById('lblAttend_' + id).innerHTML = 'No';
+            document.getElementById('icnAttend_' + id).className = 'fa fa-remove';
+            document.getElementById('icnAttend_' + id).style.color = "red";
+
+            document.getElementById('wu_pass_fail_' + id).checked = false;
+            document.getElementById('wu_pass_fail_' + id).disabled = true;
+            document.getElementById('lblPassFail_' + id).innerHTML = 'Fail';
+            document.getElementById('icnPassFail_' + id).className = 'fa fa-remove';
+            document.getElementById('icnPassFail_' + id).style.color = "red";
+
+        }
+
+        jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("AttendEvaluation", "TrainingCours")',
+                data: { "userID": id, "status": status  },
+                success: function () {
+                    if (status == 0) {
+                        toastr.error(name + ' didnt appear on Evaluation 😮');
+                        document.getElementById('btnDelete_' + id).style.visibility = "visible";
+                        //if (parseInt(document.getElementById('lblAppear').innerHTML) > 0)
+                        //    document.getElementById('lblAppear').innerHTML = parseInt(document.getElementById('lblAppear').innerHTML) - 1;
+
+                        jQuery.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("PassFailEvaluation", "TrainingCours")',
+                            data: { "userID": id, "status": status },
+                            success: function () {
+
+                                //if (parseInt(document.getElementById('lblPassFail').innerHTML) > 0)
+                                //    document.getElementById('lblPassFail').innerHTML = parseInt(document.getElementById('lblPassFail').innerHTML) - 1;
+                            },
+                            error: function (textStatus) {
+                                toastr.error('Error: Something wrong!');
+                            }
+                        });
+
+                    }
+                    if (status == 1) {
+                        toastr.success(name + ' appear on Evaluation 😀');
+                        //document.getElementById('lblAppear').innerHTML = parseInt(document.getElementById('lblAppear').innerHTML) + 1;
+                    }
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+            });
+
+    }
+
+    function fnUpdatePassFail(id, name) {
+
+        var status = 0;
+
+        if (document.getElementById('wu_pass_fail_' + id).checked == true) {
+
+            //document.getElementById('btnDelete_' + id).style.visibility = "hidden";
+            document.getElementById('lblPassFail_' + id).innerHTML = 'Pass';
+            document.getElementById('icnPassFail_' + id).className = 'fa fa-check-square-o';
+            document.getElementById('icnPassFail_' + id).style.color = "green";
+            status = 1;
+        }
+        else if (document.getElementById("wu_pass_fail_" + id).checked == false) {
+
+            //document.getElementById('btnDelete_' + id).style.visibility = "visible";
+            document.getElementById('lblPassFail_' + id).innerHTML = 'Fail';
+            document.getElementById('icnPassFail_' + id).className = 'fa fa-remove';
+            document.getElementById('icnPassFail_' + id).style.color = "red";
+        }
+
+        jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("PassFailEvaluation", "TrainingCours")',
+                data: { "userID": id, "status": status },
+                success: function () {
+                    if (status == 0) {
+                        toastr.error(name + ' didnt pass the Evaluation 😮');
+
+                        //if (parseInt(document.getElementById('lblPassFail').innerHTML) > 0)
+                        //    document.getElementById('lblPassFail').innerHTML = parseInt(document.getElementById('lblPassFail').innerHTML) - 1;
+                    }
+                    if (status == 1) {
+                        toastr.success(name + ' passed the Evaluation 😀');
+                        //document.getElementById('lblPassFail').innerHTML = parseInt(document.getElementById('lblPassFail').innerHTML) + 1;
+                    }
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+        });
+
+    }
+
+
+    function fnUpdateSignedContract(id, name) {
+
+        var status = 0;
+
+        if (document.getElementById('wu_signed_' + id).checked == true) {
+            document.getElementById('lblSigned_' + id).innerHTML = 'Signed';
+            document.getElementById('icnSigned_' + id).className = 'fa fa-check-square-o';
+            document.getElementById('icnSigned_' + id).style.color = "green";
+            status = 1;
+        }
+        else if (document.getElementById("wu_signed_" + id).checked == false) {
+
+            //document.getElementById('btnDelete_' + id).style.visibility = "visible";
+            document.getElementById('lblSigned_' + id).innerHTML = 'Not Signed';
+            document.getElementById('icnSigned_' + id).className = 'fa fa-remove';
+            document.getElementById('icnSigned_' + id).style.color = "red";
+        }
+
+        jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("SignedContract", "TrainingCours")',
+                data: { "userID": id, "status": status },
+                success: function () {
+                    if (status == 0) {
+                        toastr.error(name + ' didnt sign the Contract 😮');
+
+                        //if (parseInt(document.getElementById('lblPassFail').innerHTML) > 0)
+                        //    document.getElementById('lblPassFail').innerHTML = parseInt(document.getElementById('lblPassFail').innerHTML) - 1;
+                    }
+                    if (status == 1) {
+                        toastr.success(name + ' signed the Contract 😀');
+                        //document.getElementById('lblPassFail').innerHTML = parseInt(document.getElementById('lblPassFail').innerHTML) + 1;
+                    }
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+        });
+
+    }
+
+    function fnRemoveUserFromList(tcID, userID ) {
+        console.log(tcID);
+        console.log(userID);
+
+        if (tcID != "" && userID != "") {
+
+            jQuery.ajax({
+            type: 'POST',
+                url: '@Url.Action("ConfirmDeleteUserFromTraining2", "TrainingCours")',
+                data: { "uID": userID, "tID": tcID },
+                success: function () {
+                    //toastr.error('OKKKK');
+                    $.ajax({
+                        url: '@Url.Action("GetEvaluationList", "TrainingCours")',
+                        data: { "id": tcID },
+                        success: function (data) {
+                            $("#eval-list").html(data);
+                            toastr.success('User removed successfully');
+                            $("[data-dismiss=modal]").trigger({ type: "click" });
+                        }
+                    });
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+            });
+        }
+
+
+    }
+
+</script>

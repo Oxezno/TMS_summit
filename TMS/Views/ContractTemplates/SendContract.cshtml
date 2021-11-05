@@ -1,0 +1,109 @@
+﻿@model TMS.Models.ContractTemplate
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Send Contracts";
+}
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Contract Templates</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("ContractTemplateList","ContractTemplates")">Contract Template List</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Send Contracts</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="input-group col-md-12" style="margin-top:10px; margin-left:10px">
+                    <div class="card-body" id="bar-parent1">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Training Program
+                                    <span class="required" aria-required="true"> * </span>
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(model => model.CompanyID, ViewData["TrainingPrograms"] as IEnumerable<SelectListItem>, "--Select Training Program--", htmlAttributes: new { @class = "form-control", @onchange = "fnShowUsers()", id = "tpID" })
+                                </div>
+
+                                <label class="control-label col-md-2">
+                                    Contract Template
+                                    <span class="required" aria-required="true"> * </span>
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(model => model.ContractTemplateID, ViewData["ContractTemplate"] as IEnumerable<SelectListItem>, "--Select Contract Template--", htmlAttributes: new { @class = "form-control", @onchange = "fnShowUsers()", id = "ctID" })
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="fullresponsivetable">
+
+                                <div id="users-list">
+                                    @Html.Partial("GetUsersList")
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <span class="pull-right paddingtop">
+
+                </span>
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+
+<script>
+
+    function fnShowUsers() {
+
+        var tp = document.getElementById("tpID");
+        var tpValue = tp.options[tp.selectedIndex].value;
+        var tpText = tp.options[tp.selectedIndex].text;
+
+        var ct = document.getElementById("ctID");
+        var ctValue = ct.options[ct.selectedIndex].value;
+        var ctText = ct.options[ct.selectedIndex].text;
+        //if (tpValue != "" && ctValue != "") 
+        {
+            $.ajax({
+                url: '@Url.Action("GetUsersList", "ContractTemplates")',
+                data: { "tpID": tpValue, "ctID": ctValue },
+                success: function (data) {
+                    $("#users-list").html(data);
+                    //toastr.success('Showing Passed');
+
+                },
+                error: function (data) {
+                    $("#users-list").html(data);
+                    //toastr.error('Please select Training Program and Contract Template!');
+                }
+            });
+        }
+    }
+
+
+</script>

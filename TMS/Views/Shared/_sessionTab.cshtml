@@ -1,0 +1,324 @@
+﻿
+@{
+    int tIndex = Convert.ToInt32(TempData["tabIndex"]) - 1;
+    int trainingID = Convert.ToInt32(TempData["trainingID"]);
+    int tNumber = tIndex + 1;
+    string tName = Convert.ToString(TempData["tName"]);
+}
+
+<script>
+    var tabID = @tIndex+1;
+</script>
+
+<div id="session1" class="tab-pane fade in active">
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+
+            <div class="card">
+                <br />
+
+                @*@using (Ajax.BeginForm("EditTrainingSession", "TrainingCours", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "File" }))*@
+                @*{*@
+                <div class="clearfix"></div>
+                <div hidden class="form-group">
+                    <label class="control-label col-md-2">
+                        @Html.Editor("TrainingCourseID", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value = @trainingID } })
+                        @Html.Editor("SessionID", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value = @tIndex } })
+                    </label>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group">
+                    <label class="control-label col-md-2">
+                        <b>Session @tIndex Title</b>
+                    </label>
+                    <div class="col-md-9">
+                        @Html.Editor("SessionTitle", new { htmlAttributes = new { @class = "form-control", placeholder = "", id = "SessionTitle_" + tIndex, @Value = "Session " + @tIndex, maxlength = "300", @required = "required" } })
+                    </div>
+
+                    @*<label class="control-label col-md-1">
+                            <b>Notes</b>
+                        </label>
+
+                        <div class="col-md-4">
+                            @Html.TextArea("SessionNotes", "", new { @class = "form-control", @Value = "", maxlength = "2000" })
+                        </div>*@
+
+                    <div class="col-md-1">
+                        @*<button type="submit" class="btn btn-primary">Update</button>*@
+                        <button type="button" id="btn-update-title" onclick="fnUpdateTitle(@tIndex, document.getElementById('SessionTitle_@tIndex').value)" class="btn btn-primary">Update</button>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+                @*}*@
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><b>Materials Session @tIndex</b></div>
+                            <div class="panel-body">
+                                <form id="dropzone-formMaterials_@tIndex" class="dropzone">
+                                    <div hidden>
+                                        @Html.Editor("TrainingID", new { htmlAttributes = new { @class = "form-control", type = "number", placeholder = "", @Value = trainingID } })
+                                        @Html.Editor("SessionN", new { htmlAttributes = new { @class = "form-control", type = "text", placeholder = "", @Value = "Session" + (tIndex) } })
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><b>Recordings Session @tIndex</b></div>
+                            <div class="panel-body">
+                                <form id="dropzone-formRecordings_@tIndex" class="dropzone">
+                                    <div hidden>
+                                        @Html.Editor("TrainingID", new { htmlAttributes = new { @class = "form-control", type = "number", placeholder = "", @Value = trainingID } })
+                                        @Html.Editor("SessionN", new { htmlAttributes = new { @class = "form-control", type = "text", placeholder = "", @Value = "Session" + (tIndex) } })
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><b>Assignments Session @tIndex</b></div>
+                            <div class="panel-body">
+                                <form id="dropzone-formAssignments_@tIndex" class="dropzone">
+                                    <div hidden>
+                                        @Html.Editor("TrainingID", new { htmlAttributes = new { @class = "form-control", type = "number", placeholder = "", @Value = trainingID } })
+                                        @Html.Editor("SessionN", new { htmlAttributes = new { @class = "form-control", type = "text", placeholder = "", @Value = "Session" + (tIndex) } })
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><b>Others Session @tIndex</b></div>
+                            <div class="panel-body">
+                                <form id="dropzone-formOthers_@tIndex" class="dropzone">
+                                    <div hidden>
+                                        @Html.Editor("TrainingID", new { htmlAttributes = new { @class = "form-control", type = "number", placeholder = "", @Value = trainingID } })
+                                        @Html.Editor("SessionN", new { htmlAttributes = new { @class = "form-control", type = "text", placeholder = "", @Value = "Session" + (tIndex) } })
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@Scripts.Render("~/bundles/jquery")
+
+
+<link href="~/Scripts/dropzone/dropzone.min.css" rel="stylesheet" />
+<script src="~/Scripts/dropzone/dropzone.min.js"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+
+    var myDropzone1 = new Dropzone('#dropzone-formMaterials_' +@tIndex, {
+        url: "../../TrainingCours/UploadMaterials",
+        paramName: "file", // The name that will be used to transfer the file
+        maxFilesize: 1024, // MB,
+        addRemoveLinks: true,
+        dictRemoveFileConfirmation: "Do you really want to remove this file?",
+        acceptedFiles: ".pdf",
+
+        removedfile: function (file) {
+            @*alert("file " + file.name + "//" + @trainingID)
+            console.log(file)*@
+            $.ajax({
+                type: 'POST',
+                url: '../../TrainingCours/DeleteAttachments',
+                data: { fID: 0, tID: @trainingID, fName: file.name },
+                sucess: function (file) {
+                    //console.log('success: ' + file);
+                }
+            });
+
+            //alert('after')
+            var _ref;
+            return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+        },
+
+        init: function () {
+            var thisDropzone = this;
+
+            thisDropzone.on("success", function (file) {
+                //alert('@tName')
+                //console.log(file)
+
+                var a = document.createElement('a');
+                a.setAttribute('href', "../../BrightraceResources/"+'@tName@trainingID'+"/Materials/Session" + @tIndex+"/" + file.name);
+                a.setAttribute('class', "dz-remove");
+                a.setAttribute('style', "width:125px");
+                a.setAttribute('target', "_blank");
+                a.innerHTML = file.name;
+                file.previewTemplate.appendChild(a);
+            });
+        }
+
+
+    });
+
+    var myDropzone2 = new Dropzone('#dropzone-formRecordings_' +@tIndex, {
+        url: "../../TrainingCours/UploadRecordings",
+        paramName: "file", // The name that will be used to transfer the file
+        maxFilesize: 1024, // MB,
+        addRemoveLinks: true,
+        dictRemoveFileConfirmation: "Do you really want to remove this file?",
+
+        removedfile: function (file) {
+            @*alert("file " + file.name + "//" + @trainingID)
+            console.log(data)*@
+            $.ajax({
+                type: 'POST',
+                url: '../../TrainingCours/DeleteAttachments',
+                data: { fID: 0, tID: @trainingID, fName: file.name },
+                sucess: function (file) {
+                    //console.log('success: ' + file);
+                }
+            });
+            var _ref;
+            return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+        },
+
+        init: function () {
+            var thisDropzone = this;
+
+            thisDropzone.on("success", function (file) {
+                //alert('@tName')
+                //console.log(file)
+
+                var a = document.createElement('a');
+                a.setAttribute('href', "../../BrightraceResources/" + '@tName@trainingID' +"/Recordings/Session" + @tIndex+"/" + file.name);
+                a.setAttribute('class', "dz-remove");
+                a.setAttribute('style', "width:125px");
+                a.setAttribute('target', "_blank");
+                a.innerHTML = file.name;
+                file.previewTemplate.appendChild(a);
+            });
+        }
+    });
+
+    var myDropzone3 = new Dropzone('#dropzone-formAssignments_' +@tIndex, {
+        url: "../../TrainingCours/UploadAssignments",
+        paramName: "file", // The name that will be used to transfer the file
+        maxFilesize: 1024, // MB,
+        addRemoveLinks: true,
+        dictRemoveFileConfirmation: "Do you really want to remove this file?",
+
+        removedfile: function (file) {
+            //alert("file " + data.name + "//" + @trainingID)
+            //console.log(data)
+            $.ajax({
+                type: 'POST',
+                url: '../../TrainingCours/DeleteAttachments',
+                data: { fID: 0, tID: @trainingID, fName: file.name },
+                sucess: function (file) {
+                    //console.log('success: ' + file);
+                }
+            });
+            var _ref;
+            return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+        },
+
+        init: function () {
+            var thisDropzone = this;
+
+            thisDropzone.on("success", function (file) {
+                //alert('@tName')
+                //console.log(file)
+
+                var a = document.createElement('a');
+                a.setAttribute('href', "../../BrightraceResources/" + '@tName@trainingID' +"/Assignments/Session" + @tIndex+"/" + file.name);
+                a.setAttribute('class', "dz-remove");
+                a.setAttribute('style', "width:125px");
+                a.setAttribute('target', "_blank");
+                a.innerHTML = file.name;
+                file.previewTemplate.appendChild(a);
+            });
+        }
+
+    });
+
+    var myDropzone4 = new Dropzone('#dropzone-formOthers_' +@tIndex, {
+        url: "../../TrainingCours/UploadOthers",
+        paramName: "file", // The name that will be used to transfer the file
+        maxFilesize: 1024, // MB,
+        addRemoveLinks: true,
+        dictRemoveFileConfirmation: "Do you really want to remove this file?",
+
+        removedfile: function (file) {
+            //alert("file " + file.name + "//" + @trainingID)
+            //console.log(data)
+            $.ajax({
+                type: 'POST',
+                url: '../../TrainingCours/DeleteAttachments',
+                data: { fID: 0, tID: @trainingID, fName: file.name },
+                sucess: function (data) {
+                    //console.log('success: ' + file);
+                }
+            });
+            var _ref;
+            return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+        },
+
+        init: function () {
+            var thisDropzone = this;
+
+            thisDropzone.on("success", function (file) {
+                //alert('@tName')
+                //console.log(file)
+
+                var a = document.createElement('a');
+                a.setAttribute('href', "../../BrightraceResources/" + '@tName@trainingID' +"/Others/Session" + @tIndex+"/" + file.name);
+                a.setAttribute('class', "dz-remove");
+                a.setAttribute('style', "width:125px");
+                a.setAttribute('target', "_blank");
+                a.innerHTML = file.name;
+                file.previewTemplate.appendChild(a);
+            });
+        }
+    });
+
+    function fnUpdateTitle(id, title) {
+         
+        jQuery.ajax({
+            type: 'POST',
+            url: '@Url.Action("EditTrainingSession2", "TrainingCours")',
+            data: { "sessionID": id, "TrainingID": @trainingID, "Title": title  },
+            success: function () {
+                toastr.success('Title was updated successfully');
+            },
+            error: function (textStatus) {
+                toastr.error('Error: Something wrong!');
+            }
+        });
+    }
+
+
+</script>
+
+
+
+

@@ -1,0 +1,23 @@
+﻿@model TMS.Models.ProfilePwd
+
+@{
+    ViewBag.Title = "Pwd";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+@using (Ajax.BeginForm("Pwd", "Home", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "FileForm" }))
+{
+    <h2>Password Setup</h2>
+    <h3>@Model.Fname @Model.LName</h3>
+
+    @Html.HiddenFor(model => model.PID)
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationMessageFor(model => model.Pwd, "", new { @class = "field-validation-error" })
+    @Html.TextBoxFor(model => model.Pwd, htmlAttributes: new { @class = "form-control", @type = "password", placeholder = "Password", @id = "txtPwd" })
+
+    @Html.ValidationMessageFor(model => model.CPwd, "", new { @class = "field-validation-error" })
+    @Html.TextBoxFor(model => model.CPwd, htmlAttributes: new { @class = "form-control", @type = "password", placeholder = "Confirm Password", @id = "txtCPwd" })
+    
+    <button type="submit">Submit</button>
+}

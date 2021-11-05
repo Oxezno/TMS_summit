@@ -1,0 +1,739 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Website User Setup";
+    string styleX = "";
+    if (Model.User.Status == "Resume Preparation" || Model.User.Status == "Waiting for Resume approval")
+    {
+        styleX = "pointer-events:none; opacity: 0.4;";
+    }
+
+
+}
+
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">@Model.User.FName @Model.User.LName details</div>
+            </div>
+
+            @{
+                if (TempData["sendResume"] != null)
+                {
+                    string result = TempData["sendResume"].ToString();
+                    string textR = "";
+
+                    if (result.Contains("OK"))
+                    {
+                        result = "Successfully operation!";
+                        textR = "success";
+                    }
+
+                    else if (result.Contains("Error"))
+                    {
+                        result = "Error. Something wrong happened!";
+                        textR = "danger";
+                    }
+
+                    <div class=" pull-left">
+                        <h3 class="text-@textR">@result</h3>
+                    </div>
+                }
+            }
+
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index", "WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("WebsiteUsersList", "WebsiteUsers")">Website Users List</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Website User Setup</li>
+            </ol>
+
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">User Details</a></li>
+        <li><a data-toggle="tab" href="#enrolled">Enrolled Training Programs (@ViewBag.TrainingC)</a></li>
+        <li><a data-toggle="tab" href="#invoices">Payments (@ViewBag.InvoiceC)</a></li>
+
+        @if (Convert.ToString(Session["RoleName"]) != "Recruiter")
+        {
+            <li><a data-toggle="tab" href="#marketing">Marketing</a></li>    
+        }
+
+        
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <!-- start widget -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="card-body" id="bar-parent1">
+                            <div class="float-right pull-right">
+                                @{
+                                    if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin")
+                                    {
+                                        <a href="@Url.Action("EditWebsiteUser", new { controller = "WebsiteUsers", id = @Model.User.WebsiteUserID })" class="btn btn-primary" title="Edit User">
+                                            <i class="fa fa-edit"></i>Edit User
+                                        </a>
+                                    }
+
+                                    if (ViewBag.fromView != null && ViewBag.fromController != null)
+                                    {
+                                        @Html.ActionLink("Go Back", (string)ViewBag.fromView, new { controller = (string)ViewBag.fromController, id = (int)ViewBag.tID, tab = 1 }, new { @class = "btn btn-default" })
+                                    }
+
+
+                                }
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                                <div class="form-body">
+
+                                    
+                                    
+                                    <div class="form-group bg-orange">
+                                        <label class="text-center col-md-12">
+                                            <b>Basic Information</b>
+                                        </label>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b>Name</b>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Model.User.FName
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>Last Name</b>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Model.User.LName
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b>Email</b>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Model.User.Email
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>Phone</b>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Model.User.Phone
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b>SkypeID</b>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Model.User.SkypeID
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>Register Date</b>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Model.User.RegisterDate
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">
+                                            <b>How did you hear about us?</b>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Model.User.AboutUs
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>Why are you interested?</b>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Model.User.WhyInterested
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-2">
+                                            <b>Accept Privacy Policy</b>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @{ var aceptPP = "";
+                                                if (Model.User.AcceptPP == true)
+                                                {
+                                                    aceptPP = "Yes";
+                                                }
+                                                else if (Model.User.AcceptPP == false)
+                                                {
+                                                    aceptPP = "No";
+                                                }
+                                            }
+
+                                            @aceptPP
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>Receive Updates</b>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @{ var updates = "";
+                                                if (Model.User.ReceiveUpdates == true)
+                                                {
+                                                    updates = "Yes";
+                                                }
+                                                else if (Model.User.ReceiveUpdates == false)
+                                                {
+                                                    updates = "No";
+                                                }
+                                            }
+                                            @updates
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-2">
+                                            <b>Active</b>
+                                        </label>
+                                        <div class="col-md-4">
+
+                                            @{ var active = "";
+                                                if (Model.User.IsActive == true)
+                                                {
+                                                    active = "Yes";
+                                                }
+                                                else if (Model.User.IsActive == false)
+                                                {
+                                                    active = "No";
+                                                }
+                                            }
+                                            @active
+                                        </div>
+
+                                        <label class="control-label col-md-2">
+                                            <b>Status</b>
+                                        </label>
+                                        <div class="col-md-4 text-danger bold">
+
+                                            @{ var userStatus = "";
+                                                if (Model.User.Status == "" || Model.User.Status == null)
+                                                {
+                                                    userStatus = "N/A";
+                                                }
+                                                else
+                                                {
+                                                    userStatus = Model.User.Status;
+                                                }
+                                            }
+                                            @userStatus
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    @{if (Model.User.Status == "Regular Training (NPR)")
+                                        {
+                                            <div class="form-group">
+
+                                                <label class="control-label col-md-2">
+                                                    <b>Take Evaluation</b>
+                                                </label>
+                                                <div class="col-md-4">
+
+                                                    @{ var takeEval = "";
+
+                                                        if (Model.User.TakeEvaluation == true)
+                                                        {
+                                                            takeEval = "Yes";
+                                                        }
+
+                                                        else if (Model.User.TakeEvaluation == false || Model.User.TakeEvaluation == null)
+                                                        {
+                                                            takeEval = "No";
+                                                        }
+
+                                                        @takeEval;
+                                                    }
+
+                                                </div>
+
+                                                <label class="control-label col-md-2">
+                                                    <b>Evaluation</b>
+                                                </label>
+                                                <div class="col-md-4">
+
+                                                    @{ var evalStatus = "";
+
+                                                        if (Model.User.EvaluationStatus == true)
+                                                        {
+                                                            evalStatus = "Pass";
+                                                            <i class="fa fa-check-square-o" style="color:green"></i>
+                                                        }
+
+                                                        else if (Model.User.EvaluationStatus == false || Model.User.EvaluationStatus == null)
+                                                        {
+                                                            evalStatus = "Fail";
+                                                            <i class="fa fa-remove" style="color:red"></i>
+                                                        }
+                                                        @evalStatus
+                                                    }
+
+
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        }
+                                    }
+
+                                    @if (Model.User.RecruiterName != null)
+                                    {
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                <b>Recruiter</b>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Model.User.RecruiterName
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    }
+
+
+
+
+                                    @{ if (Model.UserDet != null)
+                                        {
+
+                                            var employed = "No";
+                                            var authorized = "No";
+                                            var relocate = "No";
+
+                                            if (Model.UserDet.CurrentlyEmployed == 1)
+                                            {
+                                                employed = "Yes";
+                                            }
+
+                                            if (Model.UserDet.AuthorizedWorkUSA == 1)
+                                            {
+                                                authorized = "Yes";
+                                            }
+
+                                            if (Model.UserDet.OpenToRelocate == 1)
+                                            {
+                                                relocate = "Yes";
+                                            }
+
+                                            <div class="clearfix"></div>
+                                            <div class="form-group bg-orange">
+                                                <label class="text-center col-md-12">
+                                                    <b>More Details</b>
+                                                </label>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">
+                                                    <b>Highest education</b>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    @Model.UserDet.HighestEducation
+                                                </div>
+
+                                                <label class="control-label col-md-2">
+                                                    <b>Completion year</b>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    @Model.UserDet.CompletionYear
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">
+                                                    <b>Work Experience (IT)</b>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    @Model.UserDet.WorkExperienceIT
+                                                </div>
+
+                                                <label class="control-label col-md-2">
+                                                    <b>Work Experience (Non-IT)</b>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    @Model.UserDet.WorkExperienceNonIT
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">
+                                                    <b>Currently Employed?</b>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    @employed
+                                                </div>
+
+                                                <label class="control-label col-md-2">
+                                                    <b>Authorized to work in the US?</b>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    @authorized
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">
+                                                    <b>Visa status</b>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    @Model.UserDet.VisaStatus
+                                                </div>
+
+                                                <label class="control-label col-md-2">
+                                                    <b>Address</b>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    @Model.UserDet.Address
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">
+                                                    <b>City</b>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    @Model.UserDet.City
+                                                </div>
+
+                                                <label class="control-label col-md-2">
+                                                    <b>State</b>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    @Model.UserDet.CountryState.State
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">
+                                                    <b>ZIP Code</b>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    @Model.UserDet.ZIPCode
+                                                </div>
+
+                                                <label class="control-label col-md-2">
+                                                    <b>Open to relocate</b>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    @relocate
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        }
+
+                                    }
+
+                                </div>
+                                <div class="form-actions">
+                                    <div class="col-md-12 text-center">
+
+                                        @if (Convert.ToString(Session["RoleName"]) == "Recruiter")
+                                        {
+                                            @Html.ActionLink("Go Back to Dashboard", "Index", new { controller = "WebsiteDashboard" }, new { @class = "btn btn-default" })
+                                        }
+                                        @*else
+                                            {
+                                                @Html.ActionLink("Cancel", "WebsiteUsersList", new { controller = "WebsiteUsers" }, new { @class = "btn btn-default" })
+                                            }*@
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="enrolled" class="tab-pane fade">
+            <!-- start widget -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="PanelShow card-body">
+                            <div class="fullresponsivetable">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Training Course</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                            <th>Enrolled Date</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.UserTraining)
+                                        {
+                                            var enrolledDate = "";
+                                            var startDate = "";
+                                            var endDate = "";
+                                            var status = "Pending";
+
+                                            if (item.TrainingCours.StartDate1 != null)
+                                            {
+                                                startDate = Convert.ToDateTime(item.TrainingCours.StartDate1).ToString("MM/dd/yyyy");
+                                            }
+
+                                            if (item.TrainingCours.EndDate2 != null)
+                                            {
+                                                endDate = Convert.ToDateTime(item.TrainingCours.EndDate2).ToString("MM/dd/yyyy");
+                                            }
+
+                                            if (item.PaymentDate != null)
+                                            {
+                                                enrolledDate = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                                            }
+
+
+                                            if (Convert.ToDateTime(DateTime.Today) >= Convert.ToDateTime(item.TrainingCours.StartDate1))
+                                            {
+                                                status = "In progress";
+                                            }
+                                            if (Convert.ToDateTime(DateTime.Today) > Convert.ToDateTime(item.TrainingCours.EndDate2))
+                                            {
+                                                status = "Completed";
+                                            }
+
+                                            <tr>
+                                                <td data-title="Training Course">@item.TrainingCours.TrainingCourseName</td>
+                                                <td data-title="Type">@item.TrainingCours.TrainingType.TrainingType1</td>
+                                                <td data-title="Description">@item.TrainingCours.ShortDescription</td>
+                                                <td data-title="Enrolled Date">@enrolledDate</td>
+                                                <td data-title="Start Date">@startDate</td>
+                                                <td data-title="End Date">@endDate</td>
+                                                <td data-title="Status">@status</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="invoices" class="tab-pane fade">
+            <!-- start widget -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="PanelShow card-body">
+                            <div class="fullresponsivetable">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Invoice ID</th>
+                                            <th>Payment Type</th>
+                                            <th>Date</th>
+                                            <th>Description</th>
+                                            <th>Real Price</th>
+                                            <th>Discount</th>
+                                            <th>Paid</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.UserInvoice)
+                                        {
+                                            var paymentT = "";
+                                            if (item.PaymentType == 1)
+                                            {
+                                                paymentT = "Registration fee";
+                                            }
+
+                                            else if (item.PaymentType == 2)
+                                            {
+                                                paymentT = "Last payment	";
+                                            }
+                                            else if (item.PaymentType == 3)
+                                            {
+                                                paymentT = "Pay in full	";
+                                            }
+
+                                            <tr>
+                                                <td data-title="InvoiceID">@item.UserInvoiceID</td>
+                                                <td data-title="Payment Type">@paymentT</td>
+                                                <td data-title="Purchase Date">@item.PurchaseDate</td>
+                                                <td data-title="Description">@item.TrainingCours.TrainingCourseName</td>
+                                                <td data-title="Price">@item.Currency @item.RealAmount.ToString("#.00")</td>
+                                                <td data-title="Discount">@item.DiscountPercent%</td>
+                                                <td data-title="Paid">@item.Currency @item.TotalAmount.ToString("#.00") </td>
+                                                <td data-title="">
+                                                    @*<a class="btn btn-xs btn-new" title="Click View" data-toggle="tooltip">
+                                                            <i class="fa fa-file-pdf-o"></i>
+                                                        </a>*@
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="marketing" class="tab-pane fade">
+            <!-- start widget -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="PanelShow card-body">
+
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#mocks">Mock Interviews</a></li>
+                                @*<li><a data-toggle="tab" href="#resume">Resume Approval</a></li>*@
+                            </ul>
+
+                            <div class="tab-content">
+
+                                <div id="mocks" class="tab-pane fade in active">
+                                    <div class="fullresponsivetable">
+                                        <span class="pull-right paddingtop">
+
+                                            @{ if (@Model.Mocks.Count > 0)
+                                                {
+                                                    <a href="@Url.Action("Ready4Resume",  new {  controller = "TrainingCours", id = ViewBag.UserID})" class="modal-link btn btn-xs btn-success" title="Ready to work on Resume">
+                                                        <i class="fa fa-thumbs-o-up"></i>Ready to work on Resume?
+                                                    </a>
+                                                }
+                                            }
+
+                                            <a href="@Url.Action("CreateInterviewDetails",  new {  controller = "TrainingCours", id = ViewBag.UserID})" class="modal-link btn btn-xs btn-primary" title="Add Interview Details">
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                        </span>
+
+                                        <div id="mock-list">
+                                            @Html.Partial("GetMockInterviews")
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<div id="resume" class="tab-pane fade in" style="@styleX">*@
+                                <div id="resume" class="tab-pane fade in">
+                                    <div class="fullresponsivetable">
+                                        @{ if (styleX != "")
+                                            {
+                                                <div id="approval-partial">
+                                                    @Html.Partial("SendResumeApproval")
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    #pageloaddiv {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        background: url('../../images/loading.gif') no-repeat center center;
+    }
+</style>
+
+<div id="pageloaddiv" hidden>
+</div>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+
+<script>
+
+
+    function fnRemoveMock(mockID) {
+        if (mockID != "") {
+
+            jQuery.ajax({
+            type: 'POST',
+                url: '@Url.Action("ConfirmDeleteMock", "TrainingCours")',
+                data: { "mockID": mockID },
+                success: function () {
+
+                    $.ajax({
+                        url: '@Url.Action("GetMockInterviews", "WebsiteUsers")',
+                        data: { "id": @Model.User.WebsiteUserID },
+                        success: function (data) {
+                            $("#mock-list").html(data);
+                            toastr.success('Mock Interview Details saved successfully');
+                            $("[data-dismiss=modal]").trigger({ type: "click" });
+                        }
+                    });
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+            });
+        }
+    }
+
+</script>

@@ -1,0 +1,98 @@
+﻿@model TMS.Models.PayingTrainees
+
+@{
+    ViewBag.Title = "Paying Trainees Report";
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Paying Trainees Report</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Paying Trainees Report</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-head">
+
+                </div>
+                <div class="@(Model.RptList.Count > 0  ? "PanelShow card-body" : "PanelHide")">
+                    <div class="fullresponsivetable">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Batch</th>
+                                    <th>First name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Contact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.RptList)
+                                {
+                                    <tr>
+                                        <td data-title="Batch">
+                                            @Html.DisplayFor(modelItem => item.Batch)
+                                        </td>
+                                        <td data-title="First Name">
+                                            @Html.DisplayFor(modelItem => item.Fname)
+                                        </td>
+                                        <td data-title="Last name">
+                                            @Html.DisplayFor(modelItem => item.LName)
+                                        </td>
+                                        <td data-title="Email">
+                                            @Html.DisplayFor(modelItem => item.Email)
+                                        </td>
+                                        <td data-title="Contact">
+                                            @Html.DisplayFor(modelItem => item.Contact)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+           var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").show();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+
+    });
+</script>

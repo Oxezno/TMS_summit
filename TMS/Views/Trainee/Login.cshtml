@@ -1,0 +1,65 @@
+﻿@model TMS.Models.UserLogin
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $.getJSON("http://jsonip.com?callback=?", function (data) {
+        if ((data.ip != "173.12.35.109") && (data.ip != "141.150.59.235"))
+        { window.location.href = "http://104.238.111.129:96/Home/NoAccess"; }
+    });
+</script>
+
+@using (Ajax.BeginForm("Login", "Trainee", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "FileForm" }))
+{
+    <h2>Login to your account</h2>
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationMessageFor(model => model.username, "", new { @class = "field-validation-error" })
+    @Html.TextBoxFor(model => model.username, htmlAttributes: new { @class = "form-control", placeholder = "Username", @id = "txtUsername" })
+
+    @Html.ValidationMessageFor(model => model.password, "", new { @class = "field-validation-error" })
+    @Html.TextBoxFor(model => model.password, htmlAttributes: new { @class = "form-control", @type = "password", placeholder = "Password", @id = "txtPassword" })
+    <div class="remember text-left" style="margin-left:20px;">
+        <div class="checkbox checkbox-primary">
+            @Html.CheckBoxFor(model => model.Remember, htmlAttributes: new { @checked = true, @id = "checkbox2" })
+            @*<input id="checkbox2" type="checkbox" checked>*@
+            <label for="checkbox2" style="line-height:20px;">
+                Remember me
+            </label>
+        </div>
+    </div>
+    <button type="submit">Submit</button>
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+           var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").show();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+
+    });
+</script>

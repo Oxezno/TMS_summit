@@ -1,0 +1,43 @@
+﻿@model TMS.Models.Form
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                &times;
+            </button>
+
+            <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+        </div>
+        <div class="modal-body">
+            @{
+                var Id = ViewBag.ID;
+            }
+            @using (Ajax.BeginForm("ConfirmDeleteForm", "Forms", new { id = Id }, new AjaxOptions { OnSuccess = "Response" }))
+            {
+                <div class="clearfix m-b-5"></div>
+                <div class="col text-red" style="text-align:center;">
+                    @if (@ViewBag.ConfMsg != null)
+                {
+                        <strong>@ViewBag.ConfMsg</strong>
+                    }
+                    else
+                    { <strong>Are you sure you want to Delete this form?</strong>}
+                </div>
+                <div class="clearfix m-b-5"></div>
+
+                <div class="col-lg-12 text-center m-t-10">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> &nbsp;
+                    <input type="submit" value="Confirm" class="btn btn-primary" />
+
+
+                </div>
+
+                <div class="clearfix"></div>
+            }
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+</div>

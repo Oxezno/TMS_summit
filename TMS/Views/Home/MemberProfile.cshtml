@@ -1,0 +1,499 @@
+﻿@model TMS.Models.ProfileUser
+
+@{
+    ViewBag.Title = "Member Profile";
+
+    List<SelectListItem> listYears = new List<SelectListItem>();
+    List<SelectListItem> listMonths = new List<SelectListItem>();
+    List<SelectListItem> listYN = new List<SelectListItem>();
+    List<SelectListItem> listExp = new List<SelectListItem>();
+    List<SelectListItem> listTM = new List<SelectListItem>();
+
+    var initDate = DateTime.Now.Year - 60;
+    var endDate = DateTime.Now.Year - 19;
+
+    for (var i = initDate; i <= endDate; i++)
+    {
+        listYears.Add(new SelectListItem { Text = i.ToString(), Value = i.ToString() });
+    }
+
+    for (int i = 0; i < 12; i++)
+    {
+        listMonths.Add(new SelectListItem { Text = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i], Value = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i] });
+    }
+
+    listYN.Add(new SelectListItem { Text = "Yes", Value = "1" });
+    listYN.Add(new SelectListItem { Text = "No", Value = "0" });
+
+    listExp.Add(new SelectListItem { Text = "0-1 yrs", Value = "0-1 yrs" });
+    listExp.Add(new SelectListItem { Text = "1-5 yrs", Value = "1-5 yrs" });
+    listExp.Add(new SelectListItem { Text = "5-10 yrs", Value = "5-10 yrs" });
+    listExp.Add(new SelectListItem { Text = "10+ yrs", Value = "10+ yrs" });
+
+    listTM.Add(new SelectListItem { Text = "Classroom", Value = "Classroom" });
+    listTM.Add(new SelectListItem { Text = "Online", Value = "Online" });
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Dashboard</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("BatchesList","Home")">Batches</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("ProfileList","Home", new { BatchId = Model.BatchId })">Profile List</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Manage Profile</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-head">
+                    <div class="col-md-12">
+                        <h3>Manage Profile</h3>
+                    </div>
+                </div>
+                @using (Ajax.BeginForm("MemberProfile", "Home", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "FileForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="card-body" id="bar-parent1">
+                        <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        First Name @Html.HiddenFor(model => model.PID) @Html.HiddenFor(model => model.BatchId)
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.ValidationMessageFor(model => model.Fname, "", new { @class = "field-validation-error" })
+                                        @Html.TextBoxFor(model => model.Fname, htmlAttributes: new { @class = "form-control", placeholder = "First Name", @id = "txtFirstName" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Last Name
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.ValidationMessageFor(model => model.LName, "", new { @class = "field-validation-error" })
+                                        @Html.TextBoxFor(model => model.LName, htmlAttributes: new { @class = "form-control", placeholder = "Last Name", @id = "txtLastName" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Contact #
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "field-validation-error" })
+                                        @Html.TextBoxFor(model => model.Contact, htmlAttributes: new { @class = "form-control", @type = "text", placeholder = "Contact #", @id = "txtContact", maxlength = "15", onkeypress = "return isNumberKey(event)" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Email
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "field-validation-error" })
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-envelope"></i>
+                                            </span>
+                                            @Html.TextBoxFor(model => model.Email, htmlAttributes: new { @class = "form-control", @type = "email", placeholder = "abc@abc.com", @id = "txtEmail" })
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        SkypeID
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.ValidationMessageFor(model => model.SkypeID, "", new { @class = "field-validation-error" })
+                                        @Html.TextBoxFor(model => model.SkypeID, htmlAttributes: new { @class = "form-control", @type = "text", placeholder = "skypeID", @id = "txtSkype" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Birthdate
+
+                                    </label>
+                                    <div class="col-md-4">
+
+                                        <div class="col-md-4">
+                                            @Html.DropDownListFor(model => model.BirthdayMonth, listMonths, "Month", htmlAttributes: new { @class = "form-control", @required = "required", onchange = "fnChangeDays();", id = "MonthDL" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.DropDownListFor(model => model.BirthdayDay, Enumerable.Empty<SelectListItem>(), "Day", htmlAttributes: new { @class = "form-control", @required = "required", id = "DayDL" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.DropDownListFor(model => model.BirthdayYear, listYears, "Year", htmlAttributes: new { @class = "form-control", @required = "required", @onchange = "fnChangeDays();", id = "YearDL" })
+                                        </div>
+
+                                        @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Gender
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.SexTypeID, ViewData["ID_GENDER"] as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Address
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "field-validation-error" })
+                                        @Html.TextBoxFor(model => model.Address, htmlAttributes: new { @class = "form-control", placeholder = "Address", @id = "txtAddress" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Nationality
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.CountryID, ViewData["ID_COUNTRY"] as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.CountryID, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Immigration Status
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.VisaStatusID, ViewData["ID_VISA"] as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.VisaStatusID, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Help get a working visa?:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.VisaHelpOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.VisaHelpOpt, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Training Mode
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.TrainingMode, listTM, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.TrainingMode, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Applied Via
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(model => model.Applied_Via, htmlAttributes: new { @class = "form-control", placeholder = "Applied Via", @id = "txtAppliedVia" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Recruiter
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.RecruiterID, ViewData["ID_RECRUITER"] as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.RecruiterID, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Education
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.EducationID, ViewData["ID_EDUCATION"] as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.EducationID, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Years of work experience
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.ExperienceYears, listExp, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.ExperienceYears, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Criminal records?
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.CriminalRecordsOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Background check?
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.BackgroundCheckOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.BackgroundCheck, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Accommodations for the first week?:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.AccommodationHelpOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.AccommodationHelp, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Willing to relocate?:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.WillingToRelocateOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.WillingToRelocateOpt, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                @*<div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Referred by
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(model => model.Referred_by, htmlAttributes: new { @class = "form-control", placeholder = "Reference", @id = "txtRefBy" })
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>*@
+
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Attachment
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.ValidationMessageFor(model => model.Resume, "", new { @class = "field-validation-error" })
+                                        @Html.TextBoxFor(model => model.Resume, new { type = "file", @class = "control-label", @id = "Fupload" })
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        Paying Trainee
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.CheckBoxFor(model => model.PayingTrainee)
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Notes
+                                    </label>
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.Notes, htmlAttributes: new { @class = "form-control sw-placeholder", placeholder = "Notes", @id = "txtNotes" })
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                            </div>
+                            <div class="form-actions">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                                    @Html.ActionLink("Cancel", "ProfileList", new { controller = "Home", BatchId = Model.BatchId }, new { @class = "btn btn-default" })
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+           var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").show();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+
+    });
+</script>
+
+<script>
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+
+
+    function fnChangeDays() {
+
+        var YearDL = document.getElementById("YearDL");
+
+        var MonthDL = document.getElementById("MonthDL");
+
+        var DayDL = document.getElementById("DayDL");
+
+        var selectedDay = DayDL.selectedIndex;
+
+        document.getElementById("DayDL").innerHTML = "";
+
+        var txt = document.createElement('option');
+        txt.text = "Day"
+        txt.value = 0;
+
+        DayDL.add(txt);
+
+
+        if (MonthDL.selectedIndex == 1 || MonthDL.selectedIndex == 3 || MonthDL.selectedIndex == 5 ||
+            MonthDL.selectedIndex == 7 || MonthDL.selectedIndex == 8 || MonthDL.selectedIndex == 10 ||
+            MonthDL.selectedIndex == 12) {
+
+            for (var i = 1; i <= 31; i++) {
+                var option = document.createElement('option');
+                option.text = option.value = i;
+                DayDL.add(option);
+            }
+            if (selectedDay > 0)
+                DayDL.selectedIndex = selectedDay;
+            else
+                DayDL.selectedIndex = 0;
+        }
+
+        else if (MonthDL.selectedIndex == 4 || MonthDL.selectedIndex == 6 || MonthDL.selectedIndex == 9 ||
+            MonthDL.selectedIndex == 11) {
+            for (var i = 1; i <= 30; i++) {
+                var option = document.createElement('option');
+                option.text = option.value = i;
+                DayDL.add(option);
+            }
+            if (selectedDay > 0)
+                DayDL.selectedIndex = selectedDay;
+            else
+                DayDL.selectedIndex = 0;
+        }
+
+        else if (MonthDL.selectedIndex == 2) {
+
+            var ini = 1940;
+            var curDate = new Date();
+            var endDate = curDate.getFullYear() - 19;
+
+            for (var j = ini; j <= endDate; j++) {
+                ini = ini + 4;
+                document.getElementById("DayDL").innerHTML = "";
+
+                var txt = document.createElement('option');
+                txt.text = "Day"
+                txt.value = 0;
+                DayDL.add(txt);
+
+                if (YearDL.value == ini) {
+                    for (var i = 1; i <= 29; i++) {
+                        var option = document.createElement('option');
+                        option.text = option.value = i;
+                        DayDL.add(option);
+                    }
+                    break;
+                }
+
+                else {
+                    for (var i = 1; i <= 28; i++) {
+                        //alert("mmmm")
+                        var option = document.createElement('option');
+                        option.text = option.value = i;
+                        DayDL.add(option);
+                    }
+                    //break;
+                }
+            }
+            if (selectedDay > 0)
+                DayDL.selectedIndex = selectedDay;
+            else
+                DayDL.selectedIndex = 0;
+        }
+
+    }
+
+    function cbclick(e) {
+        e = e || event;
+        var cb = e.srcElement || e.target;
+        if (cb.type !== 'checkbox') { return true; }
+        var cbxs = document.getElementById('radiocb').getElementsByTagName('input'), i = cbxs.length;
+        while (i--) {
+            if (cbxs[i].type && cbxs[i].type == 'checkbox' && cbxs[i].id !== cb.id) {
+                cbxs[i].checked = false;
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        fnChangeDays();
+        var DayDL = document.getElementById("DayDL");
+        DayDL.selectedIndex = @Model.BirthdayDay;
+    });
+</script>

@@ -1,0 +1,158 @@
+﻿@*@model TMS.Models.WebsiteUserResumeCustom*@
+@model dynamic
+@{
+    var i = 0;
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            @using (Ajax.BeginForm("SendResumeApproval", "WebsiteUsers", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "File" }))
+            {
+                <div class="card-body" id="bar-parent1">
+                    <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                        <div class="form-body">
+                            <div class="clearfix"></div>
+
+                            <div class="form-group" hidden>
+                                <label class="control-label col-md-2">
+                                    UserID
+                                </label>
+                                <div class="col-md-2">
+                                    @Html.Editor("WebsiteUserID", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value = @ViewBag.UserID } })
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    Resume to be Approve
+                                </label>
+                                <div class="col-md-2">
+                                    @Html.TextBox("file", "", new { @class = "form-control", type = "file", accept = ".png,.jpg,.jpeg,.gif,.tif", @required = "required" })
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            @{if (Model.Resume != null)
+                                {
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    File:
+                                </label>
+                                <div class="col-md-2">
+                                    
+                                    <a href="@Model.Resume.FilePath" target="" _blank""> @Model.Resume.FileName</a>
+                                </div>
+                                <label class="control-label col-md-2 bold">
+                                    Submited:
+                                </label>
+                                <div class="col-md-2">
+                                    @Model.Resume.DateCreate
+                                </div>
+                                <label class="control-label col-md-2 bold">
+                                    Status:
+                                </label>
+                                <div class="col-md-2">
+                                    @Model.Resume.Status
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                                }
+                            }
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Send for approve to
+                                </label>
+                                <div class="col-md-10">
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Select</th>
+                                                <th>Full Name</th>
+                                                <th>Email</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.Users)
+                                            {
+                                            <tr>
+                                                <th class="text-center">
+                                                    @{var chk = false;
+                                                        foreach (var item2 in Model.Approvals)
+                                                        {
+                                                            if (item.ID == item2.SubmitedTo)
+                                                            {
+                                                                chk = true;
+
+                                                            }
+                                                        }
+
+                                                        if (chk == true)
+                                                        {
+                                                            @Html.CheckBox("Send[" + i + "]", htmlAttributes: new { @checked = true })
+                                                        }
+                                                        else if (chk == false)
+                                                        {
+                                                            @Html.CheckBox("Send[" + i + "]", htmlAttributes: new { })
+                                                        }
+
+                                                        <div hidden>
+                                                            @Html.Editor("SendToID[" + i + "]", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value = item.ID } })
+                                                        </div>
+
+                                                        @*@Html.CheckBox("ResumeSendApprovals[" + i + "].SubmitedTo", htmlAttributes: new { })*@
+
+                                                        i++;
+                                                    }
+                                                </th>
+                                                <td>@item.FullName</td>
+                                                <td>@item.Email</td>
+                                                <td>
+                                                    @foreach (var item2 in Model.Approvals)
+                                                    {
+                                                        var status = "";
+                                                        if (item.ID == item2.SubmitedTo)
+                                                        {
+                                                            if(@item2.Approved == null)
+                                                            {
+                                                                status = "Waiting for approval";
+                                                            }
+                                                            else if (@item2.Approved == false)
+                                                            {
+                                                                status = "Rejected 😮";
+                                                            }
+                                                            else if (@item2.Approved == true)
+                                                            {
+                                                                status = "Approved 🙂";
+                                                            }
+
+                                                            @status;
+                                                        }
+
+                                                    }
+                                                </td>
+                                                <th></th>
+                                            </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-actions">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            }
+        </div>
+    </div>
+</div>

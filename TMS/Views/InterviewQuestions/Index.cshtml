@@ -1,0 +1,177 @@
+﻿@model PagedList.IPagedList<TMS.Models.InterviewQuestion>
+@using PagedList.Mvc;
+
+<style>
+    .ul.pagination {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+    }
+
+    ul.pagination li {
+        display: inline;
+    }
+
+        ul.pagination li a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+        }
+
+            ul.pagination li a.active {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            ul.pagination li a:hover:not(.active) {
+                background-color: #ddd;
+            }
+</style>
+
+@{
+    ViewBag.Title = "Interview Questions";
+}
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Interview Questions</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Interview Questions</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-head">
+                    <div class="input-group col-md-9" style="margin-top:10px; margin-left:10px">
+                        @using (Html.BeginForm("InterviewQuestionSearch", "InterviewQuestions", new { @class = "form-inline" }))
+                        {
+                        <div class="input-group">
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    @Html.DropDownList("Candidate", ViewData["CANDIDATE"] as IEnumerable<SelectListItem>, "--Select Candidate--", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("Company", ViewData["COMPANIES"] as IEnumerable<SelectListItem>, "--Select Company--", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("Technology", ViewData["TECHNOLOGIES"] as IEnumerable<SelectListItem>, "--Select Technology--", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    @Html.TextBox("txtSearchKeyword", (string)ViewBag.SearchKeyword, new { @class = "form-control", placeholder = "Keyword" })
+                                </div>
+
+                                <label class="control-label col-md-1">
+                                    From:
+                                </label>
+                                <div class="col-md-3">
+                                    @Html.Editor("From", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                </div>
+
+                                <label class="control-label col-md-1">
+                                    To:
+                                </label>
+                                <div class="col-md-3">
+                                    @Html.Editor("To", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                </div>
+                            </div>
+
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </span>
+                        </div>
+                        }
+                    </div>
+
+                    <span class="pull-right paddingtop">
+
+                        @*<a href="@Url.Action("InterviewQuestionsExcel", new { controller = "InterviewQuestions" })" class="btn btn-primary btn-add" title="Click to Export" data-toggle="tooltip">
+                            <i class="fa fa-file-excel-o"></i>
+                        </a>*@
+
+                        @if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin" || Convert.ToString(Session["RoleName"]) == "Trainer")
+                        {
+                        <a href="@Url.Action("CreateInterviewQuestion", new { controller = "InterviewQuestions", id = 0 })" class="btn btn-primary btn-add" title="Click to Add Interview Question" data-toggle="tooltip">
+                            <i class="fa fa-plus"></i>Create Interview Question
+                        </a>
+                        }
+
+                    </span>
+                </div>
+                <div class="@(Model.Count > 0  ? "PanelShow card-body" : "PanelHide")">
+                    <div class="fullresponsivetable">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.ActionLink("Created by " + (Convert.ToString(ViewBag.NameSortParm) == "name" ? "↑" : "↓"), "Index", new { sortOrder = ViewBag.NameSortParm })
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Email " + (Convert.ToString(ViewBag.EmailSortParm) == "email" ? "↑" : "↓"), "Index", new { sortOrder = ViewBag.EmailSortParm })
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Company Name " + (Convert.ToString(ViewBag.CompanySortParm) == "company" ? "↑" : "↓"), "Index", new { sortOrder = ViewBag.CompanySortParm })
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Interview Date " + (Convert.ToString(ViewBag.InterviewDateSortParm) == "interviewdate" ? "↑" : "↓"), "Index", new { sortOrder = ViewBag.InterviewDateSortParm })
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Technology " + (Convert.ToString(ViewBag.TechnologySortParm) == "technology" ? "↑" : "↓"), "Index", new { sortOrder = ViewBag.TechnologySortParm })
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Date Created " + (Convert.ToString(ViewBag.DateCreatedSortParm) == "datecreated" ? "↑" : "↓"), "Index", new { sortOrder = ViewBag.DateCreatedSortParm })
+                                    </th>
+                                    <th width="25%">
+                                        @Html.ActionLink("Description " + (Convert.ToString(ViewBag.DescriptionSortParm) == "description" ? "↑" : "↓"), "Index", new { sortOrder = ViewBag.DescriptionSortParm })
+                                    </th>
+
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td data-title="Name">@item.CreatedBy</td>
+                                        <td data-title="Email">@item.Email</td>
+                                        <td data-title="Email">@item.CompanyName</td>
+                                        <td data-title="Email">@Convert.ToDateTime(item.InterviewDate).ToString("MM/dd/yyyy")</td>
+                                        <td data-title="Email">@item.Technology</td>
+                                        <td data-title="Email">@Convert.ToDateTime(item.CreatedOn).ToString("MM/dd/yyyy")</td>
+                                        <td data-title="Email">@Html.Raw(item.Description)</td>
+                                        <td class="text-center">
+                                            @if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin")
+                                            {
+                                                <a href="@Url.Action("DeleteinterviewQuestion",  new {  controller = "InterviewQuestions", id = item.InterviewQuestionID})" class="modal-link btn btn-xs btn-danger" title="Delete Interview Question">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                    
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, searchStringKeyword = ViewBag.SearchKeyword, Candidate = ViewBag.CandidateN, Company = ViewBag.Company, Technology = ViewBag.Technology, From = ViewBag.From, To = ViewBag.To }))
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+

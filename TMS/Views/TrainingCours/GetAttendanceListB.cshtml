@@ -1,0 +1,1142 @@
+﻿@model dynamic
+@{
+    Layout = null;
+
+    string styleX = "pointer-events:none; ";
+    if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin" || Convert.ToString(Session["RoleName"]) == "Trainer")
+    {
+        styleX = "";
+    }
+
+}
+
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#attendanceB1">1st Week</a></li>
+    <li class=""><a data-toggle="tab" href="#attendanceB2">2nd Week</a></li>
+    <li class=""><a data-toggle="tab" href="#attendanceB3">3rd Week</a></li>
+    <li class=""><a data-toggle="tab" href="#attendanceB4">4th Week</a></li>
+    <li class=""><a data-toggle="tab" href="#attendanceB5">5th Week</a></li>
+    <li class=""><a data-toggle="tab" href="#attendanceB6">6th Week</a></li>
+    <li class=""><a data-toggle="tab" href="#attendanceB7">7th Week</a></li>
+    <li class=""><a data-toggle="tab" href="#attendanceB8">8th Week</a></li>
+    <li class=""><a data-toggle="tab" href="#attendanceB9">9th Week</a></li>
+    <li class=""><a data-toggle="tab" href="#attendanceB10">10th Week</a></li>
+
+    @{
+        <li class="pull-right">
+            <a href="@Url.Action("AttendanceListExcelB", new { controller = "TrainingCours", id = (int)ViewBag.TrainingCourseID })" class="btn btn-primary btn-add" title="Click to Export" data-toggle="tooltip">
+                <i class="fa fa-file-excel-o"></i> Export
+            </a>
+        </li>
+
+        if (Convert.ToString(Session["RoleName"]) == "Recruiter")
+        {
+            <li class="pull-right">
+                <a class="btn btn-success btn-add" title="Refresh" data-toggle="tooltip" onclick="fnReloadAttendanceB()">
+                    <i class="fa fa-refresh"></i> Refresh
+                </a>
+            </li>
+        }
+    }
+</ul>
+
+<div class="tab-content">
+    <div id="attendanceB1" class="tab-pane fade in active">
+        <div class="fullresponsivetable">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Recruiter</th>
+
+                        @{
+                            //if(Model.Training.StartDate1)
+                        }
+                        @{
+                            for (int i = 1; i <= 5; i++)
+                            {
+                                <th class="text-center">Day @i <div id="B_HtotalDay_@i">(@ViewData["B_TodayDay" + i])</div></th>
+                            }
+                        }
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UsersB)
+                    {
+                        var date1 = "";
+
+                        if (item.PaymentDate != null)
+                        {
+                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                        }
+
+                        <tr>
+                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+
+
+                            @{
+                                for (int i = 1; i <= 5; i++)
+                                {
+                                    var selectedChk = "";
+                                    var cellColor = "#C0392B";
+                                    var cellLabel = "Absent ✘";
+                                    foreach (var att in Model.Attendance)
+                                    {
+
+                                        if (att.WebsiteUserID == item.WebsiteUser.WebsiteUserID && att.Day == i)
+                                        {
+
+                                            if (att.Attended == true)
+                                            {
+                                                selectedChk = "checked";
+                                                cellColor = "green";
+                                                cellLabel = "Present ✔";
+                                                break;
+                                            }
+
+                                        }
+
+                                    }
+
+                            <td class="text-center" id="cellB_@item.WebsiteUser.WebsiteUserID@i" style="background-color:@cellColor">
+                                @{
+                                    if (Convert.ToString(Session["RoleName"]) != "Recruiter")
+                                    {
+                                <input type="checkbox" value="" id="chkAttB_@item.WebsiteUser.WebsiteUserID@i" onchange="setColorCellB(@item.WebsiteUser.WebsiteUserID, @i)" @selectedChk>
+                                    }
+                                }
+                                <label id="cellLabelB_@item.WebsiteUser.WebsiteUserID@i">@cellLabel</label>
+                            </td>
+
+                                }
+
+
+                            }
+
+
+                        </tr>
+                    }
+
+                    <tr class="text-center">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right"><b>Total</b></td>
+                        <td><div id="B_totalDay_1">@ViewData["B_TodayDay1"]</div></td>
+                        <td><div id="B_totalDay_2">@ViewData["B_TodayDay2"]</div></td>
+                        <td><div id="B_totalDay_3">@ViewData["B_TodayDay3"]</div></td>
+                        <td><div id="B_totalDay_4">@ViewData["B_TodayDay4"]</div></td>
+                        <td><div id="B_totalDay_5">@ViewData["B_TodayDay5"]</div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="attendanceB2" class="tab-pane fade in ">
+        <div class="fullresponsivetable">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Recruiter</th>
+
+                        @{
+                            //if(Model.Training.StartDate1)
+                        }
+                        @{
+                            for (int i = 6; i <= 10; i++)
+                            {
+                                <th class="text-center">Day @i <div id="B_HtotalDay_@i">(@ViewData["B_TodayDay" + i])</div></th>
+                            }
+                        }
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UsersB)
+                    {
+                        var date1 = "";
+
+                        if (item.PaymentDate != null)
+                        {
+                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                        }
+
+                        <tr>
+                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+
+
+                            @{
+                                for (int i = 6; i <= 10; i++)
+                                {
+                                    var selectedChk = "";
+                                    var cellColor = "#C0392B";
+                                    var cellLabel = "Absent ✘";
+                                    foreach (var att in Model.Attendance)
+                                    {
+
+                                        if (att.WebsiteUserID == item.WebsiteUser.WebsiteUserID && att.Day == i)
+                                        {
+
+                                            if (att.Attended == true)
+                                            {
+                                                selectedChk = "checked";
+                                                cellColor = "green";
+                                                cellLabel = "Present ✔";
+                                                break;
+                                            }
+
+                                        }
+
+                                    }
+
+                            <td class="text-center" id="cellB_@item.WebsiteUser.WebsiteUserID@i" style="background-color:@cellColor">
+                                @{
+                                    if (Convert.ToString(Session["RoleName"]) != "Recruiter")
+                                    {
+                                        <input type="checkbox" value="" id="chkAttB_@item.WebsiteUser.WebsiteUserID@i" onchange="setColorCellB(@item.WebsiteUser.WebsiteUserID, @i)" @selectedChk>
+                                    }
+                                }
+                                <label id="cellLabelB_@item.WebsiteUser.WebsiteUserID@i">@cellLabel</label>
+                            </td>
+
+                                }
+
+
+                            }
+
+                        </tr>
+                    }
+
+                    <tr class="text-center">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right"><b>Total</b></td>
+                        <td><div id="B_totalDay_6">@ViewData["B_TodayDay6"]</div></td>
+                        <td><div id="B_totalDay_7">@ViewData["B_TodayDay7"]</div></td>
+                        <td><div id="B_totalDay_8">@ViewData["B_TodayDay8"]</div></td>
+                        <td><div id="B_totalDay_9">@ViewData["B_TodayDay9"]</div></td>
+                        <td><div id="B_totalDay_10">@ViewData["B_TodayDay10"]</div></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="attendanceB3" class="tab-pane fade in ">
+        <div class="fullresponsivetable">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Recruiter</th>
+
+                        @{
+                            //if(Model.Training.StartDate1)
+                        }
+                        @{
+                            for (int i = 11; i <= 15; i++)
+                            {
+                                <th class="text-center">Day @i <div id="B_HtotalDay_@i">(@ViewData["B_TodayDay" + i])</div></th>
+                            }
+                        }
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UsersB)
+                    {
+                        var date1 = "";
+
+                        if (item.PaymentDate != null)
+                        {
+                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                        }
+
+                        <tr>
+                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+
+
+                            @{
+                                for (int i = 11; i <= 15; i++)
+                                {
+                                    var selectedChk = "";
+                                    var cellColor = "#C0392B";
+                                    var cellLabel = "Absent ✘";
+                                    foreach (var att in Model.Attendance)
+                                    {
+
+                                        if (att.WebsiteUserID == item.WebsiteUser.WebsiteUserID && att.Day == i)
+                                        {
+
+                                            if (att.Attended == true)
+                                            {
+                                                selectedChk = "checked";
+                                                cellColor = "green";
+                                                cellLabel = "Present ✔";
+                                                break;
+                                            }
+
+                                        }
+
+                                    }
+
+                            <td class="text-center" id="cellB_@item.WebsiteUser.WebsiteUserID@i" style="background-color:@cellColor">
+                                @{
+                                    if (Convert.ToString(Session["RoleName"]) != "Recruiter")
+                                    {
+                                        <input type="checkbox" value="" id="chkAttB_@item.WebsiteUser.WebsiteUserID@i" onchange="setColorCellB(@item.WebsiteUser.WebsiteUserID, @i)" @selectedChk>
+                                    }
+                                }
+                                <label id="cellLabelB_@item.WebsiteUser.WebsiteUserID@i">@cellLabel</label>
+                            </td>
+
+                                }
+
+
+                            }
+
+
+                        </tr>
+                    }
+
+                    <tr class="text-center">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right"><b>Total</b></td>
+                        <td><div id="B_totalDay_11">@ViewData["B_TodayDay11"]</div></td>
+                        <td><div id="B_totalDay_12">@ViewData["B_TodayDay12"]</div></td>
+                        <td><div id="B_totalDay_13">@ViewData["B_TodayDay13"]</div></td>
+                        <td><div id="B_totalDay_14">@ViewData["B_TodayDay14"]</div></td>
+                        <td><div id="B_totalDay_15">@ViewData["B_TodayDay15"]</div></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="attendanceB4" class="tab-pane fade in ">
+        <div class="fullresponsivetable">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Recruiter</th>
+
+                        @{
+                            //if(Model.Training.StartDate1)
+                        }
+                        @{
+                            for (int i = 16; i <= 20; i++)
+                            {
+                                <th class="text-center">Day @i <div id="B_HtotalDay_@i">(@ViewData["B_TodayDay" + i])</div></th>
+                            }
+                        }
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UsersB)
+                    {
+                        var date1 = "";
+
+                        if (item.PaymentDate != null)
+                        {
+                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                        }
+
+                        <tr>
+                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+
+
+                            @{
+                                for (int i = 16; i <= 20; i++)
+                                {
+                                    var selectedChk = "";
+                                    var cellColor = "#C0392B";
+                                    var cellLabel = "Absent ✘";
+                                    foreach (var att in Model.Attendance)
+                                    {
+
+                                        if (att.WebsiteUserID == item.WebsiteUser.WebsiteUserID && att.Day == i)
+                                        {
+
+                                            if (att.Attended == true)
+                                            {
+                                                selectedChk = "checked";
+                                                cellColor = "green";
+                                                cellLabel = "Present ✔";
+                                                break;
+                                            }
+                                        }
+
+                                    }
+
+                            <td class="text-center" id="cellB_@item.WebsiteUser.WebsiteUserID@i" style="background-color:@cellColor">
+                                @{
+                                    if (Convert.ToString(Session["RoleName"]) != "Recruiter")
+                                    {
+                                        <input type="checkbox" value="" id="chkAttB_@item.WebsiteUser.WebsiteUserID@i" onchange="setColorCellB(@item.WebsiteUser.WebsiteUserID, @i)" @selectedChk>
+                                    }
+                                }
+                                <label id="cellLabelB_@item.WebsiteUser.WebsiteUserID@i">@cellLabel</label>
+                            </td>
+
+                                }
+
+
+                            }
+
+
+                        </tr>
+                    }
+
+                    <tr class="text-center">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right"><b>Total</b></td>
+                        <td><div id="B_totalDay_16">@ViewData["B_TodayDay16"]</div></td>
+                        <td><div id="B_totalDay_17">@ViewData["B_TodayDay17"]</div></td>
+                        <td><div id="B_totalDay_18">@ViewData["B_TodayDay18"]</div></td>
+                        <td><div id="B_totalDay_19">@ViewData["B_TodayDay19"]</div></td>
+                        <td><div id="B_totalDay_20">@ViewData["B_TodayDay20"]</div></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="attendanceB5" class="tab-pane fade in ">
+        <div class="fullresponsivetable">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Recruiter</th>
+
+                        @{
+                            //if(Model.Training.StartDate1)
+                        }
+                        @{
+                            for (int i = 21; i <= 25; i++)
+                            {
+                                <th class="text-center">Day @i <div id="B_HtotalDay_@i">(@ViewData["B_TodayDay" + i])</div></th>
+                            }
+                        }
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UsersB)
+                    {
+                        var date1 = "";
+
+                        if (item.PaymentDate != null)
+                        {
+                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                        }
+
+                        <tr>
+                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+
+
+                            @{
+                                for (int i = 21; i <= 25; i++)
+                                {
+                                    var selectedChk = "";
+                                    var cellColor = "#C0392B";
+                                    var cellLabel = "Absent ✘";
+                                    foreach (var att in Model.Attendance)
+                                    {
+
+                                        if (att.WebsiteUserID == item.WebsiteUser.WebsiteUserID && att.Day == i)
+                                        {
+
+                                            if (att.Attended == true)
+                                            {
+                                                selectedChk = "checked";
+                                                cellColor = "green";
+                                                cellLabel = "Present ✔";
+                                                break;
+                                            }
+
+                                        }
+
+                                    }
+
+                            <td class="text-center" id="cellB_@item.WebsiteUser.WebsiteUserID@i" style="background-color:@cellColor">
+                                @{
+                                    if (Convert.ToString(Session["RoleName"]) != "Recruiter")
+                                    {
+                                        <input type="checkbox" value="" id="chkAttB_@item.WebsiteUser.WebsiteUserID@i" onchange="setColorCellB(@item.WebsiteUser.WebsiteUserID, @i)" @selectedChk>
+                                    }
+                                }
+                                <label id="cellLabelB_@item.WebsiteUser.WebsiteUserID@i">@cellLabel</label>
+                            </td>
+
+                                }
+
+
+                            }
+
+                        </tr>
+                    }
+
+                    <tr class="text-center">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right"><b>Total</b></td>
+                        <td><div id="B_totalDay_21">@ViewData["B_TodayDay21"]</div></td>
+                        <td><div id="B_totalDay_22">@ViewData["B_TodayDay22"]</div></td>
+                        <td><div id="B_totalDay_23">@ViewData["B_TodayDay23"]</div></td>
+                        <td><div id="B_totalDay_24">@ViewData["B_TodayDay24"]</div></td>
+                        <td><div id="B_totalDay_25">@ViewData["B_TodayDay25"]</div></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="attendanceB6" class="tab-pane fade in ">
+        <div class="fullresponsivetable">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Recruiter</th>
+
+                        @{
+                            //if(Model.Training.StartDate1)
+                        }
+                        @{
+                            for (int i = 26; i <= 30; i++)
+                            {
+                                <th class="text-center">Day @i <div id="B_HtotalDay_@i">(@ViewData["B_TodayDay" + i])</div></th>
+                            }
+                        }
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UsersB)
+                    {
+                        var date1 = "";
+
+                        if (item.PaymentDate != null)
+                        {
+                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                        }
+
+                        <tr>
+                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+
+
+                            @{
+                                for (int i = 26; i <= 30; i++)
+                                {
+                                    var selectedChk = "";
+                                    var cellColor = "#C0392B";
+                                    var cellLabel = "Absent ✘";
+                                    foreach (var att in Model.Attendance)
+                                    {
+
+                                        if (att.WebsiteUserID == item.WebsiteUser.WebsiteUserID && att.Day == i)
+                                        {
+
+                                            if (att.Attended == true)
+                                            {
+                                                selectedChk = "checked";
+                                                cellColor = "green";
+                                                cellLabel = "Present ✔";
+                                                break;
+                                            }
+
+                                        }
+
+                                    }
+
+                            <td class="text-center" id="cellB_@item.WebsiteUser.WebsiteUserID@i" style="background-color:@cellColor">
+                                @{
+                                    if (Convert.ToString(Session["RoleName"]) != "Recruiter")
+                                    {
+                                        <input type="checkbox" value="" id="chkAttB_@item.WebsiteUser.WebsiteUserID@i" onchange="setColorCellB(@item.WebsiteUser.WebsiteUserID, @i)" @selectedChk>
+                                    }
+                                }
+                                <label id="cellLabelB_@item.WebsiteUser.WebsiteUserID@i">@cellLabel</label>
+                            </td>
+
+                                }
+
+
+                            }
+
+
+                        </tr>
+                    }
+
+                    <tr class="text-center">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right"><b>Total</b></td>
+                        <td><div id="B_totalDay_26">@ViewData["B_TodayDay26"]</div></td>
+                        <td><div id="B_totalDay_27">@ViewData["B_TodayDay27"]</div></td>
+                        <td><div id="B_totalDay_28">@ViewData["B_TodayDay28"]</div></td>
+                        <td><div id="B_totalDay_29">@ViewData["B_TodayDay29"]</div></td>
+                        <td><div id="B_totalDay_30">@ViewData["B_TodayDay30"]</div></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="attendanceB7" class="tab-pane fade in ">
+        <div class="fullresponsivetable">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Recruiter</th>
+
+                        @{
+                            //if(Model.Training.StartDate1)
+                        }
+                        @{
+                            for (int i = 31; i <= 35; i++)
+                            {
+                                <th class="text-center">Day @i <div id="B_HtotalDay_@i">(@ViewData["B_TodayDay" + i])</div></th>
+                            }
+                        }
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UsersB)
+                    {
+                        var date1 = "";
+
+                        if (item.PaymentDate != null)
+                        {
+                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                        }
+
+                        <tr>
+                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+
+
+                            @{
+                                for (int i = 31; i <= 35; i++)
+                                {
+                                    var selectedChk = "";
+                                    var cellColor = "#C0392B";
+                                    var cellLabel = "Absent ✘";
+                                    foreach (var att in Model.Attendance)
+                                    {
+
+                                        if (att.WebsiteUserID == item.WebsiteUser.WebsiteUserID && att.Day == i)
+                                        {
+
+                                            if (att.Attended == true)
+                                            {
+                                                selectedChk = "checked";
+                                                cellColor = "green";
+                                                cellLabel = "Present ✔";
+                                                break;
+                                            }
+
+                                        }
+                                    }
+
+                            <td class="text-center" id="cellB_@item.WebsiteUser.WebsiteUserID@i" style="background-color:@cellColor">
+                                @{
+                                    if (Convert.ToString(Session["RoleName"]) != "Recruiter")
+                                    {
+                                        <input type="checkbox" value="" id="chkAttB_@item.WebsiteUser.WebsiteUserID@i" onchange="setColorCellB(@item.WebsiteUser.WebsiteUserID, @i)" @selectedChk>
+                                    }
+                                }
+                                <label id="cellLabelB_@item.WebsiteUser.WebsiteUserID@i">@cellLabel</label>
+                            </td>
+
+                                }
+
+
+                            }
+
+                        </tr>
+                    }
+
+                    <tr class="text-center">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right"><b>Total</b></td>
+                        <td><div id="B_totalDay_31">@ViewData["B_TodayDay31"]</div></td>
+                        <td><div id="B_totalDay_32">@ViewData["B_TodayDay32"]</div></td>
+                        <td><div id="B_totalDay_33">@ViewData["B_TodayDay33"]</div></td>
+                        <td><div id="B_totalDay_34">@ViewData["B_TodayDay34"]</div></td>
+                        <td><div id="B_totalDay_35">@ViewData["B_TodayDay35"]</div></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="attendanceB8" class="tab-pane fade in ">
+        <div class="fullresponsivetable">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Recruiter</th>
+
+                        @{
+                            //if(Model.Training.StartDate1)
+                        }
+                        @{
+                            for (int i = 36; i <= 40; i++)
+                            {
+                                <th class="text-center">Day @i <div id="B_HtotalDay_@i">(@ViewData["B_TodayDay" + i])</div></th>
+                            }
+                        }
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UsersB)
+                    {
+                        var date1 = "";
+
+                        if (item.PaymentDate != null)
+                        {
+                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                        }
+
+                        <tr>
+                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+
+
+                            @{
+                                for (int i = 36; i <= 40; i++)
+                                {
+                                    var selectedChk = "";
+                                    var cellColor = "#C0392B";
+                                    var cellLabel = "Absent ✘";
+                                    foreach (var att in Model.Attendance)
+                                    {
+
+                                        if (att.WebsiteUserID == item.WebsiteUser.WebsiteUserID && att.Day == i)
+                                        {
+
+                                            if (att.Attended == true)
+                                            {
+                                                selectedChk = "checked";
+                                                cellColor = "green";
+                                                cellLabel = "Present ✔";
+                                                break;
+                                            }
+                                        }
+
+                                    }
+
+                            <td class="text-center" id="cellB_@item.WebsiteUser.WebsiteUserID@i" style="background-color:@cellColor">
+                                @{
+                                    if (Convert.ToString(Session["RoleName"]) != "Recruiter")
+                                    {
+                                        <input type="checkbox" value="" id="chkAttB_@item.WebsiteUser.WebsiteUserID@i" onchange="setColorCellB(@item.WebsiteUser.WebsiteUserID, @i)" @selectedChk>
+                                    }
+                                }
+                                <label id="cellLabelB_@item.WebsiteUser.WebsiteUserID@i">@cellLabel</label>
+                            </td>
+
+                                }
+
+
+                            }
+
+                        </tr>
+                    }
+
+                    <tr class="text-center">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right"><b>Total</b></td>
+                        <td><div id="B_totalDay_36">@ViewData["B_TodayDay36"]</div></td>
+                        <td><div id="B_totalDay_37">@ViewData["B_TodayDay37"]</div></td>
+                        <td><div id="B_totalDay_38">@ViewData["B_TodayDay38"]</div></td>
+                        <td><div id="B_totalDay_39">@ViewData["B_TodayDay39"]</div></td>
+                        <td><div id="B_totalDay_40">@ViewData["B_TodayDay40"]</div></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="attendanceB9" class="tab-pane fade in ">
+        <div class="fullresponsivetable">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Recruiter</th>
+
+                        @{
+                            //if(Model.Training.StartDate1)
+                        }
+                        @{
+                            for (int i = 41; i <= 45; i++)
+                            {
+                                <th class="text-center">Day @i <div id="B_HtotalDay_@i">(@ViewData["B_TodayDay" + i])</div></th>
+                            }
+                        }
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UsersB)
+                    {
+                        var date1 = "";
+
+                        if (item.PaymentDate != null)
+                        {
+                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                        }
+
+                        <tr>
+                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+
+
+                            @{
+                                for (int i = 41; i <= 45; i++)
+                                {
+                                    var selectedChk = "";
+                                    var cellColor = "#C0392B";
+                                    var cellLabel = "Absent ✘";
+                                    foreach (var att in Model.Attendance)
+                                    {
+
+                                        if (att.WebsiteUserID == item.WebsiteUser.WebsiteUserID && att.Day == i)
+                                        {
+
+                                            if (att.Attended == true)
+                                            {
+                                                selectedChk = "checked";
+                                                cellColor = "green";
+                                                cellLabel = "Present ✔";
+                                                break;
+                                            }
+
+
+                                        }
+
+                                    }
+
+                            <td class="text-center" id="cellB_@item.WebsiteUser.WebsiteUserID@i" style="background-color:@cellColor">
+                                @{
+                                    if (Convert.ToString(Session["RoleName"]) != "Recruiter")
+                                    {
+                                        <input type="checkbox" value="" id="chkAttB_@item.WebsiteUser.WebsiteUserID@i" onchange="setColorCellB(@item.WebsiteUser.WebsiteUserID, @i)" @selectedChk>
+                                    }
+                                }
+                                <label id="cellLabelB_@item.WebsiteUser.WebsiteUserID@i">@cellLabel</label>
+                            </td>
+
+                                }
+
+
+                            }
+
+
+                        </tr>
+                    }
+
+                    <tr class="text-center">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right"><b>Total</b></td>
+                        <td><div id="B_totalDay_41">@ViewData["B_TodayDay41"]</div></td>
+                        <td><div id="B_totalDay_42">@ViewData["B_TodayDay42"]</div></td>
+                        <td><div id="B_totalDay_43">@ViewData["B_TodayDay43"]</div></td>
+                        <td><div id="B_totalDay_44">@ViewData["B_TodayDay44"]</div></td>
+                        <td><div id="B_totalDay_45">@ViewData["B_TodayDay45"]</div></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="attendanceB10" class="tab-pane fade in ">
+        <div class="fullresponsivetable">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Recruiter</th>
+
+                        @{
+                            //if(Model.Training.StartDate1)
+                        }
+                        @{
+                            for (int i = 46; i <= 50; i++)
+                            {
+                                <th class="text-center">Day @i <div id="B_HtotalDay_@i">(@ViewData["B_TodayDay" + i])</div></th>
+                            }
+                        }
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UsersB)
+                    {
+                        var date1 = "";
+
+                        if (item.PaymentDate != null)
+                        {
+                            date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+                        }
+
+                        <tr>
+                            <td data-title="Fname">@item.WebsiteUser.FName</td>
+                            <td data-title="LName">@item.WebsiteUser.LName</td>
+                            <td data-title="Email">@item.WebsiteUser.Email</td>
+                            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+                            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+
+
+                            @{
+                                for (int i = 46; i <= 50; i++)
+                                {
+                                    var selectedChk = "";
+                                    var cellColor = "#C0392B";
+                                    var cellLabel = "Absent ✘";
+                                    foreach (var att in Model.Attendance)
+                                    {
+
+                                        if (att.WebsiteUserID == item.WebsiteUser.WebsiteUserID && att.Day == i)
+                                        {
+
+                                            if (att.Attended == true)
+                                            {
+                                                selectedChk = "checked";
+                                                cellColor = "green";
+                                                cellLabel = "Present ✔";
+                                                break;
+                                            }
+
+                                        }
+
+                                    }
+
+                            <td class="text-center" id="cellB_@item.WebsiteUser.WebsiteUserID@i" style="background-color:@cellColor">
+                                @{
+                                    if (Convert.ToString(Session["RoleName"]) != "Recruiter")
+                                    {
+                                        <input type="checkbox" value="" id="chkAttB_@item.WebsiteUser.WebsiteUserID@i" onchange="setColorCellB(@item.WebsiteUser.WebsiteUserID, @i)" @selectedChk>
+                                    }
+                                }
+                                <label id="cellLabelB_@item.WebsiteUser.WebsiteUserID@i">@cellLabel</label>
+                            </td>
+
+                                }
+
+
+                            }
+
+
+                        </tr>
+                    }
+
+                    <tr class="text-center">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right"><b>Total</b></td>
+                        <td><div id="B_totalDay_46">@ViewData["B_TodayDay46"]</div></td>
+                        <td><div id="B_totalDay_47">@ViewData["B_TodayDay47"]</div></td>
+                        <td><div id="B_totalDay_48">@ViewData["B_TodayDay48"]</div></td>
+                        <td><div id="B_totalDay_49">@ViewData["B_TodayDay49"]</div></td>
+                        <td><div id="B_totalDay_50">@ViewData["B_TodayDay50"]</div></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    #pageloaddivB {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        background: url('../../images/loading.gif') no-repeat center center;
+    }
+</style>
+
+<div id="pageloaddivB" hidden>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+
+    var totalDayAttendance = 0;
+
+    function setColorCellB(userid, day) {
+        var color = '';
+        var txtColor = 'white';
+        var val = '';
+
+        if (document.getElementById("chkAttB_" + + userid + day).checked == true) {
+            $('#cellB_' + userid + day).css('background', 'green');
+            $('#cellLabelB_' + userid + day).text('Present ✔');
+            val = 'Yes';
+        }
+        if (document.getElementById("chkAttB_" + + userid + day).checked == false) {
+            $('#cellB_' + userid + day).css('background', '#C0392B');
+            $('#cellLabelB_' + userid + day).text('Absent ✘');
+            val = 'No';
+        }
+
+        jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("SaveTrainingAttendance", "TrainingCours")',
+                data: { "uID": userid, "tID": @Model.Training.TrainingCourseID, "day": day, "attended": val, "group":'B' },
+                success: function (data) {
+                    toastr.success('Saved 😀');
+                    //elementsYes = document.getElementsByClassName('yesOption');
+                    $('#B_totalDay_' + day).html(parseInt(data))
+                    $('#B_HtotalDay_' + day).html("(" + parseInt(data) + ")")
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+            });
+
+    }
+
+    
+    function fnReloadAttendanceB() {
+        $('#pageloaddivB').show();
+        var tcID = @ViewBag.TrainingCourseID;
+
+        $.ajax({
+            url: '@Url.Action("GetAttendanceListB", "TrainingCours")',
+            data: { "id": tcID },
+            success: function (data) {
+                $('#pageloaddivB').hide();
+                $("#attendanceB-list").html(data);
+                toastr.success('Updating attendance list...');
+            }
+        });
+
+    }
+
+</script>

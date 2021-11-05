@@ -1,0 +1,127 @@
+﻿@model PagedList.IPagedList<TMS.Models.WebsiteUser>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Website Users";
+}
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Website Users (@ViewBag.Count)</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Website Users</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-head">
+                    <div class="input-group col-md-9" style="margin-top:10px; margin-left:10px">
+                        @using (Html.BeginForm("WebsiteUsersSearch", "WebsiteUsers", new { @class = "form-inline" }))
+                        {
+                        <div class="input-group">
+                            @Html.TextBox("txtSearch", (string)ViewBag.Search, new { @class = "form-control", placeholder = "Search Website Users" })
+
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </span>
+                        </div>
+
+                            
+                        }
+                    </div>
+
+                    <span class="pull-right paddingtop">
+                        <a href="@Url.Action("WebsiteUsersExcel", new { controller = "WebsiteUsers" })" class="btn btn-primary btn-add" title="Click to Export" data-toggle="tooltip">
+                            <i class="fa fa-file-excel-o"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="@(Model.Count > 0  ? "PanelShow card-body" : "PanelHide")">
+                    <div class="fullresponsivetable">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.ActionLink("Name " + (Convert.ToString(ViewBag.NameSortParm) == "name" ? "↑" : "↓"), "WebsiteUsersList", new { sortOrder = ViewBag.NameSortParm })
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Last Name " + (Convert.ToString(ViewBag.LastNameSortParm) == "lastname" ? "↑" : "↓"), "WebsiteUsersList", new { sortOrder = ViewBag.LastNameSortParm })
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Email " + (Convert.ToString(ViewBag.EmailSortParm) == "email" ? "↑" : "↓"), "WebsiteUsersList", new { sortOrder = ViewBag.EmailSortParm })
+                                    </th>
+                                    <th>Phone #</th>
+                                    <th>
+                                        @Html.ActionLink("Registration Date " + (Convert.ToString(ViewBag.DateSortParm) == "date" ? "↑" : "↓"), "WebsiteUsersList", new { sortOrder = ViewBag.DateSortParm })
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Status " + (Convert.ToString(ViewBag.StatusSortParm) == "status" ? "↑" : "↓"), "WebsiteUsersList", new { sortOrder = ViewBag.StatusSortParm })
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Recruiter " + (Convert.ToString(ViewBag.RecruiterSortParm) == "recruiter" ? "↑" : "↓"), "WebsiteUsersList", new { sortOrder = ViewBag.RecruiterSortParm })
+                                    </th>
+                                    <th class="text-center">
+                                        @Html.ActionLink("Active " + (Convert.ToString(ViewBag.ActiveSortParm) == "active" ? "↑" : "↓"), "WebsiteUsersList", new { sortOrder = ViewBag.ActiveSortParm })
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+
+                                    var regDate = "";
+                                    if (item.RegisterDate != null)
+                                    {
+                                        regDate = Convert.ToDateTime(item.RegisterDate).ToString("MM/dd/yyyy");
+                                    }
+                                <tr>
+                                    <td data-title="Name">@Html.DisplayFor(modelItem => item.FName)</td>
+                                    <td data-title="Last Name">@Html.DisplayFor(modelItem => item.LName)</td>
+                                    <td data-title="Email">@Html.DisplayFor(modelItem => item.Email)</td>
+                                    <td data-title="Phone">@Html.DisplayFor(modelItem => item.Phone)</td>
+                                    <td data-title="Registration Date">@regDate</td>
+                                    <td data-title="Status">@Html.DisplayFor(modelItem => item.Status)</td>
+                                    <td data-title="Recruiter">@Html.DisplayFor(modelItem => item.RecruiterName)</td>
+
+                                    <td data-title="Active" class="text-center">
+                                        @if (item.IsActive == true)
+                                        {
+                                            <i class="fa fa-check-square-o" style="color:green"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-remove" style="color:red"></i>
+                                        }
+                                    </td>
+
+                                    <td class="text-right">
+
+                                        <a href="@Url.Action("ViewWebsiteUser", new { controller = "WebsiteUsers", id = item.WebsiteUserID, fromController = "WebsiteUsers", fromView = "WebsiteUsersList", tID = 0 })" class="btn btn-xs btn-new" title="Click to View" data-toggle="tooltip">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+                    @Html.PagedListPager(Model, page => Url.Action("WebsiteUsersList", new { page, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search }))
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

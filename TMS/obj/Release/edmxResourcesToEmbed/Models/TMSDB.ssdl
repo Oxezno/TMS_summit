@@ -1,0 +1,1004 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Companies">
+    <Key>
+      <PropertyRef Name="ID_COMPANY" />
+    </Key>
+    <Property Name="ID_COMPANY" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="COMPANY_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="PHONE1" Type="nvarchar" MaxLength="20" />
+    <Property Name="EMAIL1" Type="nvarchar" MaxLength="100" />
+    <Property Name="MAPS_URL" Type="nvarchar" MaxLength="500" />
+    <Property Name="ADDRESS" Type="nvarchar" MaxLength="200" />
+    <Property Name="CITY" Type="nvarchar" MaxLength="50" />
+    <Property Name="ZIPCODE" Type="nvarchar" MaxLength="10" />
+    <Property Name="LOGO" Type="nvarchar" MaxLength="255" />
+    <Property Name="CAPTION" Type="nvarchar" MaxLength="200" />
+    <Property Name="CONTENT_TYPE" Type="nvarchar" MaxLength="50" />
+    <Property Name="PROFILE_IMG" Type="image" />
+  </EntityType>
+  <EntityType Name="ContractTemplate">
+    <Key>
+      <PropertyRef Name="ContractTemplateID" />
+    </Key>
+    <Property Name="ContractTemplateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TemplateName" Type="nvarchar" MaxLength="300" Nullable="false" />
+    <Property Name="TemplateContent" Type="nvarchar" MaxLength="4000" />
+    <Property Name="TemplateContentBlob" Type="image" />
+    <Property Name="DateRecord" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="DateUpdate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="CompanyID" Type="int" />
+  </EntityType>
+  <EntityType Name="CountryStates">
+    <Key>
+      <PropertyRef Name="StateID" />
+    </Key>
+    <Property Name="StateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="State" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CountryID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="InterviewQuestions">
+    <Key>
+      <PropertyRef Name="InterviewQuestionID" />
+    </Key>
+    <Property Name="InterviewQuestionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="200" />
+    <Property Name="Email" Type="nvarchar" MaxLength="200" />
+    <Property Name="CompanyName" Type="nvarchar" MaxLength="200" />
+    <Property Name="InterviewDate" Type="date" />
+    <Property Name="Technology" Type="nvarchar" MaxLength="200" />
+    <Property Name="Description" Type="nvarchar" MaxLength="4000" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="DescriptionBlob" Type="image" />
+  </EntityType>
+  <EntityType Name="MockInterviews">
+    <Key>
+      <PropertyRef Name="MockInterviewID" />
+    </Key>
+    <Property Name="MockInterviewID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrainingCourseID" Type="int" />
+    <Property Name="InterviewDate" Type="date" Nullable="false" />
+    <Property Name="InterviewedBy" Type="int" Nullable="false" />
+    <Property Name="Performance" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Notes" Type="nvarchar" MaxLength="2000" />
+    <Property Name="Status" Type="varchar" MaxLength="255" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="WebsiteUserID" Type="int" Nullable="false" />
+    <Property Name="Technology" Type="nvarchar" MaxLength="100" />
+    <Property Name="InterviewedBy2" Type="int" />
+    <Property Name="InterviewedBy3" Type="int" />
+  </EntityType>
+  <EntityType Name="Recruiters">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Phone" Type="varchar" MaxLength="30" />
+    <Property Name="ID_COMPANY" Type="int" />
+  </EntityType>
+  <EntityType Name="ResumeSendApproval">
+    <Key>
+      <PropertyRef Name="ResumeSendApprovalID" />
+    </Key>
+    <Property Name="ResumeSendApprovalID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ResumeID" Type="int" />
+    <Property Name="WebsiteUserID" Type="int" />
+    <Property Name="DateSubmited" Type="datetime" />
+    <Property Name="SubmitedTo" Type="int" />
+    <Property Name="Approved" Type="bit" />
+    <Property Name="SubmitedFrom" Type="int" />
+    <Property Name="DateApproved" Type="datetime" />
+  </EntityType>
+  <EntityType Name="RolePermissions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Role" Type="varchar" MaxLength="50" />
+    <Property Name="Settings" Type="bit" Nullable="false" />
+    <Property Name="AdminWebsite" Type="bit" Nullable="false" />
+    <Property Name="WebsiteDashboard" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Schedule">
+    <Key>
+      <PropertyRef Name="ScheduleID" />
+    </Key>
+    <Property Name="ScheduleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" />
+    <Property Name="StartDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+    <Property Name="WebsiteUserID" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+    <Property Name="TrainingCourseID" Type="int" />
+    <Property Name="Subject" Type="nvarchar" MaxLength="200" />
+    <Property Name="ThemeColor" Type="nvarchar" MaxLength="10" />
+    <Property Name="IsFullDay" Type="bit" Nullable="false" />
+    <Property Name="ScheduleType" Type="int" />
+  </EntityType>
+  <EntityType Name="TrainingCourses">
+    <Key>
+      <PropertyRef Name="TrainingCourseID" />
+    </Key>
+    <Property Name="TrainingCourseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrainingCourseName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="ShortDescription" Type="nvarchar" MaxLength="200" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="LastUpdate" Type="datetime" />
+    <Property Name="TrainingImage" Type="nvarchar" MaxLength="200" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="Price" Type="money" />
+    <Property Name="StartDate1" Type="date" />
+    <Property Name="EndDate1" Type="date" />
+    <Property Name="StartDate2" Type="date" />
+    <Property Name="EndDate2" Type="date" />
+    <Property Name="DiscountDate1" Type="int" />
+    <Property Name="DiscountDate2" Type="int" />
+    <Property Name="FirstPayment" Type="money" />
+    <Property Name="SecondPayment" Type="money" />
+    <Property Name="Coupon1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Coupon2" Type="nvarchar" MaxLength="50" />
+    <Property Name="DiscountCoupon1" Type="int" />
+    <Property Name="DiscountCoupon2" Type="int" />
+    <Property Name="KeyWords" Type="nvarchar" MaxLength="4000" />
+    <Property Name="ImgName" Type="nvarchar" MaxLength="100" />
+    <Property Name="ImgPath" Type="nvarchar" MaxLength="500" />
+    <Property Name="FullDescription" Type="nvarchar" MaxLength="4000" />
+    <Property Name="FullDescriptionBlob" Type="image" />
+    <Property Name="PriceFullPayment" Type="money" />
+    <Property Name="LimitFullPaymentDate" Type="date" />
+    <Property Name="SKU" Type="nvarchar" MaxLength="30" />
+    <Property Name="MeetingDetails" Type="nvarchar" MaxLength="4000" />
+    <Property Name="Sessions" Type="int" />
+    <Property Name="MeetingDetailsBlob" Type="image" />
+    <Property Name="SpecialAnnouncements" Type="nvarchar" MaxLength="4000" />
+    <Property Name="SpecialAnnouncementsBlob" Type="image" />
+    <Property Name="Coupon3" Type="nvarchar" MaxLength="50" />
+    <Property Name="Coupon4" Type="nvarchar" MaxLength="50" />
+    <Property Name="Coupon5" Type="varchar" MaxLength="255" />
+    <Property Name="DiscountCoupon3" Type="int" />
+    <Property Name="DiscountCoupon4" Type="int" />
+    <Property Name="DiscountCoupon5" Type="int" />
+    <Property Name="MaxDiscountPayment1" Type="int" />
+    <Property Name="MaxDiscountTotalPayment" Type="int" />
+    <Property Name="TrainingTypeID" Type="int" />
+  </EntityType>
+  <EntityType Name="TrainingResources">
+    <Key>
+      <PropertyRef Name="TrainingResourcesID" />
+    </Key>
+    <Property Name="TrainingResourcesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrainingCourseID" Type="int" />
+    <Property Name="Type" Type="nvarchar" MaxLength="50" />
+    <Property Name="Path" Type="varchar" MaxLength="1000" />
+    <Property Name="BackupPath" Type="nvarchar" MaxLength="1000" />
+    <Property Name="SessionN" Type="nvarchar" MaxLength="30" />
+    <Property Name="DateRecord" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="OriginalFileName" Type="nvarchar" MaxLength="1000" />
+    <Property Name="FileSize" Type="float" />
+    <Property Name="FileExtension" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="TrainingSession">
+    <Key>
+      <PropertyRef Name="TrainingSessionID" />
+    </Key>
+    <Property Name="TrainingSessionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SessionTitle" Type="nvarchar" MaxLength="300" />
+    <Property Name="SessionNotes" Type="nvarchar" MaxLength="4000" />
+    <Property Name="TrainingCourseID" Type="int" />
+    <Property Name="SessionID" Type="int" />
+    <Property Name="SessionNotesBlob" Type="image" />
+  </EntityType>
+  <EntityType Name="TrainingTrainer">
+    <Key>
+      <PropertyRef Name="TrainingTrainerID" />
+    </Key>
+    <Property Name="TrainingTrainerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrainingCourseID" Type="int" />
+    <Property Name="TrainerID" Type="int" />
+  </EntityType>
+  <EntityType Name="TrainingType">
+    <Key>
+      <PropertyRef Name="TrainingTypeID" />
+    </Key>
+    <Property Name="TrainingTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrainingType" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="300" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Roles_id" Type="int" Nullable="false" />
+    <Property Name="ActiveInactive" Type="bit" Nullable="false" />
+    <Property Name="LastLoginDate" Type="datetime" />
+    <Property Name="RecoveryCode" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="WebsiteInvoice">
+    <Key>
+      <PropertyRef Name="WebsiteInvoiceID" />
+    </Key>
+    <Property Name="WebsiteInvoiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BusinessName" Type="nvarchar" MaxLength="100" />
+    <Property Name="BusinessEmail" Type="nvarchar" MaxLength="100" />
+    <Property Name="BusinessFName" Type="nvarchar" MaxLength="30" />
+    <Property Name="BusinessLName" Type="nvarchar" MaxLength="30" />
+    <Property Name="BusinessPhoneCode" Type="nvarchar" MaxLength="5" />
+    <Property Name="BusinessPhoneNumber" Type="nvarchar" MaxLength="20" />
+    <Property Name="DiscountPercent" Type="int" />
+    <Property Name="ShippingValue" Type="money" />
+    <Property Name="Currency" Type="nvarchar" MaxLength="10" />
+    <Property Name="Note" Type="nvarchar" MaxLength="500" />
+    <Property Name="Terms" Type="nvarchar" MaxLength="500" />
+    <Property Name="WebsiteUserID" Type="int" Nullable="false" />
+    <Property Name="TrainingCourseID" Type="int" Nullable="false" />
+    <Property Name="TotalAmount" Type="money" />
+    <Property Name="PaymentType" Type="int" />
+    <Property Name="PurchaseDate" Type="datetime" />
+    <Property Name="PayPalInvoiceID" Type="nvarchar" MaxLength="30" />
+    <Property Name="PayPalID" Type="nvarchar" MaxLength="30" />
+    <Property Name="PaymentMethod" Type="nvarchar" MaxLength="30" />
+    <Property Name="RealAmount" Type="money" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="BusinessAddress" Type="nvarchar" MaxLength="300" />
+    <Property Name="UserInvoiceID" Type="nvarchar" MaxLength="30" />
+    <Property Name="SKU" Type="nvarchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="WebsiteUserAttendance">
+    <Key>
+      <PropertyRef Name="WebsiteUserAttendanceID" />
+    </Key>
+    <Property Name="WebsiteUserAttendanceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WebsiteUserID" Type="int" Nullable="false" />
+    <Property Name="TrainingCourseID" Type="int" Nullable="false" />
+    <Property Name="Day" Type="int" />
+    <Property Name="DateRecord" Type="datetime" />
+    <Property Name="DateUpdate" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="Attended" Type="bit" />
+    <Property Name="TrainingGroup" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="WebsiteUserDetails">
+    <Key>
+      <PropertyRef Name="WebsiteUserDetailsID" />
+    </Key>
+    <Property Name="WebsiteUserDetailsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WebsiteUserID" Type="int" />
+    <Property Name="HighestEducation" Type="nvarchar" MaxLength="200" />
+    <Property Name="CompletionYear" Type="nvarchar" MaxLength="20" />
+    <Property Name="WorkExperienceIT" Type="nvarchar" MaxLength="200" />
+    <Property Name="WorkExperienceNonIT" Type="nvarchar" MaxLength="200" />
+    <Property Name="CurrentlyEmployed" Type="int" />
+    <Property Name="AuthorizedWorkUSA" Type="int" />
+    <Property Name="VisaStatus" Type="nvarchar" MaxLength="100" />
+    <Property Name="Address" Type="nvarchar" MaxLength="300" />
+    <Property Name="City" Type="nvarchar" MaxLength="100" />
+    <Property Name="StateID" Type="int" />
+    <Property Name="ZIPCode" Type="nvarchar" MaxLength="20" />
+    <Property Name="OpenToRelocate" Type="int" />
+    <Property Name="RegisterDate" Type="datetime" />
+    <Property Name="LastUpdate" Type="datetime" />
+    <Property Name="TrainingCourseID" Type="int" />
+    <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="PaymentType" Type="int" />
+    <Property Name="Discount" Type="int" />
+  </EntityType>
+  <EntityType Name="WebsiteUserResume">
+    <Key>
+      <PropertyRef Name="ResumeID" />
+    </Key>
+    <Property Name="ResumeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FileName" Type="nvarchar" MaxLength="255" />
+    <Property Name="FilePath" Type="nvarchar" MaxLength="500" />
+    <Property Name="WebsiteUserID" Type="int" />
+    <Property Name="DateCreate" Type="datetime" />
+    <Property Name="UserCreate" Type="int" />
+    <Property Name="Status" Type="nvarchar" MaxLength="255" />
+    <Property Name="SendToID" Type="int" />
+    <Property Name="Send" Type="bit" />
+    <Property Name="FileExtension" Type="nvarchar" MaxLength="20" />
+    <Property Name="FileSize" Type="float" />
+  </EntityType>
+  <EntityType Name="WebsiteUsers">
+    <Key>
+      <PropertyRef Name="WebsiteUserID" />
+    </Key>
+    <Property Name="WebsiteUserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FName" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="LName" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="20" />
+    <Property Name="SkypeID" Type="varchar" MaxLength="100" />
+    <Property Name="AboutUs" Type="varchar" MaxLength="100" />
+    <Property Name="WhyInterested" Type="varchar" MaxLength="1000" />
+    <Property Name="AcceptPP" Type="bit" Nullable="false" />
+    <Property Name="ReceiveUpdates" Type="bit" />
+    <Property Name="Password" Type="varchar" MaxLength="500" />
+    <Property Name="RegisterDate" Type="datetime" />
+    <Property Name="LastUpdate" Type="datetime" />
+    <Property Name="ProfilePic" Type="nvarchar" MaxLength="200" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="ConfirmedEmail" Type="bit" />
+    <Property Name="Token" Type="nvarchar" MaxLength="500" />
+    <Property Name="RecoveryCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="Status" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ready4Resume" Type="date" />
+    <Property Name="TakeEvaluation" Type="bit" />
+    <Property Name="EvaluationStatus" Type="bit" />
+    <Property Name="RecruiterName" Type="nvarchar" MaxLength="200" />
+    <Property Name="SignedContract" Type="bit" />
+  </EntityType>
+  <EntityType Name="WebsiteusersAssignments">
+    <Key>
+      <PropertyRef Name="WebsiteusersAssignmentsID" />
+    </Key>
+    <Property Name="WebsiteusersAssignmentsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrainingCourseID" Type="int" />
+    <Property Name="Path" Type="varchar" MaxLength="1000" />
+    <Property Name="BackupPath" Type="nvarchar" MaxLength="1000" />
+    <Property Name="SessionN" Type="nvarchar" MaxLength="30" />
+    <Property Name="DateRecord" Type="datetime" />
+    <Property Name="WebsiteUserID" Type="int" />
+    <Property Name="OriginalFileName" Type="nvarchar" MaxLength="1000" />
+    <Property Name="FileSize" Type="float" />
+    <Property Name="FileExtension" Type="nvarchar" MaxLength="10" />
+    <Property Name="File" Type="image" />
+  </EntityType>
+  <EntityType Name="WebsiteUserTraining">
+    <Key>
+      <PropertyRef Name="WebsiteUserTrainingID" />
+    </Key>
+    <Property Name="WebsiteUserTrainingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrainingCourseID" Type="int" Nullable="false" />
+    <Property Name="WebsiteUserID" Type="int" />
+    <Property Name="PayPalID" Type="nvarchar" MaxLength="50" />
+    <Property Name="Amount" Type="money" />
+    <Property Name="PaymentStatus" Type="nvarchar" MaxLength="50" />
+    <Property Name="PaymentDate" Type="datetime" />
+    <Property Name="TrainingStatus" Type="nvarchar" MaxLength="20" />
+    <Property Name="GUID" Type="nvarchar" MaxLength="50" />
+    <Property Name="payerID" Type="nvarchar" MaxLength="50" />
+    <Property Name="PaymentType" Type="int" />
+    <Property Name="Discount" Type="int" />
+    <Property Name="UserInvoiceID" Type="nvarchar" MaxLength="30" />
+    <Property Name="TrainingGroup" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <Association Name="FK__ContractT__Compa__7226EDCC">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="0..1" />
+    <End Role="ContractTemplate" Type="Self.ContractTemplate" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="ID_COMPANY" />
+      </Principal>
+      <Dependent Role="ContractTemplate">
+        <PropertyRef Name="CompanyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ContractT__Creat__703EA55A">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="ContractTemplate" Type="Self.ContractTemplate" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ContractTemplate">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ContractT__Updat__7132C993">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="ContractTemplate" Type="Self.ContractTemplate" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ContractTemplate">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MockInter__Creat__26CFC035">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="MockInterviews" Type="Self.MockInterviews" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MockInterviews">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MockInter__Inter__25DB9BFC">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="MockInterviews" Type="Self.MockInterviews" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MockInterviews">
+        <PropertyRef Name="InterviewedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MockInter__Inter__70FDBF69">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="MockInterviews" Type="Self.MockInterviews" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MockInterviews">
+        <PropertyRef Name="InterviewedBy2" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MockInter__Inter__71F1E3A2">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="MockInterviews" Type="Self.MockInterviews" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MockInterviews">
+        <PropertyRef Name="InterviewedBy3" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MockInter__Train__24E777C3">
+    <End Role="TrainingCourses" Type="Self.TrainingCourses" Multiplicity="0..1" />
+    <End Role="MockInterviews" Type="Self.MockInterviews" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TrainingCourses">
+        <PropertyRef Name="TrainingCourseID" />
+      </Principal>
+      <Dependent Role="MockInterviews">
+        <PropertyRef Name="TrainingCourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Recruiter__ID_CO__75035A77">
+    <End Role="Companies" Type="Self.Companies" Multiplicity="0..1" />
+    <End Role="Recruiters" Type="Self.Recruiters" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Companies">
+        <PropertyRef Name="ID_COMPANY" />
+      </Principal>
+      <Dependent Role="Recruiters">
+        <PropertyRef Name="ID_COMPANY" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ResumeSen__Resum__37FA4C37">
+    <End Role="WebsiteUserResume" Type="Self.WebsiteUserResume" Multiplicity="0..1" />
+    <End Role="ResumeSendApproval" Type="Self.ResumeSendApproval" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WebsiteUserResume">
+        <PropertyRef Name="ResumeID" />
+      </Principal>
+      <Dependent Role="ResumeSendApproval">
+        <PropertyRef Name="ResumeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ResumeSen__Submi__39E294A9">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="ResumeSendApproval" Type="Self.ResumeSendApproval" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ResumeSendApproval">
+        <PropertyRef Name="SubmitedTo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ResumeSen__Submi__3AD6B8E2">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="ResumeSendApproval" Type="Self.ResumeSendApproval" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ResumeSendApproval">
+        <PropertyRef Name="SubmitedTo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ResumeSen__Websi__38EE7070">
+    <End Role="WebsiteUsers" Type="Self.WebsiteUsers" Multiplicity="0..1" />
+    <End Role="ResumeSendApproval" Type="Self.ResumeSendApproval" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WebsiteUsers">
+        <PropertyRef Name="WebsiteUserID" />
+      </Principal>
+      <Dependent Role="ResumeSendApproval">
+        <PropertyRef Name="WebsiteUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Schedule__Create__19FFD4FC">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Schedule__Traini__1AF3F935">
+    <End Role="TrainingCourses" Type="Self.TrainingCourses" Multiplicity="0..1" />
+    <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TrainingCourses">
+        <PropertyRef Name="TrainingCourseID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="TrainingCourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Schedule__Websit__190BB0C3">
+    <End Role="WebsiteUsers" Type="Self.WebsiteUsers" Multiplicity="1" />
+    <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WebsiteUsers">
+        <PropertyRef Name="WebsiteUserID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="WebsiteUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TrainingC__Creat__22401542">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="TrainingCourses" Type="Self.TrainingCourses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TrainingCourses">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TrainingC__Train__22CA2527">
+    <End Role="TrainingType" Type="Self.TrainingType" Multiplicity="0..1" />
+    <End Role="TrainingCourses" Type="Self.TrainingCourses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TrainingType">
+        <PropertyRef Name="TrainingTypeID" />
+      </Principal>
+      <Dependent Role="TrainingCourses">
+        <PropertyRef Name="TrainingTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TrainingR__Creat__43A1090D">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="TrainingResources" Type="Self.TrainingResources" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TrainingResources">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TrainingR__Train__42ACE4D4">
+    <End Role="TrainingCourses" Type="Self.TrainingCourses" Multiplicity="0..1" />
+    <End Role="TrainingResources" Type="Self.TrainingResources" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TrainingCourses">
+        <PropertyRef Name="TrainingCourseID" />
+      </Principal>
+      <Dependent Role="TrainingResources">
+        <PropertyRef Name="TrainingCourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TrainingS__Train__55BFB948">
+    <End Role="TrainingCourses" Type="Self.TrainingCourses" Multiplicity="0..1" />
+    <End Role="TrainingSession" Type="Self.TrainingSession" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TrainingCourses">
+        <PropertyRef Name="TrainingCourseID" />
+      </Principal>
+      <Dependent Role="TrainingSession">
+        <PropertyRef Name="TrainingCourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TrainingT__Train__0E04126B">
+    <End Role="TrainingCourses" Type="Self.TrainingCourses" Multiplicity="0..1" />
+    <End Role="TrainingTrainer" Type="Self.TrainingTrainer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TrainingCourses">
+        <PropertyRef Name="TrainingCourseID" />
+      </Principal>
+      <Dependent Role="TrainingTrainer">
+        <PropertyRef Name="TrainingCourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TrainingT__Train__0EF836A4">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="TrainingTrainer" Type="Self.TrainingTrainer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TrainingTrainer">
+        <PropertyRef Name="TrainerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__WebsiteIn__Train__2CBDA3B5">
+    <End Role="TrainingCourses" Type="Self.TrainingCourses" Multiplicity="1" />
+    <End Role="WebsiteInvoice" Type="Self.WebsiteInvoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TrainingCourses">
+        <PropertyRef Name="TrainingCourseID" />
+      </Principal>
+      <Dependent Role="WebsiteInvoice">
+        <PropertyRef Name="TrainingCourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__WebsiteIn__Websi__2BC97F7C">
+    <End Role="WebsiteUsers" Type="Self.WebsiteUsers" Multiplicity="1" />
+    <End Role="WebsiteInvoice" Type="Self.WebsiteInvoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WebsiteUsers">
+        <PropertyRef Name="WebsiteUserID" />
+      </Principal>
+      <Dependent Role="WebsiteInvoice">
+        <PropertyRef Name="WebsiteUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__WebsiteUs__State__60FC61CA">
+    <End Role="CountryStates" Type="Self.CountryStates" Multiplicity="0..1" />
+    <End Role="WebsiteUserDetails" Type="Self.WebsiteUserDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CountryStates">
+        <PropertyRef Name="StateID" />
+      </Principal>
+      <Dependent Role="WebsiteUserDetails">
+        <PropertyRef Name="StateID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__WebsiteUs__Train__351DDF8C">
+    <End Role="TrainingCourses" Type="Self.TrainingCourses" Multiplicity="1" />
+    <End Role="WebsiteUserAttendance" Type="Self.WebsiteUserAttendance" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TrainingCourses">
+        <PropertyRef Name="TrainingCourseID" />
+      </Principal>
+      <Dependent Role="WebsiteUserAttendance">
+        <PropertyRef Name="TrainingCourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__WebsiteUs__Train__69C6B1F5">
+    <End Role="TrainingCourses" Type="Self.TrainingCourses" Multiplicity="1" />
+    <End Role="WebsiteUserTraining" Type="Self.WebsiteUserTraining" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TrainingCourses">
+        <PropertyRef Name="TrainingCourseID" />
+      </Principal>
+      <Dependent Role="WebsiteUserTraining">
+        <PropertyRef Name="TrainingCourseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__WebsiteUs__UserC__351DDF8C">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="WebsiteUserResume" Type="Self.WebsiteUserResume" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="WebsiteUserResume">
+        <PropertyRef Name="UserCreate" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__WebsiteUs__Websi__3429BB53">
+    <End Role="WebsiteUsers" Type="Self.WebsiteUsers" Multiplicity="1" />
+    <End Role="WebsiteUserAttendance" Type="Self.WebsiteUserAttendance" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WebsiteUsers">
+        <PropertyRef Name="WebsiteUserID" />
+      </Principal>
+      <Dependent Role="WebsiteUserAttendance">
+        <PropertyRef Name="WebsiteUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__WebsiteUs__Websi__3429BB534">
+    <End Role="WebsiteUsers" Type="Self.WebsiteUsers" Multiplicity="0..1" />
+    <End Role="WebsiteUserResume" Type="Self.WebsiteUserResume" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WebsiteUsers">
+        <PropertyRef Name="WebsiteUserID" />
+      </Principal>
+      <Dependent Role="WebsiteUserResume">
+        <PropertyRef Name="WebsiteUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__WebsiteUs__Websi__5A4F643B">
+    <End Role="WebsiteUsers" Type="Self.WebsiteUsers" Multiplicity="0..1" />
+    <End Role="WebsiteUserDetails" Type="Self.WebsiteUserDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WebsiteUsers">
+        <PropertyRef Name="WebsiteUserID" />
+      </Principal>
+      <Dependent Role="WebsiteUserDetails">
+        <PropertyRef Name="WebsiteUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__WebsiteUs__Websi__6ABAD62E">
+    <End Role="WebsiteUsers" Type="Self.WebsiteUsers" Multiplicity="0..1" />
+    <End Role="WebsiteUserTraining" Type="Self.WebsiteUserTraining" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WebsiteUsers">
+        <PropertyRef Name="WebsiteUserID" />
+      </Principal>
+      <Dependent Role="WebsiteUserTraining">
+        <PropertyRef Name="WebsiteUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="AtteRptbyBatch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetAttendanceReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="StartDt" Type="date" Mode="In" />
+    <Parameter Name="EndDt" Type="date" Mode="In" />
+    <Parameter Name="Tech" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetBatchCandidates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="batchID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetBatches" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="GetBatchesList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="pageNum" Type="int" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="SortExp" Type="varchar" Mode="In" />
+    <Parameter Name="SearchText" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GetCountries" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="getDashBoard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="getDashBoardMarket" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="getDashBoardTraining" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="GetForms" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="getGrossMarginRpt" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="StartDt" Type="date" Mode="In" />
+    <Parameter Name="EndDt" Type="date" Mode="In" />
+    <Parameter Name="Flag" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetPayingTrainees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="GetPlacementList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="pageNum" Type="int" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="SortExp" Type="varchar" Mode="In" />
+    <Parameter Name="SearchText" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GetPositionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="pageNum" Type="int" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="SortExp" Type="varchar" Mode="In" />
+    <Parameter Name="SearchText" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GetProfileEvaluation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="getProfileList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="pageNum" Type="int" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="SortExp" Type="varchar" Mode="In" />
+    <Parameter Name="SearchText" Type="varchar" Mode="In" />
+    <Parameter Name="BatchId" Type="int" Mode="In" />
+    <Parameter Name="Filter" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetReasonList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="pageNum" Type="int" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="SortExp" Type="varchar" Mode="In" />
+    <Parameter Name="SearchText" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GetRecruiters" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="companyID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetTrainingCourses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="GetTrainingCoursesByName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Name" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GetUsersList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="pageNum" Type="int" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="SortExp" Type="varchar" Mode="In" />
+    <Parameter Name="SearchText" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GetVisaStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="TMSModelStoreContainer">
+    <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ContractTemplate" EntityType="Self.ContractTemplate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CountryStates" EntityType="Self.CountryStates" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InterviewQuestions" EntityType="Self.InterviewQuestions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MockInterviews" EntityType="Self.MockInterviews" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Recruiters" EntityType="Self.Recruiters" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ResumeSendApproval" EntityType="Self.ResumeSendApproval" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RolePermissions" EntityType="Self.RolePermissions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TrainingCourses" EntityType="Self.TrainingCourses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TrainingResources" EntityType="Self.TrainingResources" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TrainingSession" EntityType="Self.TrainingSession" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TrainingTrainer" EntityType="Self.TrainingTrainer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TrainingType" EntityType="Self.TrainingType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WebsiteInvoice" EntityType="Self.WebsiteInvoice" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WebsiteUserAttendance" EntityType="Self.WebsiteUserAttendance" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WebsiteUserDetails" EntityType="Self.WebsiteUserDetails" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WebsiteUserResume" EntityType="Self.WebsiteUserResume" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WebsiteUsers" EntityType="Self.WebsiteUsers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WebsiteusersAssignments" EntityType="Self.WebsiteusersAssignments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WebsiteUserTraining" EntityType="Self.WebsiteUserTraining" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__ContractT__Compa__7226EDCC" Association="Self.FK__ContractT__Compa__7226EDCC">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="ContractTemplate" EntitySet="ContractTemplate" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ContractT__Creat__703EA55A" Association="Self.FK__ContractT__Creat__703EA55A">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ContractTemplate" EntitySet="ContractTemplate" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ContractT__Updat__7132C993" Association="Self.FK__ContractT__Updat__7132C993">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ContractTemplate" EntitySet="ContractTemplate" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MockInter__Creat__26CFC035" Association="Self.FK__MockInter__Creat__26CFC035">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="MockInterviews" EntitySet="MockInterviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MockInter__Inter__25DB9BFC" Association="Self.FK__MockInter__Inter__25DB9BFC">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="MockInterviews" EntitySet="MockInterviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MockInter__Inter__70FDBF69" Association="Self.FK__MockInter__Inter__70FDBF69">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="MockInterviews" EntitySet="MockInterviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MockInter__Inter__71F1E3A2" Association="Self.FK__MockInter__Inter__71F1E3A2">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="MockInterviews" EntitySet="MockInterviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MockInter__Train__24E777C3" Association="Self.FK__MockInter__Train__24E777C3">
+      <End Role="TrainingCourses" EntitySet="TrainingCourses" />
+      <End Role="MockInterviews" EntitySet="MockInterviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Recruiter__ID_CO__75035A77" Association="Self.FK__Recruiter__ID_CO__75035A77">
+      <End Role="Companies" EntitySet="Companies" />
+      <End Role="Recruiters" EntitySet="Recruiters" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ResumeSen__Resum__37FA4C37" Association="Self.FK__ResumeSen__Resum__37FA4C37">
+      <End Role="WebsiteUserResume" EntitySet="WebsiteUserResume" />
+      <End Role="ResumeSendApproval" EntitySet="ResumeSendApproval" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ResumeSen__Submi__39E294A9" Association="Self.FK__ResumeSen__Submi__39E294A9">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ResumeSendApproval" EntitySet="ResumeSendApproval" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ResumeSen__Submi__3AD6B8E2" Association="Self.FK__ResumeSen__Submi__3AD6B8E2">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ResumeSendApproval" EntitySet="ResumeSendApproval" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ResumeSen__Websi__38EE7070" Association="Self.FK__ResumeSen__Websi__38EE7070">
+      <End Role="WebsiteUsers" EntitySet="WebsiteUsers" />
+      <End Role="ResumeSendApproval" EntitySet="ResumeSendApproval" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Schedule__Create__19FFD4FC" Association="Self.FK__Schedule__Create__19FFD4FC">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Schedule__Traini__1AF3F935" Association="Self.FK__Schedule__Traini__1AF3F935">
+      <End Role="TrainingCourses" EntitySet="TrainingCourses" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Schedule__Websit__190BB0C3" Association="Self.FK__Schedule__Websit__190BB0C3">
+      <End Role="WebsiteUsers" EntitySet="WebsiteUsers" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TrainingC__Creat__22401542" Association="Self.FK__TrainingC__Creat__22401542">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TrainingCourses" EntitySet="TrainingCourses" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TrainingC__Train__22CA2527" Association="Self.FK__TrainingC__Train__22CA2527">
+      <End Role="TrainingType" EntitySet="TrainingType" />
+      <End Role="TrainingCourses" EntitySet="TrainingCourses" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TrainingR__Creat__43A1090D" Association="Self.FK__TrainingR__Creat__43A1090D">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TrainingResources" EntitySet="TrainingResources" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TrainingR__Train__42ACE4D4" Association="Self.FK__TrainingR__Train__42ACE4D4">
+      <End Role="TrainingCourses" EntitySet="TrainingCourses" />
+      <End Role="TrainingResources" EntitySet="TrainingResources" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TrainingS__Train__55BFB948" Association="Self.FK__TrainingS__Train__55BFB948">
+      <End Role="TrainingCourses" EntitySet="TrainingCourses" />
+      <End Role="TrainingSession" EntitySet="TrainingSession" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TrainingT__Train__0E04126B" Association="Self.FK__TrainingT__Train__0E04126B">
+      <End Role="TrainingCourses" EntitySet="TrainingCourses" />
+      <End Role="TrainingTrainer" EntitySet="TrainingTrainer" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TrainingT__Train__0EF836A4" Association="Self.FK__TrainingT__Train__0EF836A4">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TrainingTrainer" EntitySet="TrainingTrainer" />
+    </AssociationSet>
+    <AssociationSet Name="FK__WebsiteIn__Train__2CBDA3B5" Association="Self.FK__WebsiteIn__Train__2CBDA3B5">
+      <End Role="TrainingCourses" EntitySet="TrainingCourses" />
+      <End Role="WebsiteInvoice" EntitySet="WebsiteInvoice" />
+    </AssociationSet>
+    <AssociationSet Name="FK__WebsiteIn__Websi__2BC97F7C" Association="Self.FK__WebsiteIn__Websi__2BC97F7C">
+      <End Role="WebsiteUsers" EntitySet="WebsiteUsers" />
+      <End Role="WebsiteInvoice" EntitySet="WebsiteInvoice" />
+    </AssociationSet>
+    <AssociationSet Name="FK__WebsiteUs__State__60FC61CA" Association="Self.FK__WebsiteUs__State__60FC61CA">
+      <End Role="CountryStates" EntitySet="CountryStates" />
+      <End Role="WebsiteUserDetails" EntitySet="WebsiteUserDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__WebsiteUs__Train__351DDF8C" Association="Self.FK__WebsiteUs__Train__351DDF8C">
+      <End Role="TrainingCourses" EntitySet="TrainingCourses" />
+      <End Role="WebsiteUserAttendance" EntitySet="WebsiteUserAttendance" />
+    </AssociationSet>
+    <AssociationSet Name="FK__WebsiteUs__Train__69C6B1F5" Association="Self.FK__WebsiteUs__Train__69C6B1F5">
+      <End Role="TrainingCourses" EntitySet="TrainingCourses" />
+      <End Role="WebsiteUserTraining" EntitySet="WebsiteUserTraining" />
+    </AssociationSet>
+    <AssociationSet Name="FK__WebsiteUs__UserC__351DDF8C" Association="Self.FK__WebsiteUs__UserC__351DDF8C">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="WebsiteUserResume" EntitySet="WebsiteUserResume" />
+    </AssociationSet>
+    <AssociationSet Name="FK__WebsiteUs__Websi__3429BB53" Association="Self.FK__WebsiteUs__Websi__3429BB53">
+      <End Role="WebsiteUsers" EntitySet="WebsiteUsers" />
+      <End Role="WebsiteUserAttendance" EntitySet="WebsiteUserAttendance" />
+    </AssociationSet>
+    <AssociationSet Name="FK__WebsiteUs__Websi__3429BB534" Association="Self.FK__WebsiteUs__Websi__3429BB534">
+      <End Role="WebsiteUsers" EntitySet="WebsiteUsers" />
+      <End Role="WebsiteUserResume" EntitySet="WebsiteUserResume" />
+    </AssociationSet>
+    <AssociationSet Name="FK__WebsiteUs__Websi__5A4F643B" Association="Self.FK__WebsiteUs__Websi__5A4F643B">
+      <End Role="WebsiteUsers" EntitySet="WebsiteUsers" />
+      <End Role="WebsiteUserDetails" EntitySet="WebsiteUserDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__WebsiteUs__Websi__6ABAD62E" Association="Self.FK__WebsiteUs__Websi__6ABAD62E">
+      <End Role="WebsiteUsers" EntitySet="WebsiteUsers" />
+      <End Role="WebsiteUserTraining" EntitySet="WebsiteUserTraining" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

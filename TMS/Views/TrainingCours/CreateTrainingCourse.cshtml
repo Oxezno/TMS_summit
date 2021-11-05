@@ -1,0 +1,388 @@
+﻿@model TMS.Models.TrainingCoursCustom
+
+@{
+    ViewBag.Title = "Training Course Setup";
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Training Program Setup</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("TrainingCoursesList","TrainingCours")">Training Programs List</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Training Program Setup</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                @using (Ajax.BeginForm("SaveTrainingCourse", "TrainingCours", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "File" }))
+                {
+                    @*@Html.AntiForgeryToken()*@
+                    <div class="card-body" id="bar-parent1">
+                        <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                            <div class="form-body">
+                                <div class="clearfix"></div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Training Program
+                                    </label>
+                                    <div class="col-md-6">
+                                        @Html.EditorFor(model => model.TrainingCourseName, new { htmlAttributes = new { @class = "form-control", maxlength = "25", @required = "required", id = "TrainingCourse", onchange = "fnChangeSKU()" } })
+                                        @Html.ValidationMessageFor(model => model.TrainingCourseName, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        SKU
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.SKU, new { htmlAttributes = new { @class = "form-control", maxlength = "30", @required = "required", id = "SKU" } })
+                                        @Html.ValidationMessageFor(model => model.SKU, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Short Description
+                                    </label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control", maxlength = "200", @required = "required" } })
+                                        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        1st Payment
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.FirstPayment, new { htmlAttributes = new { @class = "form-control", maxlength = "10", @required = "required", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');", @Value = "0.00", @onkeyup = "fnChangeTotal()", id = "fPayment" } })
+                                        @Html.ValidationMessageFor(model => model.FirstPayment, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        2nd Payment
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.SecondPayment, new { htmlAttributes = new { @class = "form-control", maxlength = "10", @required = "required", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');", @Value = "0.00", @onkeyup = "fnChangeTotal()", id = "sPayment" } })
+                                        @Html.ValidationMessageFor(model => model.SecondPayment, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Total
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", maxlength = "10", @readonly = "readonly", @required = "required", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');", @Value = "0.00", id = "tPayment" } })
+                                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Training Type:
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.DropDownListFor(model => model.TrainingTypeID, ViewData["TRAINING_TYPE"] as IEnumerable<SelectListItem>, "--Select Type--", htmlAttributes: new { @class = "form-control", @required = "required", id = "tcType" })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Limit Full Payment
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.LimitFullPaymentDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Total Full Payment
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.PriceFullPayment, new { htmlAttributes = new { @class = "form-control", maxlength = "10", @required = "required", onchange = "fnChangeFullPrice()", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');", @Value = "0.00", id = "tFullPayment" } })
+                                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                    </label>
+                                    <div class="col-md-2">
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Max Discount 1st & 2nd Payment (%)
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.MaxDiscountPayment1, new { htmlAttributes = new { @class = "form-control", type = "number", @Value = 0, min = 0, max = 100, id = "discountFirst", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        Max Discount Full Payment (%)
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.MaxDiscountTotalPayment, new { htmlAttributes = new { @class = "form-control", type = "number", @Value = 0, min = 0, max = 100, id = "discountFull", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Start Date 1
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.StartDate1, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        End Date 1
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.EndDate1, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        Discount Date 1 (%)
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.DiscountDate1, new { htmlAttributes = new { @class = "form-control", type = "number", @Value = 0, min = 0, max = 100, oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Start Date 2
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.StartDate2, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        End Date 2
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.EndDate2, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        Discount Date 2 (%)
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.DiscountDate2, new { htmlAttributes = new { @class = "form-control", type = "number", @Value = 0, min = 0, max = 100, oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Coupon 1
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.Coupon1, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        Discount Coupon 1 (%)
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.DiscountCoupon1, new { htmlAttributes = new { @class = "form-control", type = "number", onchange = "fnCheckDiscount(1)", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');", id = "discount1" } })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Coupon 2
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.Coupon2, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        Discount Coupon 2 (%)
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.DiscountCoupon2, new { htmlAttributes = new { @class = "form-control", type = "number", onchange = "fnCheckDiscount(2)", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');", id = "discount2" } })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Coupon 3
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.Coupon3, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        Discount Coupon 3 (%)
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.DiscountCoupon3, new { htmlAttributes = new { @class = "form-control", type = "number", onchange = "fnCheckDiscount(3)", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');", id = "discount3" } })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Coupon 4
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.Coupon4, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        Discount Coupon 4 (%)
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.DiscountCoupon4, new { htmlAttributes = new { @class = "form-control", type = "number", onchange = "fnCheckDiscount(4)", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');", id = "discount4" } })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Coupon 5
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.Coupon5, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        Discount Coupon 5 (%)
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.DiscountCoupon5, new { htmlAttributes = new { @class = "form-control", type = "number", onchange = "fnCheckDiscount(5)", oninput = "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');", id = "discount5" } })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Image
+                                    </label>
+                                    <div class="col-md-2">
+                                        @Html.TextBox("file", "", new { @class = "form-control", type = "file", accept = ".png,.jpg,.jpeg,.gif,.tif" })
+                                        @Html.ValidationMessageFor(model => model.ImgName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <label class="control-label col-md-2">
+                                        Active
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.CheckBoxFor(model => model.IsActive, htmlAttributes: new { @class = "chkbox pull-left", @checked = true })
+                                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Full Description
+                                    </label>
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.FullDescription, new { htmlAttributes = new { @class = "form-control", @rows = 20, id = "descriptionInput" } })
+                                        @Html.ValidationMessageFor(model => model.FullDescription, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                                    @Html.ActionLink("Cancel", "TrainingCoursesList", new { controller = "TrainingCours" }, new { @class = "btn btn-default" })
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script src="https://cdn.tiny.cloud/1/9xc9wdopb0ep4oervh62x1e67qfoskkab0sm3i2gajsxxvzo/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script type="text/javascript">
+    tinymce.init({
+        selector: 'textarea', height: 350,
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar: 'undo redo | formatselect | ' +
+            'bold italic backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help'
+
+    });
+</script>
+
+<script>
+    function fnChangeTotal() {
+        var f = document.getElementById("fPayment").value;
+        var s = document.getElementById("sPayment").value;
+
+        var res = parseFloat(f) + parseFloat(s);
+
+        document.getElementById("tPayment").value = res;
+    }
+
+    function fnChangeFullPrice() {
+        
+        var full = document.getElementById("tFullPayment").value;
+        var total = document.getElementById("tPayment").value;
+
+        if (parseFloat(total) < parseFloat(full))
+        {
+            alert("Full payment should be less than Total Payment")
+            document.getElementById("tFullPayment").value = "0.00";
+        }
+    }
+
+    function fnChangeSKU() {
+        
+        var tc = document.getElementById("TrainingCourse").value;
+        var firstWord = tc.replace(/ .*/, '').toUpperCase();
+        var random = Math.floor(Math.random() * 100) + 1;
+        var sku = firstWord + random;
+
+
+        if (document.getElementById("SKU").value == "") {
+            document.getElementById("SKU").value = sku;
+        }
+    } 
+
+    function fnCheckDiscount(id) {
+        var d1 = parseInt(document.getElementById("discountFirst").value);
+        var df = parseInt(document.getElementById("discountFull").value);
+
+        var max = "";
+
+        if (d1 == "0" && df == "0") {
+            alert("Please Set Max Discounts")
+        }
+        else {
+            if (d1 > df)
+                max = d1;
+            else if (df > d1)
+                max = df;
+
+            var discount = parseInt(document.getElementById("discount"+id).value);
+
+            if (discount > max) {
+                alert("Discont should be less than: " + max);
+                document.getElementById("discount"+id).value = "0";
+            }
+        }
+
+    }
+
+</script>
+

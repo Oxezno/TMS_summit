@@ -1,0 +1,107 @@
+﻿@model TMS.Models.Recruiter
+
+@{
+    ViewBag.Title = "Recruiter Setup";
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Recruiter Setup</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("RecruiterList","Recruiter")">Recruiter List</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Recruiter Setup</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                @using (Ajax.BeginForm("EditRecruiter", "Recruiter", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "FileForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="card-body" id="bar-parent1">
+                        <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Name @Html.HiddenFor(model => model.ID)
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @required = "required", maxlength = "20" } })
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Last Name
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @required = "required", maxlength = "20" } })
+                                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Email
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", maxlength = "80" } })
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Phone
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", maxlength = "12" } })
+                                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        Company
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.ID_COMPANY, ViewData["ID_COMPANY_i"] as IEnumerable<SelectListItem>, "--Select a Company--", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.ID_COMPANY, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+
+                            </div>
+                            <div class="form-actions">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                                    @Html.ActionLink("Cancel", "RecruiterList", new { controller = "Recruiter" }, new { @class = "btn btn-default" })
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>

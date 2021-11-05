@@ -1,0 +1,179 @@
+﻿@model PagedList.IPagedList<TMS.Models.GetTrainingCourses_Result>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Training Courses";
+}
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Training Programs</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Training Programs</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-head">
+                    <div class="input-group col-md-9" style="margin-top:10px; margin-left:10px">
+                        @using (Html.BeginForm("TrainingCoursesSearch", "TrainingCours", new { @class = "form-inline" }))
+                        {
+                            <div class="input-group">
+                                @Html.TextBox("txtSearch", (string)ViewBag.Search, new { @class = "form-control", placeholder = "Search Training Program" })
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </span>
+                            </div>
+                        }
+                    </div>
+
+                    <span class="pull-right paddingtop">
+
+                        <a href="@Url.Action("TrainingProgramsExcel", new { controller = "TrainingCours" })" class="btn btn-primary btn-add" title="Click to Export" data-toggle="tooltip">
+                            <i class="fa fa-file-excel-o"></i>
+                        </a>
+
+                        @if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin")
+                        {
+                            <a href="@Url.Action("CreateTrainingCourse", new { controller = "TrainingCours", id = 0 })" class="btn btn-primary btn-add" title="Click to Add Form" data-toggle="tooltip">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        }
+                        
+                    </span>
+                </div>
+                <div class="@(Model.Count > 0  ? "PanelShow card-body" : "PanelHide")">
+                    <div class="fullresponsivetable">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>
+                                        @Html.ActionLink("Training Program " + (Convert.ToString(ViewBag.NameSortParm) == "name" ? "↑" : "↓"), "TrainingCoursesList", new { sortOrder = ViewBag.NameSortParm })
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("Type " + (Convert.ToString(ViewBag.TypeSortParm) == "type" ? "↑" : "↓"), "TrainingCoursesList", new { sortOrder = ViewBag.TypeSortParm })
+                                    </th>
+                                    <th class="text-right">
+                                        @Html.ActionLink("Starting Date " + (Convert.ToString(ViewBag.StartDate1SortParm) == "startdate1" ? "↑" : "↓"), "TrainingCoursesList", new { sortOrder = ViewBag.StartDate1SortParm })
+                                    </th>
+                                    @*<th>
+            @Html.ActionLink("Starting Date 2 " + (Convert.ToString(ViewBag.StartDate2SortParm) == "startdate2" ? "↑" : "↓"), "TrainingCoursesList", new { sortOrder = ViewBag.StartDate2SortParm })
+        </th>*@
+                                    <th class="text-right">
+                                        @Html.ActionLink("1st Payment " + (Convert.ToString(ViewBag.Payment1SortParm) == "payment1" ? "↑" : "↓"), "TrainingCoursesList", new { sortOrder = ViewBag.Payment1SortParm })
+                                    </th>
+                                    <th class="text-right">
+                                        @Html.ActionLink("2nd Payment " + (Convert.ToString(ViewBag.Payment2SortParm) == "payment2" ? "↑" : "↓"), "TrainingCoursesList", new { sortOrder = ViewBag.Payment2SortParm })
+                                    </th>
+                                    <th class="text-right">
+                                        @Html.ActionLink("Total Amount " + (Convert.ToString(ViewBag.TotalSortParm) == "total" ? "↑" : "↓"), "TrainingCoursesList", new { sortOrder = ViewBag.TotalSortParm })
+                                    </th>
+                                    <th class="text-center">
+                                        @Html.ActionLink("Active " + (Convert.ToString(ViewBag.ActiveSortParm) == "active" ? "↑" : "↓"), "TrainingCoursesList", new { sortOrder = ViewBag.ActiveSortParm })
+                                    </th>
+                                    <th class="text-right">
+                                        @Html.ActionLink("Enrolled " + (Convert.ToString(ViewBag.EnrolledSortParm) == "enrolled" ? "↑" : "↓"), "TrainingCoursesList", new { sortOrder = ViewBag.EnrolledSortParm })
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    var date1 = "";
+                                    //var date2 = "";
+                                    if (item.StartDate1 != null)
+                                    {
+                                        date1 = Convert.ToDateTime(item.StartDate1).ToString("MM/dd/yyyy");
+                                    }
+                                    //if (item.StartDate2 != null)
+                                    //{
+                                    //    date2 = Convert.ToDateTime(item.StartDate2).ToString("MM/dd/yyyy");
+                                    //}
+
+                                <tr>
+                                    <td align="center">
+                                        @{var trainingImg = item.ImgName; }
+                                        @if (item.ImgName != null)
+                                        {
+                                            trainingImg = item.ImgName;
+
+                                        }
+                                        else
+                                        {
+                                            trainingImg = "noImage.png";
+                                        }
+                                        <img src="~/Images/trainingCourses/@trainingImg" alt="@trainingImg" style="max-height:25px;">
+                                    </td>
+                                    @*<td data-title="Training Course">@Html.DisplayFor(modelItem => item.TrainingCourseName)</td>*@
+                                    <td>
+                                        <a href="@Url.Action("EditTrainingCourse", new { controller = "TrainingCours", id = item.TrainingCourseID})" title="Click to Edit" data-toggle="tooltip">
+                                            @Html.DisplayFor(modelItem => item.TrainingCourseName)
+                                        </a>
+                                    </td>
+                                    <td data-title="Type">@item.TrainingType</td>
+                                    <td class="text-right" data-title="StartDate1">@date1</td>
+                                    @*<td data-title="StartDate2">@date2</td>*@
+                                    <td class="text-right" data-title="FirstPayment">$ @Html.DisplayFor(modelItem => item.FirstPayment)</td>
+                                    <td class="text-right" data-title="SecondPayment">$ @Html.DisplayFor(modelItem => item.SecondPayment)</td>
+                                    <td class="text-right" data-title="Price">$ @Html.DisplayFor(modelItem => item.Price)</td>
+
+                                    <td data-title="Active" class="text-center">
+                                        @if (item.IsActive == true)
+                                        {
+                                            <i class="fa fa-check-square-o" style="color:green"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-remove" style="color:red"></i>
+                                        }
+                                    </td>
+
+                                    <td class="text-right" data-title="Enrolled">@Html.DisplayFor(modelItem => item.TotalEnrolled)</td>
+
+                                    <td class="text-center">
+
+                                        <a href="@Url.Action("EditTrainingCourse", new { controller = "TrainingCours", id = item.TrainingCourseID})" class="btn btn-xs btn-new" title="Click to Edit" data-toggle="tooltip">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+
+                                        <a href="@Url.Action("ViewTrainingCourse", new { controller = "TrainingCours", id = item.TrainingCourseID})" class="btn btn-xs btn-new" title="Click to View" data-toggle="tooltip">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
+                                        @if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin")
+                                        {
+                                            if (item.TotalEnrolled == 0)
+                                            {
+                                                <a href="@Url.Action("DeleteTrainingCourse",  new {  controller = "TrainingCours", id = item.TrainingCourseID})" class="modal-link btn btn-xs btn-danger" title="Delete Training Course.">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            }
+
+                                        }
+
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+                    @Html.PagedListPager(Model, page => Url.Action("TrainingCoursesList", new { page, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search }))
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

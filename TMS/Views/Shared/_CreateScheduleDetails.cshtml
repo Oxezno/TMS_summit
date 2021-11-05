@@ -1,0 +1,290 @@
+﻿
+@{ 
+
+    List<Tuple<string, string>> hours = new List<Tuple<string, string>>();
+    List<Tuple<string, string>> hours_to = new List<Tuple<string, string>>();
+
+    hours.Add(new Tuple<string, string>("9:00", "9:00 AM"));
+    hours.Add(new Tuple<string, string>("9:30", "9:30 AM"));
+    hours.Add(new Tuple<string, string>("10:00", "10:00 AM"));
+    hours.Add(new Tuple<string, string>("10:30", "10:30 AM"));
+    hours.Add(new Tuple<string, string>("11:00", "11:00 AM"));
+    hours.Add(new Tuple<string, string>("11:30", "11:30 AM"));
+    hours.Add(new Tuple<string, string>("12:00", "12:00 AM"));
+    hours.Add(new Tuple<string, string>("12:30", "12:30 AM"));
+    hours.Add(new Tuple<string, string>("13:00", "1:00 PM"));
+    hours.Add(new Tuple<string, string>("13:30", "1:30 PM"));
+    hours.Add(new Tuple<string, string>("14:00", "2:00 PM"));
+    hours.Add(new Tuple<string, string>("14:30", "2:30 PM"));
+    hours.Add(new Tuple<string, string>("15:00", "3:00 PM"));
+    hours.Add(new Tuple<string, string>("15:30", "3:30 PM"));
+    hours.Add(new Tuple<string, string>("16:00", "4:00 PM"));
+    hours.Add(new Tuple<string, string>("16:30", "4:30 PM"));
+    hours.Add(new Tuple<string, string>("17:00", "5:00 PM"));
+    hours.Add(new Tuple<string, string>("17:30", "5:30 PM"));
+
+    hours_to.Add(new Tuple<string, string>("9:30", "9:30 AM"));
+    hours_to.Add(new Tuple<string, string>("10:00", "10:00 AM"));
+    hours_to.Add(new Tuple<string, string>("10:30", "10:30 AM"));
+    hours_to.Add(new Tuple<string, string>("11:00", "11:00 AM"));
+    hours_to.Add(new Tuple<string, string>("11:30", "11:30 AM"));
+    hours_to.Add(new Tuple<string, string>("12:00", "12:00 AM"));
+    hours_to.Add(new Tuple<string, string>("12:30", "12:30 AM"));
+    hours_to.Add(new Tuple<string, string>("13:00", "1:00 PM"));
+    hours_to.Add(new Tuple<string, string>("13:30", "1:30 PM"));
+    hours_to.Add(new Tuple<string, string>("14:00", "2:00 PM"));
+    hours_to.Add(new Tuple<string, string>("14:30", "2:30 PM"));
+    hours_to.Add(new Tuple<string, string>("15:00", "3:00 PM"));
+    hours_to.Add(new Tuple<string, string>("15:30", "3:30 PM"));
+    hours_to.Add(new Tuple<string, string>("16:00", "4:00 PM"));
+    hours_to.Add(new Tuple<string, string>("16:30", "4:30 PM"));
+    hours_to.Add(new Tuple<string, string>("17:00", "5:00 PM"));
+    hours_to.Add(new Tuple<string, string>("17:30", "5:30 PM"));
+    hours_to.Add(new Tuple<string, string>("18:00", "6:00 PM"));
+    hours_to.Add(new Tuple<string, string>("18:30", "6:30 PM"));
+
+    ViewBag.HOURS = new SelectList(hours, "item1", "Item2");
+    ViewBag.HOURS_TO = new SelectList(hours_to, "item1", "Item2");
+
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                &times;
+            </button>
+
+            <h4 class="modal-title" id="exampleModalLabel">Scheduler for @ViewBag.TRAINING</h4>
+        </div>
+        <div class="modal-body">
+            @{
+                var Id = ViewBag.ID;
+            }
+            <div class="clearfix m-b-5"></div>
+            <div class="col text-red">
+                @using (Html.BeginForm("SaveScheduleDetails", "TrainingCourse", FormMethod.Post, new { id = "ScheduleForm" }))
+                { 
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "Please below errors: ", new { @class = "col-md-4 text-danger" })
+                @*<form action="#" id="form_sample_1" class="form-horizontal" novalidate>*@
+                    <div class="form-body">
+
+                        <div class="clearfix"></div>
+                        <div hidden class="form-group">
+                            <label class="control-label col-md-2">
+                                @Html.Editor("TrainingCourseID", new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value = @ViewBag.ID } })
+                            </label>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Training Program:</b>
+                            </label>
+                            <div class="col-md-8">
+                                @ViewBag.TRAINING
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Candidate:</b>
+                            </label>
+                            <div class="col-md-8">
+                                @Html.DropDownList("WebsiteUserID", ViewData["ID_USER"] as IEnumerable<SelectListItem>, "--Select Candidate--", htmlAttributes: new { @class = "form-control", @required = "required", id = "wuID"})
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Schedule for:</b>
+                            </label>
+                            <div class="col-md-8">
+                                @Html.DropDownList("ScheduleType", ViewData["SCHEDULE_FOR"] as IEnumerable<SelectListItem>, "--Select Type--", htmlAttributes: new { @class = "form-control", @required = "required", id = "scType" })
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Date:</b>
+                            </label>
+                            <div class="col-md-4">
+                                @Html.TextBox("StartDate", "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date", @required = "required", id = "iStartDate", onchange = "fnEnableFrom()" })
+                            </div>
+                            <div class="col-md-2">
+                                @Html.DropDownList("From", ViewData["HOURS"] as IEnumerable<SelectListItem>, "From", htmlAttributes: new { @class = "form-control", @required = "required", id = "iStartTime", @disabled = "disabled", onchange = "fnEnableTo()" })
+                            </div>
+                            <div class="col-md-2">
+                                @Html.DropDownList("To", ViewData["HOURS_TO"] as IEnumerable<SelectListItem>, "To", htmlAttributes: new { @class = "form-control", @required = "required", id = "iEndTime", @disabled = "disabled" })
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        @*<div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Event Color:</b>
+                            </label>
+                            <div class="col-md-8">
+                                <select name=colors class="form-control">
+                                    <option class="red" value="red"></option>
+                                    <option class="pink" value="pink"></option>
+                                    <option>Blue</option>
+                                    <option class="red" style="color:red" value="red">Red</option>
+                                    <option>Option 3</option>
+                                    <option>Option 4</option>
+                                </select>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>*@
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Notes/Comments:</b>
+                            </label>
+                            <div class="col-md-8">
+                                @Html.TextArea("Description", new { @class = "form-control", maxlength = "500", rows = 10, id = "description" })
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-12">
+                                <span class="pull-right" id='remainingC'> Remaining characters: 500 </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <div class="col-lg-12 text-center m-t-10">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> &nbsp;
+                            @*<button type="button" id="btn-update-title" onclick="fnClear()" class="btn btn-primary">Clear</button>*@
+                            <button type="button" id="btn-update-title" onclick="fnSaveScheduleDetails()" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                @*</form>*@
+                }
+            </div>
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+<script>
+    $(document).ready(function () {
+        var len = 0;
+        var maxchar = 500;
+
+        $('#description').keyup(function () {
+            len = this.value.length
+            if (len > maxchar) {
+                return false;
+            }
+            else if (len > 0) {
+                $("#remainingC").html("Remaining characters: " + (maxchar - len));
+            }
+            else {
+                $("#remainingC").html("Remaining characters: " + (maxchar));
+            }
+        })
+    });
+
+    function fnSaveScheduleDetails() {
+
+        if ($('#wuID').val() == "" || $('#scType').val() == "" || $('#iStartDate').val() == "" ||
+            $('#iStartTime').val() == "" || $('#iEndTime').val() == "") {
+
+            if ($('#wuID').val() == "") {
+                toastr.error('Error: Select Candidate!');
+            }
+
+            if ($('#scType').val() == "") {
+                toastr.error('Error: Select Type!');
+            }
+
+            if ($('#iStartDate').val() == "") {
+                toastr.error('Error: Select Date!');
+            }
+
+            if ($('#iStartTime').val() == "") {
+                toastr.error('Error: Select Start Time!');
+            }
+
+            if ($('#iEndTime').val() == "") {
+                toastr.error('Error: Select End Time!');
+            }
+        }
+        else {
+            if ($("#iEndTime").prop('selectedIndex') <= $("#iStartTime").prop('selectedIndex'))
+                toastr.error('Check end time');
+            else {
+
+                var sDate = $('#iStartDate').val() + " " + $('#iStartTime').val();
+                var eDate = $('#iStartDate').val() + " " + $('#iEndTime').val();
+                $("[data-dismiss=modal]").trigger({ type: "click" });
+                toastr.success('Sending email notifications');
+                $('#pageloaddiv').show();
+                jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("SaveScheduleDetails", "TrainingCours")',
+                    data: { "tcID": $('#TrainingCourseID').val(), "wuID": $('#wuID').val(), "scType": $('#scType').val(), "sDate": sDate, "eDate": eDate, "notes": $('#description').val() },
+                success: function (textStatus) {
+                    
+                    $.ajax({
+                        url: '@Url.Action("GetScheduleView", "TrainingCours")',
+                        data: { "id": @ViewBag.ID },
+                        success: function (data) {
+                            $("#scheduler-grid").html(data);
+                            $('#pageloaddiv').hide();
+                            toastr.success('Updating Scheduler');
+                        }
+                    });
+
+                },
+                error: function (textStatus) {
+                    //toastr.error('Error: Something wrong!' + textStatus);
+                }
+            });
+
+            }
+        }
+
+
+    }
+
+    function fnEnableFrom() {
+        if ($('#iStartDate').val() == "") {
+            $('#iStartTime').attr('disabled', true);
+            $('#iEndTime').attr('disabled', true);
+            $("select#iStartTime").prop('selectedIndex', 0);
+            $("select#iEndTime").prop('selectedIndex', 0);
+        }
+        else if ($('#iStartDate').val() != "") {
+            $('#iStartTime').attr('disabled', false);
+            //$('#iEndTime').attr('disabled', false);
+        }
+    }
+
+    function fnEnableTo() {
+        if ($("#iStartTime").prop('selectedIndex') != 0) {
+            $('#iEndTime').attr('disabled', false);
+            $("select#iEndTime").prop('selectedIndex', $("#iStartTime").prop('selectedIndex') + 1);
+
+        }
+        else {
+            $('#iEndTime').attr('disabled', true);
+            $("select#iEndTime").prop('selectedIndex', 0);
+        }
+    }
+
+</script>

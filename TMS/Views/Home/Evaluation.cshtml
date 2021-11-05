@@ -1,0 +1,160 @@
+﻿@model TMS.Models.EvalutionLoc
+
+@{
+    ViewBag.Title = "Profile Interaction";
+}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$('#divSelected').hide();
+        $('#chkSelected').change(function () {
+            if (this.checked) {
+                $('#divSelected').hide();
+            }
+            else {
+                $('#divSelected').show();
+            }
+        })
+
+        $('#chkAppearedInEval').change(function () {
+            if (this.checked) {
+                $('#divAE').show();
+            }
+            else {
+                $('#divAE').hide();
+            }
+        })
+    })
+</script>
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Profile Evaluation</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("BatchesList","Home")">Batches</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("ProfileList","Home", new { BatchId = 1 })">Profile List</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("ViewProfile","Home", new { Id = Model.Profile_users_PID })">View Profile</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Evaluation</li>
+            </ol>
+        </div>
+    </div>
+@using (Ajax.BeginForm("Evaluation", "Home", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "EvalForm" }))
+{
+    @Html.AntiForgeryToken()
+    <!-- start widget -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-head">
+                        <div class="col-md-6">
+
+                        </div>
+
+                        <div class="col-md-6 pull-right text-right" style="margin-top:5px;">
+                            <h5>Profile Name: @Model.ProfileName @Html.HiddenFor(model => model.Profile_users_PID) @Html.HiddenFor(model => model.ProfileName) @Html.HiddenFor(model => model.ProfileEmail) &nbsp;&nbsp;</h5>
+                        </div>
+                    </div>
+                    <div class="card-body" id="bar-parent1">
+                        <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Evaluation On
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            @Html.ValidationMessageFor(model => model.EvalDate, "", new { @class = "field-validation-error" })
+
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                            @Html.TextBoxFor(model => model.EvalDate, "{0:yyyy-MM-dd}", htmlAttributes: new { @class = "form-control", @type = "date", placeholder = "MM/dd/yyyy", @id = "txtRecruitmentInterviewOn" })
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Appeared in Evaluation
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.CheckBoxFor(model => model.AppearedInEval, htmlAttributes: new { @class = "chkbox pull-left", @id = "chkAppearedInEval" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div id="divAE">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            Result
+                                            <span class="required" aria-required="true"> * </span>
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Html.ValidationMessageFor(model => model.Result, "", new { @class = "field-validation-error" })
+                                            @Html.TextBoxFor(model => model.Result, htmlAttributes: new { @class = "form-control", placeholder = "Result", @id = "txtRecruitmentInterview_by" })
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            Comments
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Html.TextAreaFor(model => model.Comment, htmlAttributes: new { @class = "form-control sw-placeholder", placeholder = "Comments", @id = "txtNotes" })
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">
+                                            Selected
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Html.CheckBoxFor(model => model.Selected, htmlAttributes: new { @class = "chkbox pull-left", @id = "chkSelected" })
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="form-group" id="divSelected">
+                                        <label class="control-label col-md-3">
+                                            Reason for not Selecting
+                                        </label>
+                                        <div class="col-md-4">
+                                            @Html.DropDownListFor(model => model.reasonForNotSelectingId, (SelectList)ViewBag.ReasonforNotSelecting, "Select Reason for not Selecting", new { @class = "form-control m-bot15", @id = "ddlReasonforNotSelecting" })
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                                    @Html.ActionLink("Cancel", "ViewProfile", new { controller = "Home", Id = Model.Profile_users_PID }, new { @class = "btn btn-default" })
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

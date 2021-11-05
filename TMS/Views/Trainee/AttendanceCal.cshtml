@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "Attendance Cal";
+}
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Attendance Calendar</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active"><a class="parent-item" href="@Url.Action("TraineePortal","Trainee")">Trainee Protal</a></li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div id='calendar'></div>
+                    <div id='cal_error'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+        $.ajax({
+            dataType: "json",
+            contentType: "application/json",
+            data: "{}",
+            url: "/Trainee/AttendanceList",
+            dataType: "json",
+            success: function (data) {
+                $('#calendar').fullCalendar({
+                    theme: false,
+                    header: {
+                        left: 'title',
+                        center: '',
+                        right: 'prevYear prev today next nextYear'
+                    },
+                    defaultView: 'month',
+                    editable: false,
+                    lang: 'en-IN',
+                    height: 300,
+                    
+                    //eventLimit: 1,
+                    //eventLimitText: 'More',
+                    //weekMode: 'liquid',
+                    events: $.map(data, function (item, i) {//This is where you need to take care
+                        var event = new Object();
+                        event.start = moment(item.DateFrom).utc();
+                        event.end = moment(item.DateTo).utc();
+                        event.title = item.name;
+                        event.backgroundColor = item.BgColor
+                        return event;
+                    }),
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#cal_error").text(errorThrown); //Handle Error
+            }
+        });
+    
+
+
+    //$(document).ready(function () {
+
+    //    // page is now ready, initialize the calendar...
+
+    //    $('#calendar').fullCalendar({
+    //        // put your options and callbacks here
+    //        left: 'Calendar',
+    //        center: '',
+    //        right: 'today prev,next',
+    //        events: "/Trainee/AttendanceList"
+    //    });
+
+    //});
+</script>

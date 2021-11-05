@@ -1,0 +1,7 @@
+create AWS free tier account.
+
+
+1. Install AWS cli in your laptop, see whehter its installed properly or not.
+use you can Demo_AWS_CLI.pdf file for reference. 
+
+2. launch ec2 server and connect with ssh protocal.

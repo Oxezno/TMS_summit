@@ -1,0 +1,94 @@
+﻿
+@model List<TMS.Models.RolePermission>
+
+@{
+    ViewBag.Title = "RolePermissions";
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Role Permissions</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Role Permission</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+@using (Html.BeginForm("UserRoles", "Settings", FormMethod.Post))
+{
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th style="text-align:center;">WebsiteDashboard</th>
+                            <th style="text-align:center;">Settings</th>
+                            <th style="text-align:center;">AdminWebsite</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(model => model[i].Id)
+                                @Html.DisplayFor(model => model[i].Role)
+                            </td>
+                            <td style="text-align:center;"> @Html.CheckBoxFor(model => model[i].WebsiteDashboard)</td>
+                            <td style="text-align:center;"> @Html.CheckBoxFor(model => model[i].Settings)</td>
+                            <td style="text-align:center;"> @Html.CheckBoxFor(model => model[i].AdminWebsite)</td>
+                        </tr>
+                        }
+                        <tr>
+                            <td colspan="9" style="text-align:right;">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+}
+             
+            </div>
+        </div>
+    </div>
+
+
+   </div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+           var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").show();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+
+    });
+</script>

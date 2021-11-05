@@ -1,0 +1,134 @@
+﻿@model TMS.Models.MockInterview
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                &times;
+            </button>
+
+            <h4 class="modal-title" id="exampleModalLabel">@ViewBag.NAME / @ViewBag.TRAINING</h4>
+        </div>
+        <div class="modal-body">
+            @{
+                var Id = ViewBag.ID;
+            }
+            @*@using (Ajax.BeginForm("SaveMockInterviewDetails", "TrainingCours", new { id = Id }, new AjaxOptions { OnSuccess = "Response" }))*@
+            @*{*@
+            <div class="clearfix m-b-5"></div>
+            <div class="col text-red" >
+
+                <div class="form-body">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">
+                            <b>Subject:</b>
+                        </label>
+                        <div class="col-md-10">
+                            @Html.Editor("Subject", new { htmlAttributes = new { id = "txt_subject", @class = "form-control", placeholder = "Subject", @required = "required", @Value = @ViewBag.NAME + "/" + @ViewBag.TRAINING + " is ready to work on Resume" } })
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    @*<div class="form-group">
+                        <label class="control-label col-md-2">
+                            <b>Notify:</b>
+                        </label>
+                        <div class="col-md-10">
+                            @Html.DropDownList("ToInternalID", ViewData["ID_USER"] as IEnumerable<SelectListItem>, "--Select User--", htmlAttributes: new { @class = "form-control", @required = "required", id = "userID" })
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>*@
+
+                    <div class="clearfix"></div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2">
+                            <b>Message:</b>
+                        </label>
+                        <div class="col-md-10">
+                            @Html.TextArea("Message", new { id = "txt_message", @class = "form-control", maxlength = "2000", placeholder = "Message", rows = "10", })
+                            <div class="col-md-12">
+                                <span class="pull-right" id='remainingC'></span>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="clearfix m-b-5"></div>
+
+            <div class="col-lg-12 text-center m-t-10">
+                <button type="button" class="modal-close-btn btn btn-secondary" data-dismiss="modal">Cancel</button> &nbsp;
+                @*<input type="submit" value="Send" class="btn btn-primary" />*@
+                <button type="button" onclick="fnSendMessage(@ViewBag.ID, document.getElementById('txt_subject').value, document.getElementById('txt_message').value)" class="btn btn-primary">Send</button>
+
+            </div>
+            @*}*@
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+<script>
+
+    $(document).ready(function () {
+        var len = 0;
+        var maxchar = 2000;
+
+        document.getElementById('txt_message').value = document.getElementById('txt_subject').value+". Please contact the candidate to start working on resume preparation.";
+
+        $('#txt_message').keyup(function () {
+            len = this.value.length
+            if (len > maxchar) {
+                return false;
+            }
+            else if (len > 0) {
+                $("#remainingC").html("Remaining characters: " + (maxchar - len));
+            }
+            else {
+                $("#remainingC").html("Remaining characters: " + (maxchar));
+            }
+        })
+    });
+
+    function fnSendMessage(id, sub, mes) {
+        //console.log(id, sub, notify, mes)
+        if (sub == "") 
+            toastr.error('Error: Please enter a subject!');
+
+        //if (notify == 0) 
+        //    toastr.error('Error: Please select a user to notify!');
+
+        if (mes == "") 
+            toastr.error('Error: Please enter a message!');
+
+        if (sub != "" && mes != "") {
+
+            $("[data-dismiss=modal]").trigger({ type: "click" });
+            toastr.success('Sending email notification');
+            $('#pageloaddiv').show();
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("ConfirmSendMessageInternal", "TrainingCours")',
+                data: { "subject": sub, "message": mes, "userID": id },
+                success: function (textStatus) {
+                    $('#pageloaddiv').hide();  
+                    toastr.success('Message was send successfully!');
+                },
+                error: function (textStatus) {
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    toastr.error('Error: Something wrong!' + textStatus);
+                }
+            });
+        }
+
+    }
+</script>

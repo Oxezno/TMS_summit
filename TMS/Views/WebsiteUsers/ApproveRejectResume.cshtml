@@ -1,0 +1,74 @@
+﻿@{
+                /**/
+
+                Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewBag.Message</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body style="text-align: center;font-family: Arial, Helvetica, sans-serif;">
+    <div style="position:relative;
+padding:50px 0px 50px;
+background-position:center center;
+background-repeat:no-repeat;
+background-size: cover;
+text-align:center;
+background-image:url('https://brightrace.com/ui/assets/images/inner-bg.jpg');">
+        <a href="https://brightrace.com"><img src="https://brightrace.com/ui/assets/images/logo-2.png" alt=""></a>
+        <br /><br /><br /><br />
+        <h3 style="">@ViewBag.Message</h3>
+        <table style="margin-left:auto; margin-right:auto; width:500px; border:none; text-align: justify; border-radius: 0px;" cellpadding="0" cellspacing="0">
+
+            <tbody>
+                <tr>
+                    <td style="padding: 10px 30px 10px 30px;"> If you have any issues, please contact Brightrace Intitute of Technologies Admin</b>.</td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr style="text-align:center;">
+                    <td style="padding: 10px 30px 10px 30px;">
+                        <a href="@ViewBag.URl" role="button">Go to login page</a>
+                    </td>
+                <tr>
+            </tbody>
+            <tfoot style="text-align:center; font-size:small;">
+                <tr>
+                    <td>
+                        <hr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://brightrace.com/ui/course/all" target="_blank"> Programs </a>
+                        |
+                        <a href="https://brightrace.com/ui/register" target="_blank"> Register </a>
+                        |
+                        <a href="https://brightrace.com/ui/login" target="_blank"> Sign in</a>
+                        |
+                        <a href="https://brightrace.com/ui/policy" target="_blank"> Privacy Policy </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px 30px 10px 30px;">
+                        50 Cragwood Road, South Plainfield, <br />
+                        New Jersey, United States<br />
+                        Email: info@brightrace.com <br />
+                        Phone: (908) 458 - 4161 <br />
+                        <a href="https://brightrace.com" target="_blank" role="button"> www.brightrace.com </a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</body>
+</html>

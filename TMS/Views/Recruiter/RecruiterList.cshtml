@@ -1,0 +1,118 @@
+﻿@model PagedList.IPagedList<TMS.Models.Recruiter>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Recruiters";
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Recruiters</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Recruiters</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-head">
+                    <div class="input-group col-md-9" style="margin-top:10px; margin-left:10px">
+                        @using (Html.BeginForm("RecruiterSearch", "Recruiter", new { @class = "form-inline" }))
+                        {
+                            <div class="input-group">
+                                @Html.TextBox("txtSearch", (string)ViewBag.Search, new { @class = "form-control", placeholder = "Search Recruiter" })
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </span>
+                            </div>
+                        }
+                    </div>
+
+                    <span class="pull-right paddingtop">
+                        <a href="@Url.Action("CreateRecruiter", new { controller = "Recruiter", id = 0 })" class="btn btn-primary btn-add" title="Click to Add Recruiter" data-toggle="tooltip">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="@(Model.Count > 0  ? "PanelShow card-body" : "PanelHide")">
+                    <div class="fullresponsivetable">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Company</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td data-title="Company">@Html.DisplayFor(modelItem => item.Name)</td>
+                                        <td data-title="Phone">@Html.DisplayFor(modelItem => item.LastName)</td>
+                                        <td data-title="Email">@Html.DisplayFor(modelItem => item.Email)</td>
+                                        <td data-title="Address">@Html.DisplayFor(modelItem => item.Phone)</td>
+                                        <td data-title="Address">@Html.DisplayFor(modelItem => item.Company.COMPANY_NAME)</td>
+                                        <td class="text-right">
+                                            <a href="@Url.Action("EditRecruiter", new { controller = "Recruiter", id = item.ID})" class="btn btn-xs btn-new" title="Click to Edit" data-toggle="tooltip">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                            <a href="@Url.Action("DeleteRecruiter",  new {  controller = "Recruiter", id = item.ID})" class="modal-link btn btn-xs btn-danger" title="Delete Recruiter.">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+                    @Html.PagedListPager(Model, page => Url.Action("RecruiterList", new { page, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search }))
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    $(document).ready(function () {
+
+      $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+           var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").show();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+
+    });
+</script>

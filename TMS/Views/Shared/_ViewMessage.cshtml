@@ -1,0 +1,125 @@
+﻿@model TMS.Models.Message
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                &times;
+            </button>
+
+            <h5 class="modal-title" id="exampleModalLabel"><b>Message from:</b> @TempData["UserName"]</h5>
+        </div>
+        <div class="modal-body">
+            @{
+                var Id = ViewBag.ID;
+            }
+            @*@using (Ajax.BeginForm("ConfirmSendMessage", "TrainingCours", new { id = Id }, new AjaxOptions { OnSuccess = "Response" }))*@
+            @*{*@
+            <div class="clearfix m-b-5"></div>
+            <div class="col text-red">
+
+                <div class="form-body">
+
+                    <div class="clearfix"></div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">
+                            <b>Subject:</b>
+                        </label>
+                        <div class="col-md-10 pull-left">
+                            @TempData["Subject"]
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">
+                            <b>Message:</b>
+                        </label>
+                        <div class="col-md-10 pull-left">
+                            @TempData["Message"]
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2">
+                        </label>
+                        <div id="reply" class="col-md-10 pull-left">
+
+                        </div>
+                    </div>
+                    <h5 class="text-danger text-center"><label id="err_message"></label></h5>
+                </div>
+            <div class="clearfix m-b-5"></div>
+
+            <div class="col-lg-12 text-center m-t-10">
+                <button type="button" class="modal-close-btn btn btn-secondary" data-dismiss="modal">Cancel</button> &nbsp;
+                @*<input type="submit" value="Send" class="btn btn-primary" />*@
+                @*<button type="button" onclick="fnSendMessage(@TempData["ID"], document.getElementById('txt_subject').value, document.getElementById('txt_message').value)" class="btn btn-primary">Reply</button>*@
+                <button id="replyBtn" type="button" onclick="fnReply()" class="btn btn-primary">Reply</button>
+
+                @*<a href="@Url.Action("ReplyMessage",  new {  controller = "TrainingCours", id = TempData["ID"]})" class="btn btn-primary">
+            Reply @TempData["ID"]
+        </a>*@
+
+            </div>
+
+            <div class="clearfix"></div>
+            @*}*@
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function fnReply() {
+        var element = document.createElement("TEXTAREA");
+        document.getElementById('reply').appendChild(element);
+        document.getElementById('reply').appendChild(element).className = "form-control";
+        document.getElementById('reply').appendChild(element).id = "replyBox";
+        document.getElementById("replyBox").maxLength = "2000";
+        document.getElementById("replyBox").rows = "8";
+        document.getElementById("replyBox").placeholder = "Reply here...";
+        document.getElementById('replyBtn').textContent = "Send";
+        document.getElementById("replyBtn").onclick = SendReply;
+    }
+
+    function SendReply() {
+        var replyMessage = document.getElementById("replyBox").value;
+
+        if (replyMessage == "") {
+            document.getElementById('err_message').innerHTML = 'Please enter a message';
+        }
+        //else {
+        //    document.getElementById('err_message').innerHTML = '';
+        //}
+
+        else {
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("ConfirmSendReply", "TrainingCours")',
+                data: { "mID": @TempData["ID"], "message": replyMessage },
+                success: function () {
+                    toastr.success('Message was send successfully!');
+                    //sessionStorage.test1 = resources;
+                    location.reload();
+                    //activaTab('resources');
+                    //$('.nav-tabs a[href="#' + tab + '"]').tab('show');
+                    //$("[data-dismiss=modal]").trigger({ type: "click" });
+                    //toastr.success('Message was send successfully!');
+                },
+                error: function (textStatus) {
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    toastr.error('Error: Something wrong!');
+                }
+            });
+        }
+
+    }
+</script>
+

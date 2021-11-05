@@ -1,0 +1,198 @@
+﻿@model TMS.Models.PMarketing
+
+@{
+    ViewBag.Title = "Profile Interaction";
+}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#chkPlaced').change(function () {
+            if (this.checked) {
+                $('#dPlaced').show();
+            }
+            else {
+                $('#dPlaced').hide();
+            }
+        })
+    })
+</script>
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Profile Interaction</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("BatchesList","Home")">Batches</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("ProfileList","Home", new { BatchId = 1 })">Profile List</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("ViewProfile","Home", new { Id = Model.Profile_users_PID })">View Profile</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Profile Interaction</li>
+            </ol>
+        </div>
+    </div>
+    @using (Ajax.BeginForm("ProfileMartketings", "Home", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "FileForm" }))
+    {
+        @Html.AntiForgeryToken()
+    <!-- start widget -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-head">
+                        <div class="col-md-6">
+
+                        </div>
+
+                        <div class="col-md-6 pull-right text-right" style="margin-top:5px;">
+                            <h5>Profile Name: @Model.ProfileName @Html.HiddenFor(model => model.Profile_users_PID) @Html.HiddenFor(model => model.MId) &nbsp;&nbsp;</h5>
+                        </div>
+                    </div>
+                    <div class="card-body" id="bar-parent1">
+                        <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Marketing Start Date
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            @Html.ValidationMessageFor(model => model.StartDt, "", new { @class = "field-validation-error" })
+
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                            @Html.TextBoxFor(model => model.StartDt, "{0:yyyy-MM-dd}", htmlAttributes: new { @class = "form-control", @type = "date", placeholder = "MM/dd/yyyy", @id = "txtStartDt" })
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Sale Team
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.ValidationMessageFor(model => model.SalesTeamId, "", new { @class = "field-validation-error" })
+                                        @Html.DropDownListFor(model => model.SalesTeamId, (SelectList)ViewBag.UsersList, "Select Sales Team", new { @class = "form-control m-bot15", @id = "ddlSalesTeam" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        Final Resume
+                                        <span class="required" aria-required="true"> * </span> 
+                                        @if(Model.FinalResume != null)
+                                        { @Html.HiddenFor(model => model.FinalResume) }
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.ValidationMessageFor(model => model.FinalResume, "", new { @class = "field-validation-error" })
+                                        @Html.TextBoxFor(model => model.FinalResume, new { type = "file", @class = "control-label", @id = "FuploadFinalResume" })
+                                    </div>
+                                    <div class="col-md-5">
+                                        <a target='_blank' href='@ViewBag.FileFolderPath@Model.FinalResume'>@Model.FinalResume </a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                        is Placed?
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.CheckBoxFor(model => model.Placed, htmlAttributes: new { @class = "chkbox pull-left", @id = "chkPlaced" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+@if (Session["RolesId"].ToString() == "1")
+{
+                               <div id="dPlaced" style="display: (@Model.Placed == true ? 'block':'none')">
+                                   <div class="form-group">
+                                       <label class="control-label col-md-3">
+                                           Client Name
+                                           <span class="required" aria-required="true"> * </span>
+                                       </label>
+                                       <div class="col-md-4">
+                                           @*@Html.ValidationMessageFor(model => model.ClientName, "", new { @class = "field-validation-error" })*@
+                                           @Html.TextBoxFor(model => model.ClientName, htmlAttributes: new { @class = "form-control", placeholder = "Client Name", @id = "txtClientName" })
+                                       </div>
+                                       <div class="clearfix"></div>
+                                   </div>
+                                   <div class="form-group">
+                                       <label class="control-label col-md-3">
+                                           Client Location
+                                           <span class="required" aria-required="true"> * </span>
+                                       </label>
+                                       <div class="col-md-4">
+                                           @*@Html.ValidationMessageFor(model => model.ClientLocation, "", new { @class = "field-validation-error" })*@
+                                           @Html.TextBoxFor(model => model.ClientLocation, htmlAttributes: new { @class = "form-control", placeholder = "Client Location", @id = "txtClientLocation" })
+                                       </div>
+                                       <div class="clearfix"></div>
+                                   </div>
+                                   <div class="form-group">
+                                       <label class="control-label col-md-3">
+                                           Project Start Date
+                                           <span class="required" aria-required="true"> * </span>
+                                       </label>
+                                       <div class="col-md-4">
+                                           <div class="input-group">
+                                               @*@Html.ValidationMessageFor(model => model.ProjectStartDt, "", new { @class = "field-validation-error" })*@
+
+                                               <span class="input-group-addon">
+                                                   <i class="fa fa-calendar"></i>
+                                               </span>
+                                               @Html.TextBoxFor(model => model.ProjectStartDt, "{0:yyyy-MM-dd}", htmlAttributes: new { @class = "form-control", @type = "date", placeholder = "MM/dd/yyyy", @id = "txtProjectStartDt" })
+                                           </div>
+                                       </div>
+                                       <div class="clearfix"></div>
+                                   </div>
+
+                                   <div class="form-group">
+                                       <label class="control-label col-md-3">
+                                           Hourly Rate
+                                           <span class="required" aria-required="true"> * </span>
+                                       </label>
+                                       <div class="col-md-4">
+                                           <div class="input-group">
+                                               @*@Html.ValidationMessageFor(model => model.HourlyRate, "", new { @class = "field-validation-error" })*@
+
+                                               <span class="input-group-addon">
+                                                   <i class="fa fa-usd"></i>
+                                               </span>
+                                               @Html.TextBoxFor(model => model.HourlyRate, "{0:n2}", htmlAttributes: new { @class = "form-control", placeholder = "0.00", @id = "txtHourlyRate" })
+                                           </div>
+                                       </div>
+                                       <div class="clearfix"></div>
+                                   </div>
+                               </div>
+}
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                                        @Html.ActionLink("Cancel", "ViewProfile", new { controller = "Home", Id = Model.Profile_users_PID }, new { @class = "btn btn-default" })
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

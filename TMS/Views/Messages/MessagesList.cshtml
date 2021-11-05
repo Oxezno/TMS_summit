@@ -1,0 +1,59 @@
+﻿@model PagedList.IPagedList<TMS.Models.Message>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Messages";
+}
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Messages</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Messages</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-head">
+                    
+                </div>
+                <div class="PanelShow card-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#inbox">Inbox</a></li>
+                        <li><a data-toggle="tab" href="#sent">Sent</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="inbox" class="tab-pane fade in active">
+                            <div class="fullresponsivetable">
+                                <div id="inbox-list">
+                                    @Html.Partial("GetInboxMessages")
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="sent" class="tab-pane fade in">
+                            <div class="fullresponsivetable">
+                                <div id="sent-list">
+                                    bye
+                                    @*@Html.Partial("GetInboxMessages")*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

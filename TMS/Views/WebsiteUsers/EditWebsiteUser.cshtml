@@ -1,0 +1,487 @@
+﻿@model TMS.Models.WebsiteUserFull
+
+@{
+    ViewBag.Title = "Website User Edit";
+    string styleX = "";
+    if (Model.Status == "Resume Preparation" || Model.Status == "Waiting for Resume approval")
+    {
+        styleX = "pointer-events:none; opacity: 0.4;";
+    }
+
+
+}
+
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title"><b>@Model.FName @Model.LName </b></div>
+            </div>
+
+            @{
+                if (TempData["Message"] != null)
+                {
+                    <div class="text-success pull-left">
+                        <h3> @TempData["Message"]</h3>
+                    </div>
+                }
+            }
+
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index", "WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("WebsiteUsersList", "WebsiteUsers")">Website Users List</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Website User Edit</li>
+            </ol>
+
+        </div>
+    </div>
+
+    <div id="home" class="tab-pane fade in active">
+        <!-- start widget -->
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-body" id="bar-parent1">
+                        <div class="clearfix"></div>
+                        @using (Html.BeginForm("EditWebsiteUser", "WebsiteUsers", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                        {
+                        @Html.AntiForgeryToken()
+                            <div class="form-body">
+
+                                <div class="form-group bg-orange">
+                                    <label class="text-center col-md-12">
+                                        <b>Basic Information</b>
+                                    </label>
+                                </div>
+
+                                <div hidden class="form-group">
+                                    <label class="control-label col-md-2">
+                                        @Html.EditorFor(model => model.WebsiteUserID, new { htmlAttributes = new { @class = "form-control" } })
+                                    </label>
+                                </div>
+
+                                <div class="clearfix"></div>
+                                <div class="form-group">
+
+                                    <label class="control-label col-md-2">
+                                        <b>Name</b>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Model.FName
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        <b>Last Name</b>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Model.LName
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        <b>Email</b>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "", maxlength = "100", @required = "required" } })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        <b>Phone</b>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "", maxlength = "12", @required = "required", @onkeypress = "return isNumber(event)" } })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        <b>SkypeID</b>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.SkypeID, new { htmlAttributes = new { @class = "form-control", placeholder = "", maxlength = "50" } })
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        <b>Register Date</b>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Model.RegisterDate
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        <b>How did you hear about us?</b>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Model.AboutUs
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        <b>Why are you interested?</b>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Model.WhyInterested
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label class="control-label col-md-2">
+                                        <b>Accept Privacy Policy</b>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @{ var aceptPP = "";
+                                            if (Model.AcceptPP == true)
+                                            {
+                                                aceptPP = "Yes";
+                                            }
+                                            else if (Model.AcceptPP == false)
+                                            {
+                                                aceptPP = "No";
+                                            }
+                                        }
+
+                                        @aceptPP
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        <b>Receive Updates</b>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @{ var updates = "";
+                                            if (Model.ReceiveUpdates == true)
+                                            {
+                                                updates = "Yes";
+                                            }
+                                            else if (Model.ReceiveUpdates == false)
+                                            {
+                                                updates = "No";
+                                            }
+                                        }
+                                        @updates
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label class="control-label col-md-2">
+                                        <b>Active</b>
+                                    </label>
+                                    <div class="col-md-4">
+
+                                        @{ var active = "";
+                                            if (Model.IsActive == true)
+                                            {
+                                                active = "Yes";
+                                            }
+                                            else if (Model.IsActive == false)
+                                            {
+                                                active = "No";
+                                            }
+                                        }
+                                        @active
+                                    </div>
+
+                                    <label class="control-label col-md-2">
+                                        <b>Status</b>
+                                    </label>
+                                    <div class="col-md-4 text-danger bold">
+
+                                        @{ var userStatus = "";
+                                            if (Model.Status == "" || Model.Status == null)
+                                            {
+                                                userStatus = "N/A";
+                                            }
+                                            else
+                                            {
+                                                userStatus = Model.Status;
+                                            }
+                                        }
+                                        @userStatus
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                @{if (Model.Status == "Regular Training (NPR)")
+                                    {
+                                        <div class="form-group">
+
+                                            <label class="control-label col-md-2">
+                                                <b>Take Evaluation</b>
+                                            </label>
+                                            <div class="col-md-4">
+
+                                                @{ var takeEval = "";
+
+                                                    if (Model.TakeEvaluation == true)
+                                                    {
+                                                        takeEval = "Yes";
+                                                    }
+
+                                                    else if (Model.TakeEvaluation == false || Model.TakeEvaluation == null)
+                                                    {
+                                                        takeEval = "No";
+                                                    }
+
+                                                    @takeEval;
+                                                }
+
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <b>Evaluation</b>
+                                            </label>
+                                            <div class="col-md-4">
+
+                                                @{ var evalStatus = "";
+
+                                                    if (Model.EvaluationStatus == true)
+                                                    {
+                                                        evalStatus = "Pass";
+                                                        <i class="fa fa-check-square-o" style="color:green"></i>
+                                                    }
+
+                                                    else if (Model.EvaluationStatus == false || Model.EvaluationStatus == null)
+                                                    {
+                                                        evalStatus = "Fail";
+                                                        <i class="fa fa-remove" style="color:red"></i>
+                                                    }
+                                                    @evalStatus
+                                                }
+
+
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    }
+                                }
+
+                                
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">
+                                        <b>Recruiter</b>
+                                    </label>
+                                    <div class="col-md-4">
+                                        @Html.DropDownListFor(model => model.RecruiterName, ViewData["ID_RECRUITER"] as IEnumerable<SelectListItem>, "--Select a Recruiter--", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                
+
+
+
+
+                                @{
+                                    if (Model.HighestEducation != null)
+                                    {
+
+                                        var employed = "No";
+
+                                        if (Model.CurrentlyEmployed == 1)
+                                        {
+                                            employed = "Yes";
+                                        }
+
+                                        <div class="clearfix"></div>
+                                        <div class="form-group bg-orange">
+                                            <label class="text-center col-md-12">
+                                                <b>More Details</b>
+                                            </label>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                <b>Highest education</b>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Model.HighestEducation
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <b>Completion year</b>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Model.CompletionYear
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                <b>Work Experience (IT)</b>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Model.WorkExperienceIT
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <b>Work Experience (Non-IT)</b>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Model.WorkExperienceNonIT
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                <b>Currently Employed?</b>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @employed
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <b>Authorized to work in the US?</b>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Html.DropDownListFor(model => model.AuthorizedWorkUSA, ViewData["WorkUSA"] as IEnumerable<SelectListItem>, "--Select--", htmlAttributes: new { @class = "form-control", @required = "required" })
+
+                                                @*@if (Model.AuthorizedWorkUSA == 1)
+                                                {
+                                                    @Html.CheckBox("AuthorizedWorkUSA", htmlAttributes: new { @class = "chkbox pull-left", @checked = true })
+                                                }
+                                                else if (Model.AuthorizedWorkUSA == 0 || Model.AuthorizedWorkUSA == null)
+                                                {
+                                                    @Html.CheckBox("AuthorizedWorkUSA", htmlAttributes: new { @class = "chkbox pull-left" })
+                                                }*@
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                <b>Visa status</b>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Html.EditorFor(model => model.VisaStatus, new { htmlAttributes = new { @class = "form-control", placeholder = "", maxlength = "80", @required = "required" } })
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <b>Address</b>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Model.Address
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                <b>City</b>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Model.City
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <b>State</b>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Model.CountryState.State
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">
+                                                <b>ZIP Code</b>
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Model.ZIPCode
+                                            </div>
+
+                                            <label class="control-label col-md-2">
+                                                <b>Open to relocate</b>
+                                            </label>
+                                            <div class="col-md-4">
+
+                                                @Html.DropDownListFor(model => model.OpenToRelocate, ViewData["Relocate"] as IEnumerable<SelectListItem>, "--Select--", htmlAttributes: new { @class = "form-control", @required = "required" })
+
+                                                @*@if (Model.OpenToRelocate == 1)
+                                                {
+                                                    @Html.CheckBoxFor(model => model.OpenToRelocate, htmlAttributes: new { @class = "chkbox pull-left", @checked = true })
+                                                }
+                                                else if (Model.OpenToRelocate == 0 || Model.OpenToRelocate == null)
+                                                {
+                                                    @Html.CheckBox("OpenToRelocate", htmlAttributes: new { @class = "chkbox pull-left" })
+                                                }*@
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    }
+
+                                }
+
+                            </div>
+                            <div class="form-actions">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                                    @Html.ActionLink("Cancel", "WebsiteUsersList", new { controller = "WebsiteUsers" }, new { @class = "btn btn-default" })
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #pageloaddiv {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        background: url('../../images/loading.gif') no-repeat center center;
+    }
+</style>
+
+<div id="pageloaddiv" hidden>
+</div>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+
+<script>
+
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+
+</script>

@@ -1,0 +1,241 @@
+﻿@model dynamic
+@{
+    Layout = null;
+
+    List<SelectListItem> listGroups = new List<SelectListItem>();
+
+    listGroups.Add(new SelectListItem { Text = "Group A", Value = "A" });
+    listGroups.Add(new SelectListItem { Text = "Group B", Value = "B" });
+    listGroups.Add(new SelectListItem { Text = "Group C", Value = "C" });
+
+    var num = 1;
+
+    string styleX = "disabled";
+    if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin" || Convert.ToString(Session["RoleName"]) == "Trainer")
+    {
+        styleX = "";
+    }
+}
+
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            @*<th>SkypeID</th>*@
+            <th>Status</th>
+            <th>Recruiter</th>
+            <th>Enrolled Date</th>
+            @{
+                if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin" || Convert.ToString(Session["RoleName"]) == "Trainer")
+                {
+                    <th class="text-center">Training Program</th>
+                }
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.UsersAll)
+        {
+            
+            var date1 = "";
+            string payment = item.PaymentStatus;
+            var userID = 0;
+
+            if (item.PaymentType == 1)
+            {
+                payment = "Paid Registration Fee";
+            }
+
+            else if (item.PaymentType == 2)
+            {
+                payment = "Paid Last installment";
+            }
+
+            else if (item.PaymentType == 3)
+            {
+                payment = "Paid in Full";
+            }
+
+            else if (item.PaymentType == 4)
+            {
+                payment = "Not Paid";
+            }
+
+            else if (payment.Contains("Free"))
+            {
+                payment = "Not Paid";
+            }
+
+            if (item.PaymentDate != null)
+            {
+                date1 = Convert.ToDateTime(item.PaymentDate).ToString("MM/dd/yyyy");
+            }
+
+        <tr>
+            <td data-title="Number">@num</td>
+            <td data-title="Fname">@item.WebsiteUser.FName</td>
+            <td data-title="LName">@item.WebsiteUser.LName</td>
+            <td data-title="Email">@item.WebsiteUser.Email</td>
+            <td data-title="Phone">@item.WebsiteUser.Phone</td>
+            @*<td data-title="SkypeID">@item.WebsiteUser.SkypeID</td>*@
+            <td data-title="Payment">@payment</td>
+            <td data-title="Recruiter">@item.WebsiteUser.RecruiterName</td>
+            <td data-title="Date1">@date1</td>
+                @{
+
+                    if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin" || Convert.ToString(Session["RoleName"]) == "Trainer")
+                    {
+                    <td data-title="Training" class="text-center">
+                        @Html.DropDownList("TrainingCourseID", ViewData["TRAINING_COURSE_ID"] as IEnumerable<SelectListItem>, "--Select--", htmlAttributes: new { @class = "form-control", @required = "required", onChange = "fnSwitchTrainingProgram(this)", id = "tpID_" + @item.WebsiteUser.WebsiteUserID })
+                    </td>
+                    }
+                }
+            <td class="text-right">
+                @*<a href="@Url.Action("SendMessage",  new {  controller = "TrainingCours", id = item.WebsiteUser.WebsiteUserID})" class="modal-link btn btn-xs btn-new" title="Send message to: @item.WebsiteUser.FName @item.WebsiteUser.LName">
+                <i class="fa fa-envelope-o"></i>
+            </a>*@
+                @if (Convert.ToString(Session["RoleName"]) == "Admin" || Convert.ToString(Session["RoleName"]) == "Super Admin")
+                {
+                    if (item.PaymentType == 4 || item.PaymentType == 5)
+                    {
+                        <a href="@Url.Action("DeleteEnrolledUserFromTraining", new { controller = "TrainingCours", userID = item.WebsiteUser.WebsiteUserID, tID = (int)ViewBag.TrainingCourseID })" class="modal-link btn btn-xs btn-danger" title="Remove @item.WebsiteUser.FName from Training.">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    }
+                }
+
+
+                <a href="@Url.Action("ViewWebsiteUser", new { controller = "WebsiteUsers", id = item.WebsiteUserID, fromController = "TrainingCours", fromView = "ViewTrainingCourse", tID = (int)ViewBag.TrainingCourseID })" class="btn btn-xs btn-new" title="View @item.WebsiteUser.FName Details" data-toggle="tooltip">
+                    <i class="fa fa-eye"></i>
+                </a>
+            </td>
+        </tr>
+        num++;
+        }
+    </tbody>
+</table>
+
+<script>
+
+    function fnSearchUserToEnrroll(tcID) {
+
+        if (tcID != "" && $('#searchString').val() != "" ) {
+            $('#errorMessage').remove();
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("SearchUserToEnrroll", "TrainingCours")',
+                data: { "tID": tcID, "searchString": $('#searchString').val() },
+                success: function (data) {
+
+                    if (data != "") {
+                        $("#searchUser-list").show();
+                        $("#searchUser-list").html(data);
+                        toastr.success('User(s) found');
+                    }
+                    else {
+                        toastr.error('0 Users not found!');
+                    }
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+            });
+        }
+        else {
+            $('#errorMessage').html('<b>Enter Name / Last Name / Email</b>').css("color", "red");
+            //if (document.getElementById("Name").validity.valueMissing) {
+            //    document.getElementById("Name").reportValidity();
+            //}
+            //if (document.getElementById("LastName").validity.valueMissing) {
+            //    document.getElementById("LastName").reportValidity();
+            //}
+
+        }
+
+    }
+
+    function fnEnrrollSelectedUser(uID, tID) {
+
+        jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("EnrrollSelectedUser", "TrainingCours")',
+                data: { "uID": uID, "tID": tID },
+                success: function (data) {
+
+
+                    $.ajax({
+                        url: '@Url.Action("GetEnrolledUserList", "TrainingCours")',
+                        data: { "id": tID },
+                        success: function (data) {
+                            $("#enrolled-list").html(data);
+                            toastr.success('User Enrolled!');
+                            //$("[data-dismiss=modal]").trigger({ type: "click" });
+                        }
+                    });
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!');
+                }
+            });
+
+    }
+
+    function updateGroup(userid) {
+
+        jQuery.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdateUserGroup", "TrainingCours")',
+            data: { "uID": userid, "tID": @Model.Training.TrainingCourseID, "group": $('#grp_' + userid).find('option:selected').attr('value') },
+            success: function (data) {
+                toastr.success('Group Updated 😀');
+                //elementsYes = document.getElementsByClassName('yesOption');
+                
+                $('#totalDay_' + day).html(parseInt(data))
+
+            },
+            error: function (textStatus) {
+                toastr.error('Error: Something wrong!');
+            }
+        });
+    }
+
+    function fnSwitchTrainingProgram(data) {
+
+        var tID = data.value;
+        var id = data.id;
+        var userID = id.split('_')[1];
+
+        jQuery.ajax({
+            type: 'POST',
+            url: '@Url.Action("SwitchUserTraining", "TrainingCours")',
+            data: { "uID": parseInt(userID), "tID": parseInt(tID), "currentTID": @Model.Training.TrainingCourseID },
+            success: function (data) {
+                toastr.success('User was changed to a different training program 😀');
+                //elemensYes = document.getElementsByClassName('yesOption');
+
+                $.ajax({
+                        url: '@Url.Action("GetEnrolledUserList", "TrainingCours")',
+                        data: { "id": @Model.Training.TrainingCourseID },
+                        success: function (data) {
+                            $("#enrolled-list").html(data);
+                            //toastr.success('User Enrolled!');
+                            //$("[data-dismiss=modal]").trigger({ type: "click" });
+                        }
+                    });
+
+
+            },
+            error: function (textStatus) {
+                toastr.error('Error: Something wrong!');
+            }
+        });
+    }
+
+</script>

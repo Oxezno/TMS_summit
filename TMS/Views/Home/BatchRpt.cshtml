@@ -1,0 +1,98 @@
+﻿@model TMS.Models.BatRpt
+
+@{
+    ViewBag.Title = "Attendance Report";
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Batch Report</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Batch Report</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-head">
+                    
+                </div>
+                <div class="@(Model.RptList.Count > 0  ? "PanelShow card-body" : "PanelHide")">
+                    <div class="fullresponsivetable">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Appread in Evaluation</th>
+                                    <th>Result</th>
+                                    <th class="center">Selected In Evaluation</th>
+                                    <th class="center">Reason</th>
+                                    <th class="center">Attendence After Evaluation (Present)</th>
+                                    <th class="center">Attendence After Evaluation (Absent)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.RptList)
+                                {
+                                    <tr>
+                                        <td data-title="Name">
+                                            @Html.DisplayFor(modelItem => item.ProfileName)
+                                        </td>
+                                        <td data-title="Appread in Evaluation">
+                                            @Html.DisplayFor(modelItem => item.AppreadinEvaluation)
+                                        </td>
+                                        <td data-title="Result">
+                                            @Html.DisplayFor(modelItem => item.Result)
+                                        </td>
+                                        <td data-title="Selected In Evaluation" class="center">@Html.DisplayFor(modelItem => item.SelectedInEvaluation)</td>
+                                        <td data-title="Reason" class="center">@Html.DisplayFor(modelItem => item.Reason)</td>
+                                        <td data-title="Attendence After Evaluation (Present)" class="center">@Html.DisplayFor(modelItem => item.AttendenceAfterEvaluation__Present_)</td>
+                                        <td data-title="Attendence After Evaluation (Absent)" class="center">@Html.DisplayFor(modelItem => item.AttendenceAfterEvaluation__Absent_)</td>                                        
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+           var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").show();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+
+    });
+</script>

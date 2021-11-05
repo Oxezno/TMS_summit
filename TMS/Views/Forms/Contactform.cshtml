@@ -1,0 +1,546 @@
+﻿@model TMS.Models.Profile_users_Custom
+
+@{
+    ViewBag.Title = "Contactform";
+    Layout = "~/Views/Shared/_Layout_Ext.cshtml";
+
+    List<SelectListItem> listYears = new List<SelectListItem>();
+    List<SelectListItem> listMonths = new List<SelectListItem>();
+    List<SelectListItem> listYN = new List<SelectListItem>();
+    List<SelectListItem> listExp = new List<SelectListItem>();
+    List<SelectListItem> listTM = new List<SelectListItem>();
+
+    var initDate = DateTime.Now.Year - 60;
+    var endDate = DateTime.Now.Year - 19;
+
+    for (var i = initDate; i <= endDate; i++)
+    {
+        listYears.Add(new SelectListItem { Text = i.ToString(), Value = i.ToString() });
+    }
+
+    for (int i = 0; i < 12; i++)
+    {
+        listMonths.Add(new SelectListItem { Text = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i], Value = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.MonthNames[i] });
+    }
+
+    listYN.Add(new SelectListItem { Text = "Yes", Value = "1" });
+    listYN.Add(new SelectListItem { Text = "No", Value = "0" });
+
+    listExp.Add(new SelectListItem { Text = "0-1 yrs", Value = "0-1 yrs" });
+    listExp.Add(new SelectListItem { Text = "1-5 yrs", Value = "1-5 yrs" });
+    listExp.Add(new SelectListItem { Text = "5-10 yrs", Value = "5-10 yrs" });
+    listExp.Add(new SelectListItem { Text = "10+ yrs", Value = "10+ yrs" });
+
+    listTM.Add(new SelectListItem { Text = "Classroom", Value = "Classroom" });
+    listTM.Add(new SelectListItem { Text = "Online", Value = "Online" });
+
+}
+
+
+<body class="hold-transition">
+
+    <div class="contact-form">
+        <div class="card">
+            <div class="col-md-12 col-sm-12">
+
+                <div class="col-md-3 text-center-sm">
+                    <img src="~/Images/companyLogo/@ViewBag.Company.CAPTION" style="max-height:100px; width:auto; margin-top:5px;" />
+                </div>
+                <div class="col-md-6 text-center">
+                    <div class="page-title">@ViewBag.Company.COMPANY_NAME</div>
+                    <div class="page-title">@ViewBag.Form.FormName</div>
+                </div>
+                <div class="col-md-3 text-center-sm">
+                </div>
+            </div><div class="clearfix"></div>
+            <hr style="margin:0px;" />
+
+
+            <div class="col-md-12 col-sm-12" style="background:#f0f8ff; padding-top:0px;">
+
+                @using (Ajax.BeginForm("SaveProfile", "Forms", new AjaxOptions() { HttpMethod = "POST", OnSuccess = "OnSuccess", OnFailure = "OnFailure", LoadingElementId = "progress" }, new { enctype = "multipart/form-data", id = "FileForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div id="bar-parent1">
+                        <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                            <div class="form-body">
+                                <div class="form-group col-md-4" hidden>
+                                    <label class="control-label">
+                                        BatchID:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.EditorFor(model => model.BatchId, new { htmlAttributes = new { @class = "form-control", @required = "required", @maxlength = "20", @Value = @ViewBag.ID_BATCH } })
+                                    @Html.ValidationMessageFor(model => model.BatchId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-md-4" hidden>
+                                    <label class="control-label">
+                                        FormID:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.EditorFor(model => model.FormID, new { htmlAttributes = new { @class = "form-control", @required = "required", @maxlength = "20", @Value = @ViewBag.Form.FormID } })
+                                    @Html.ValidationMessageFor(model => model.FormID, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-md-4" hidden>
+                                    <label class="control-label">
+                                        CompanyID:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.EditorFor(model => model.CompanyID, new { htmlAttributes = new { @class = "form-control", @required = "required", @maxlength = "20", @Value = @ViewBag.Company.ID_COMPANY } })
+                                    @Html.ValidationMessageFor(model => model.CompanyID, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="clearfix"></div>
+
+                                <div class="form-group  col-md-6">
+                                    <label class="control-label">
+                                        First Name:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    @Html.EditorFor(model => model.Fname, new { htmlAttributes = new { @class = "form-control", @required = "required", @maxlength = "30", onkeypress = "return isBlnkSpc(event, this)" } })
+                                    @Html.ValidationMessageFor(model => model.Fname, "", new { @class = "text-danger" })
+                                </div>
+
+
+                                <div class="form-group  col-md-6">
+                                    <label class="control-label">
+                                        Last Name:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.EditorFor(model => model.LName, new { htmlAttributes = new { @class = "form-control", @required = "required", @maxlength = "30", @onkeypress = "return isBlnkSpc(event, this)" } })
+                                    @Html.ValidationMessageFor(model => model.LName, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="clearfix"></div>
+
+
+                                <div class="form-group  col-md-4">
+                                    <label class="control-label">
+                                        Phone Number:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control", @required = "required", @maxlength = "12", @minlength = "10", @onkeypress = "return isNumberKey(event); isBlnkSpc(event, this)" } })
+                                    @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+                                </div>
+
+
+                                <div class="form-group  col-md-4">
+                                    <label class="control-label">
+                                        Email:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @required = "required", @maxlength = "80", type = "email", @onkeypress = "return isBlnkSpc(event, this)" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+
+
+                                <div class="form-group  col-md-4">
+                                    <label class="control-label">
+                                        Skype ID:
+                                    </label>
+                                    <span class="required" aria-required="true"> * </span>
+                                    @Html.EditorFor(model => model.SkypeID, new { htmlAttributes = new { @class = "form-control", @maxlength = "80", @onkeypress = "return isBlnkSpc(event, this)" } })
+                                    @Html.ValidationMessageFor(model => model.SkypeID, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="clearfix"></div>
+
+
+                                <div class="form-group  col-md-6">
+                                    <div class="row">
+                                        <label class="control-label col-md-12">
+                                            Birthday:
+                                            @*<span class="required" aria-required="true"> * </span>*@
+                                        </label>
+                                        <div class="clearfix"></div>
+
+                                        <div class="col-md-4">
+                                            @Html.DropDownListFor(model => model.BirthdayMonth, listMonths, "Month", htmlAttributes: new { @class = "form-control", @onchange = "fnChangeDays();", id = "MonthDL" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.DropDownListFor(model => model.BirthdayDay, Enumerable.Empty<SelectListItem>(), "Day", htmlAttributes: new { @class = "form-control", id = "DayDL" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.DropDownListFor(model => model.BirthdayYear, listYears, "Year", htmlAttributes: new { @class = "form-control", @onchange = "fnChangeDays();", id = "YearDL" })
+                                        </div>
+
+                                        @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label class="control-label">
+                                        Gender:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.DropDownListFor(model => model.SexTypeID, ViewData["ID_GENDER"] as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.SexTypeID, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-12">
+                                    <label class="control-label">
+                                        Address:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = 1, @required = "required", onkeypress = "return isBlnkSpc(event, this)" })
+                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-4">
+                                    <label class="control-label">
+                                        Nationality:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.DropDownListFor(model => model.CountryID, ViewData["ID_COUNTRY"] as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.CountryID, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label class="control-label">
+                                        Immigration  Status:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.DropDownListFor(model => model.VisaStatusID, ViewData["ID_VISA"] as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.VisaStatusID, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label class="control-label">
+                                        Do you need us to help get a working visa?:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.DropDownListFor(model => model.VisaHelpOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.NationalityStatus, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group   col-md-6">
+                                    <label class="control-label">
+                                        Applied via (i.e. Indeed, Monster, Friend, etc.):
+                                    </label>
+
+                                    @Html.EditorFor(model => model.Applied_Via, new { htmlAttributes = new { @class = "form-control", @maxlength = "20" } })
+                                    @Html.ValidationMessageFor(model => model.Applied_Via, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label class="control-label">
+                                        Recruiter:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.DropDownListFor(model => model.RecruiterID, ViewData["ID_RECRUITER"] as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.RecruiterID, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group col-md-6">
+                                    <label class="control-label">
+                                        Education:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.DropDownListFor(model => model.EducationID, ViewData["ID_EDUCATION"] as IEnumerable<SelectListItem>, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.EducationID, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group   col-md-6">
+                                    <label class="control-label">
+                                        How years of work general work experience do you have?:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.DropDownListFor(model => model.ExperienceYears, listExp, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.ExperienceYears, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group   col-md-6">
+                                    <label class="control-label">
+                                        Do you have any criminal records in the past 4 years?
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    @Html.DropDownListFor(model => model.CriminalRecordsOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.CriminalRecords, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group  col-md-6">
+                                    <label class="control-label">
+                                        Are you willing to undergo a background check?
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.DropDownListFor(model => model.BackgroundCheckOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.BackgroundCheck, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group  col-md-6">
+                                    <label class="control-label">
+                                        Do you need accommodations for the first week?:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.DropDownListFor(model => model.AccommodationHelpOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.AccommodationHelp, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group   col-md-6">
+                                    <label class="control-label">
+                                        Are you willing to relocate anywhere in the United States?
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    @Html.DropDownListFor(model => model.WillingToRelocateOpt, listYN, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.WillingToRelocate, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group  col-md-6">
+                                    <label class="control-label">
+                                        Training Mode:
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+
+                                    @Html.DropDownListFor(model => model.TrainingMode, listTM, "Select", htmlAttributes: new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.TrainingMode, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                                <div class="form-group  col-md-12">
+                                    <label class="control-label">
+                                        Rate your coding experience in computer languages before coming here
+                                        <span class="required" aria-required="true"> * </span>
+                                    </label>
+                                    <div>
+                                        <table class="table table-advanced" style="margin-bottom:0px;">
+                                            <tr>
+                                                <th></th>
+                                                <th width="20px"></th>
+                                                <th>1</th>
+                                                <th>2</th>
+                                                <th>3</th>
+                                                <th>4</th>
+                                                <th>5</th>
+                                                <th></th>
+                                            </tr>
+                                            <tr id="radiocb" onclick="cbclick(event)">
+                                                <th style="text-align: right;">I have no prior background.</th>
+                                                <th> </th>
+                                                <th>
+                                                    @Html.RadioButtonFor(model => model.CodingExperienceBefore, "1", new { @class = "custom-radio", @Name = "CodingExperienceBefore", @required = "required" })
+                                                </th>
+                                                <th>
+                                                    @Html.RadioButtonFor(model => model.CodingExperienceBefore, "2", new { @class = "custom-radio", @Name = "CodingExperienceBefore", @required = "required" })
+                                                </th>
+                                                <th>
+                                                    @Html.RadioButtonFor(model => model.CodingExperienceBefore, "3", new { @class = "custom-radio", @Name = "CodingExperienceBefore", @required = "required" })
+                                                </th>
+                                                <th>
+                                                    @Html.RadioButtonFor(model => model.CodingExperienceBefore, "4", new { @class = "custom-radio", @Name = "CodingExperienceBefore", @required = "required" })
+                                                </th>
+                                                <th>
+                                                    @Html.RadioButtonFor(model => model.CodingExperienceBefore, "5", new { @class = "custom-radio", @Name = "CodingExperienceBefore", @required = "required" })
+                                                </th>
+                                                <th>I am an awesome coder.</th>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-actions">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="btn btn-primary"> Submit </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+
+            </div>
+
+
+
+        </div>
+    </div>
+</body>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+      $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+           var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").show();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+
+    });
+
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+
+
+    function fnChangeDays() {
+
+        var YearDL = document.getElementById("YearDL");
+
+        var MonthDL = document.getElementById("MonthDL");
+
+        var DayDL = document.getElementById("DayDL");
+
+        var selectedDay = DayDL.selectedIndex;
+
+        document.getElementById("DayDL").innerHTML = "";
+
+        var txt = document.createElement('option');
+        txt.text = "Day"
+        txt.value = 0;
+
+        DayDL.add(txt);
+
+
+        if (MonthDL.selectedIndex == 1 || MonthDL.selectedIndex == 3 || MonthDL.selectedIndex == 5 ||
+            MonthDL.selectedIndex == 7 || MonthDL.selectedIndex == 8 || MonthDL.selectedIndex == 10 ||
+            MonthDL.selectedIndex == 12) {
+
+            for (var i = 1; i <= 31; i++) {
+                var option = document.createElement('option');
+                option.text = option.value = i;
+                DayDL.add(option);
+            }
+            if (selectedDay > 0)
+                DayDL.selectedIndex = selectedDay;
+            else
+                DayDL.selectedIndex = 0;
+        }
+
+        else if (MonthDL.selectedIndex == 4 || MonthDL.selectedIndex == 6 || MonthDL.selectedIndex == 9 ||
+            MonthDL.selectedIndex == 11) {
+            for (var i = 1; i <= 30; i++) {
+                var option = document.createElement('option');
+                option.text = option.value = i;
+                DayDL.add(option);
+            }
+            if (selectedDay > 0)
+                DayDL.selectedIndex = selectedDay;
+            else
+                DayDL.selectedIndex = 0;
+        }
+
+        else if (MonthDL.selectedIndex == 2) {
+
+            var ini = 1940;
+            var curDate = new Date();
+            var endDate = curDate.getFullYear() - 19;
+
+            for (var j = ini; j <= endDate; j++) {
+                ini = ini + 4;
+                document.getElementById("DayDL").innerHTML = "";
+
+                var txt = document.createElement('option');
+                txt.text = "Day"
+                txt.value = 0;
+                DayDL.add(txt);
+
+                if (YearDL.value == ini) {
+                    for (var i = 1; i <= 29; i++) {
+                        var option = document.createElement('option');
+                        option.text = option.value = i;
+                        DayDL.add(option);
+                    }
+                    break;
+                }
+
+                else {
+                    for (var i = 1; i <= 28; i++) {
+                        //alert("mmmm")
+                        var option = document.createElement('option');
+                        option.text = option.value = i;
+                        DayDL.add(option);
+                    }
+                    //break;
+                }
+            }
+            if (selectedDay > 0)
+                DayDL.selectedIndex = selectedDay;
+            else
+                DayDL.selectedIndex = 0;
+        }
+
+    }
+
+    function cbclick(e) {
+        e = e || event;
+        var cb = e.srcElement || e.target;
+        if (cb.type !== 'checkbox') { return true; }
+        var cbxs = document.getElementById('radiocb').getElementsByTagName('input'), i = cbxs.length;
+        while (i--) {
+            if (cbxs[i].type && cbxs[i].type == 'checkbox' && cbxs[i].id !== cb.id) {
+                cbxs[i].checked = false;
+            }
+        }
+    }
+
+    function isBlnkSpc(evt, txt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode == 32 && txt.value.length == 0)
+            return false;
+
+        return true;
+    }
+
+    function OnSuccess(response) {
+        var message = "OK";
+        alert(message);
+    }
+    function OnFailure(response) {
+        alert("Error occured.");
+    }
+
+</script>
+
+
+@*<div id="divProcessing">
+    <p>Processing, please wait . . . <img src="~/images/loading.gif"></p>
+</div>*@
+    

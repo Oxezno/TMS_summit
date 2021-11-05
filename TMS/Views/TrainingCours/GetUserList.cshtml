@@ -1,0 +1,43 @@
+﻿@model IEnumerable<TMS.Models.WebsiteUser>
+
+@{
+    Layout = null;
+}
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>Select</th>
+            <th>Nane</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th hidden>tID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" id="user_@item.WebsiteUserID" onchange="fnEnrrollSelectedUser(@item.WebsiteUserID,@ViewBag.tID)" >
+                    </td>
+                    <td>
+                        @item.FName
+                    </td>
+                    <td>
+                        @item.LName
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td hidden>
+                       @ViewBag.tID
+                    </td>
+                </tr>
+            }
+        }
+
+
+    </tbody>
+</table>

@@ -1,0 +1,51 @@
+﻿<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                &times;
+            </button>
+
+            <h5 class="modal-title" id="exampleModalLabel">Search User to Enroll</h5>
+        </div>
+        <div class="modal-body">
+            @{
+                var Id = ViewBag.ID;
+            }
+
+            <div class="clearfix m-b-5"></div>
+            <div class="col text-red" style="text-align:center;">
+            </div>
+            <div class="row">
+
+                <label class="control-label col-md-12">
+                    Please enter <b>Name</b> or <b>Last Name </b> or <b>Email</b>
+                </label>
+                <div class="control-label col-md-12">
+                    @Html.Editor("searchString", new { htmlAttributes = new { @class = "form-control", placeholder = "", maxlength = "100", @required = "required" } })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div style="text-align:center" id="errorMessage">
+            </div>
+
+            <div class="clearfix m-b-5"></div>
+            <div class="fullresponsivetable">
+                <div id="searchUser-list" hidden>
+                    @Html.Partial("GetUserList")
+                </div>
+            </div>
+            <br />
+            <div class="col-lg-12 text-center m-t-10">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> &nbsp;
+                <input type="submit" value="Search" class="btn btn-primary" onclick="fnSearchUserToEnrroll(@ViewBag.tID)" />
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+</div>

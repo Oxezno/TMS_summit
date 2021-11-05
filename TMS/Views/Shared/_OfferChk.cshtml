@@ -1,0 +1,108 @@
+﻿
+@model TMS.Models.viewProfile
+<style type="text/css">
+    
+</style>
+@using (Ajax.BeginForm("EditOfferLetterDate", "Home", new AjaxOptions()
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "divOffer",
+    InsertionMode = InsertionMode.Replace
+
+}, new { id = "OfferForm" }))
+{
+    <div class="clearfix"></div>
+    @*@Html.HiddenFor(model => model.pu.PID, new { @id = "hdnPid" })*@
+
+    if (Model.pu.offer == true)
+    {
+        <label>Yes</label>
+    }
+    else
+    {
+        <label class="switch">
+            @Html.CheckBoxFor(model => model.pu.offer, new { @Id = "chkOffer" })
+            <div class="slider round"></div>
+        </label>
+    }
+
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        $('#chkOffer').change(function () {
+            var Offer;
+            if ($('#chkOffer').prop('checked')) {
+
+                Offer = true;
+            }
+            else {
+                Offer = false;
+            }
+            
+
+            var Pid = $("#hdnPid").val();
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("OfferCheck", "Home"))",
+                data: { PID: Pid, OfferFlag : Offer},
+            success: function (data) {
+
+                // $("#divDeviceDropdown" + Id.toString()).html(data);
+               // debugger;
+                $("#MessageModal").hide();
+                var MsgSuccess = '@(TempData["ErrorMessage"])';
+                if (MsgSuccess != "" && MsgSuccess != null) {
+                    var color = '@(TempData["color"])';
+
+                    if (color == "red") {
+                        $('#TxtHeaderMessageModal').html('Error!');
+                        $('#divAlert').removeClass("alert-success");
+                        $('#divAlert').addClass("alert-danger");
+                    }
+                    else {
+
+                        $('#TxtHeaderMessageModal').html('Success!');
+                        $('#divAlert').removeClass("alert-danger");
+                        $('#divAlert').addClass("alert-success");
+                    }
+                    $('#TxtMessageModal').html(MsgSuccess);
+                    $("#MessageModal").alert();
+                    $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger;
+            }
+        });
+        });
+
+        
+        debugger;
+        $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+            var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").alert();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+    });
+   
+</script>

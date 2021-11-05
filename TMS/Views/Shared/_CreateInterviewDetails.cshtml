@@ -1,0 +1,246 @@
+﻿@model TMS.Models.MockInterview
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                &times;
+            </button>
+
+            <h4 class="modal-title" id="exampleModalLabel">Mock Interview Details</h4>
+        </div>
+        <div class="modal-body">
+            @{
+                var Id = ViewBag.ID;
+            }
+            @*@using (Ajax.BeginForm("SaveMockInterviewDetails", "TrainingCours", new { id = Id }, new AjaxOptions { OnSuccess = "Response" }))*@
+            @*{*@
+            <div class="clearfix m-b-5"></div>
+            <div class="col text-red">
+                <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                    <div class="form-body">
+
+                        <div class="clearfix"></div>
+                        <div hidden class="form-group">
+                            <label class="control-label col-md-2">
+                                @Html.EditorFor(model => model.WebsiteUserID, new { htmlAttributes = new { @class = "form-control", placeholder = "", @Value = @ViewBag.ID } })
+                            </label>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Training Program:</b>
+                            </label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(model => model.TrainingCourseID, ViewData["ID_TRAINING"] as IEnumerable<SelectListItem>, "--Select Training Course--", htmlAttributes: new { @class = "form-control", @required = "required", id = "tcID", onchange = "fnChangeTraining()" })
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Technology:</b>
+                            </label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.Technology, new { @class = "form-control", @required = "required", id = "technology", @Value = @ViewBag.TRAINING, maxlength = "60" })
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Interviewed on:</b>
+                            </label>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.InterviewDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date", @required = "required", id = "iDate" })
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Interviewed by:</b>
+                            </label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(model => model.InterviewedBy, ViewData["ID_USER"] as IEnumerable<SelectListItem>, "--Select Interviewer--", htmlAttributes: new { @class = "form-control", @required = "required", id = "userID" })
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Interviewed by (2):</b>
+                            </label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(model => model.InterviewedBy2, ViewData["ID_USER2"] as IEnumerable<SelectListItem>, "--Select Interviewer--", htmlAttributes: new { @class = "form-control", @required = "required", id = "userID2" })
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Interviewed by (3):</b>
+                            </label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(model => model.InterviewedBy3, ViewData["ID_USER3"] as IEnumerable<SelectListItem>, "--Select Interviewer--", htmlAttributes: new { @class = "form-control", @required = "required", id = "userID3" })
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Performance:</b>
+                            </label>
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(model => model.Performance, ViewData["PERFORMANCE"] as IEnumerable<SelectListItem>, "--Select Performance--", htmlAttributes: new { @class = "form-control", @required = "required", id = "performance" })
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                <b>Notes/Comments:</b>
+                            </label>
+                            <div class="col-md-8">
+                                @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", maxlength = "500", rows = 10, id = "notes" })
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-12">
+                                <span class="pull-right" id='remainingC'> Remaining characters: 500 </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <div class="col-lg-12 text-center m-t-10">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> &nbsp;
+                            @*<button type="button" id="btn-update-title" onclick="fnClear()" class="btn btn-primary">Clear</button>*@
+                            <button type="button" id="btn-update-title" onclick="fnSaveMockInterviewDetails(document.getElementById('tcID').value, document.getElementById('iDate').value, document.getElementById('userID').value,document.getElementById('userID2').value, document.getElementById('userID3').value, document.getElementById('performance').value, document.getElementById('notes').value, document.getElementById('technology').value )" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            @*}*@
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+<script>
+    $(document).ready(function () {
+        var len = 0;
+        var maxchar = 500;
+
+        $('#notes').keyup(function () {
+            len = this.value.length
+            if (len > maxchar) {
+                return false;
+            }
+            else if (len > 0) {
+                $("#remainingC").html("Remaining characters: " + (maxchar - len));
+            }
+            else {
+                $("#remainingC").html("Remaining characters: " + (maxchar));
+            }
+        })
+    });
+
+    function fnSaveMockInterviewDetails(tcID, iDate, userID, userID2, userID3, performance, notes, technology) {
+        console.log(userID3);
+
+        if (tcID == "")
+            toastr.error('Error: Select Training Program!');
+
+        if (technology == "")
+            toastr.error('Error: Enter Technology!');
+
+        if (iDate == "")
+            toastr.error('Error: Select Date!');
+
+        if (userID == "")
+            toastr.error('Error: Select Interviewer!');
+
+        if (userID2 == "")
+            userID2 = 0;
+
+        if (userID3 == "")
+            userID3 = 0;
+
+        if (performance == "")
+            toastr.error('Error: Select Performance!');
+
+        if (tcID != "" && iDate != "" && userID != "" && performance != "" && technology != "") {
+
+            var perf = document.getElementById('performance');
+            var perfName = perf.options[perf.selectedIndex].innerHTML;
+            $("[data-dismiss=modal]").trigger({ type: "click" });
+            toastr.success('Sending email notifications');
+            $('#pageloaddiv').show();
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("SaveMockInterviewDetails", "TrainingCours")',
+                data: { "tcID": tcID, "iDate": iDate, "interviewBy": userID, "interviewBy2": userID2, "interviewBy3": userID3, "performance": perfName, "notes": notes, "wuID":@ViewBag.ID, "technology": technology, "status": performance },
+                success: function (textStatus) {
+
+                    $.ajax({
+                        //url: "/LaborCodeMaintenance/LaborMaintenanceList/",
+                        url: '@Url.Action("GetMockInterviews", "WebsiteUsers")',
+                        data: { "id": @ViewBag.ID },
+                        success: function (data) {
+                            $("#mock-list").html(data);
+                            $('#pageloaddiv').hide();
+                            toastr.success('Mock Interview Details saved successfully');
+
+                        }
+                    });
+
+                },
+                error: function (textStatus) {
+                    toastr.error('Error: Something wrong!' + textStatus);
+                }
+            });
+        }
+
+
+    }
+
+    function fnChangeTraining() {
+        var training = document.getElementById('tcID');
+        var trainingName = training.options[training.selectedIndex].innerHTML;
+
+        if (training.selectedIndex > 0)
+            document.getElementById('technology').value = trainingName;
+
+        else
+            document.getElementById('technology').value = "";
+
+    }
+
+    function fnClear() {
+
+        document.getElementById('tcID').selectedIndex = 1;
+        document.getElementById('technology').value = document.getElementById('tcID').options[1].innerHTML;
+        document.getElementById('performance').selectedIndex = 0;
+        document.getElementById('notes').value = "";
+        document.getElementById('userID').selectedIndex = @ViewBag.ID;
+        document.getElementById('remainingC').innerHTML = "Remaining characters: 500";
+        document.getElementById('iDate').value = "";
+
+    }
+
+</script>

@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="description" content="Responsive Admin Template" />
+    <meta name="author" content="TMS" />
+
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <!-- icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="images/favicon.ico" />
+</head>
+<body>
+    <div>
+        <!-- start page container -->
+            <div class="page-content" style="min-height:0px; padding:0px">
+                <div id="MessageModal" style="display:none;">
+                    <div id="divAlert">
+                        <i></i><p><b id="TxtHeaderMessageModal"></b> &nbsp; <span id="TxtMessageModal"></span></p>
+                    </div>
+                </div>
+            </div>
+            @RenderBody()
+        <!-- end page content -->
+        <!-- end page container -->
+        <!-- start footer -->
+        <div class="page-footer">
+            <div class="page-footer-inner">
+                Copyright &copy; @DateTime.Now.Year SummitWorks Technologies Inc. All rights reserved.
+
+            </div>
+            <div class="scroll-to-top">
+                <i class="icon-arrow-up"></i>
+            </div>
+        </div>
+        <!-- end footer -->
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/jquery.min.js"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+    <script src="~/Scripts/app.js"></script>
+    <script src="~/Scripts/layout.js"></script>
+    @RenderSection("scripts", required: false)
+
+    <script>
+
+                    $(function () {
+                        $('body').on('click', '.modal-link', function (e) {
+                            e.preventDefault();
+                            $(this).attr('data-target', '#modal-container');
+                            $(this).attr('data-toggle', 'modal');
+                        });
+                        $('body').on('click', '.modal-Confirmlink', function (e) {
+                            e.preventDefault();
+                            $(this).attr('data-target', '#modal-Confirmcontainer');
+                            $(this).attr('data-toggle', 'modal');
+                        });
+                        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+
+
+                        $('body').on('click', '.modal-close-btn', function () {
+                            $('#modal-container').modal('hide');
+                        });
+
+                        //clear modal cache, so that new content can be loaded
+                        $('#modal-container').on('hidden.bs.modal', function () {
+                            $(this).removeData('bs.modal');
+                        });
+
+                        $('#modal-Confirmcontainer').on('hidden.bs.modal', function () {
+                            $(this).removeData('bs.modal');
+                        });
+
+                        $('#CancelModal').on('click', function () {
+                            return false;
+                        });
+                    });
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.js'></script>
+    <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css" />
+
+</body>
+</html>

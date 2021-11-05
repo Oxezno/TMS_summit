@@ -1,0 +1,570 @@
+﻿@model TMS.Models.viewProfile
+
+@{
+    ViewBag.Title = "View Profile";
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">View Profile</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("BatchesList","Home")">Batches</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a class="parent-item" href="@Url.Action("ProfileList","Home", new { BatchId = Model.pu.BatchId })">Profile List</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">View Profile</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-body" id="bar-parent1" style="padding-bottom:0px !important;">
+                    <form action="#" id="form_sample_1" class="form-horizontal profile-form" novalidate>
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    First Name: @Html.HiddenFor(model => model.pu.PID, new { @id = "hdnPid" }) @Html.HiddenFor(model => model.pu.BatchId)
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Fname)
+                                </div>
+
+                                <label class="control-label col-md-2 bold">
+                                    Last Name:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.LName)
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    Contact #:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Contact)
+                                </div>
+
+                                <label class="control-label col-md-2 bold">
+                                    Email:
+                                </label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        @Html.DisplayFor(model => model.pu.Email)
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    SkypeID:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.SkypeID)
+                                </div>
+
+                                <label class="control-label col-md-2 bold">
+                                    Birthday:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Birthday)  (@Html.DisplayFor(model => model.pu.Age) years)
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    Gender:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Gender)
+                                </div>
+
+                                <label class="control-label col-md-2 bold">
+                                    Address:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Address)
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    Nationality:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Country)
+                                </div>
+
+                                <label class="control-label col-md-2 bold">
+                                    Immigration Status:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Visa)
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    Help to get a working visa?:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.VisaHelpOpt)
+                                </div>
+
+                                <label class="control-label col-md-2 bold">
+                                    Training Mode:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.TrainingMode)
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    Applied Via:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Applied_Via)
+                                </div>
+
+                                <label class="control-label col-md-2 bold">
+                                    Recruiter:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Recuiter)
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    Education:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Education)
+                                </div>
+
+                                <label class="control-label col-md-2 bold">
+                                    General work experience (years):
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.ExperienceYears)
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    Criminal records:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.Records)
+                                </div>
+
+                                <label class="control-label col-md-2 bold">
+                                    Undergo a background check:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.BackgroundCheckOpt)
+                                </div>
+
+                                
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    Accommodations 1st week?:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.AccommodationHelpOpt)
+                                </div>
+
+                                <label class="control-label col-md-2 bold">
+                                    Are you willing to relocate?:
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DisplayFor(model => model.pu.WillingToRelocateOpt)
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    Notes:
+                                </label>
+                                <div class="col-md-10">
+                                    @Html.DisplayFor(model => model.pu.Notes)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    Offer Sent:
+                                </label>
+                                <div class="col-md-4">
+                                    @if (Model.pu.OfferLetterSent == "Not yet")
+                                    {
+                                        @Html.ActionLink("Not yet", "EditOfferLetterPopup", new { Controller = "Home", id = Model.pu.PID }, new { @class = "text-green modal-link" })
+                                    }
+                                    else
+                                    {
+                                        @String.Format("{0:MM/dd/yyyy}", Model.pu.OfferLetterSent)
+                                    }
+                                </div>
+                                @if (Model.pu.OfferLetterSent != "Not yet")
+                                {
+                                    <label class="control-label col-md-2 bold">
+                                        Offer Accepted:
+                                    </label>
+                                    <div class="col-md-4" id="divOffer">
+                                        @{Html.RenderPartial("_OfferChk", new TMS.Models.viewProfile().pu); }
+                                        @*<label class="switch">
+                     @Html.CheckBoxFor(model => model.pu.offer, new { id = Model.pu.PID, data_url = Url.Action("EditOfferLetterPopup", "Home") })
+                        <div class="slider round"></div>
+                    </label>*@
+                                        @*@Html.DisplayFor(model => model.pu.OfferAccepted)*@
+                                    </div>
+                                }
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">
+                                    Attachment:
+                                </label>
+                                <div class="col-md-10">
+                                    <a target='_blank' href='@ViewBag.FileFolderPath@Model.pu.Resume'>@Model.pu.Resume</a>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#Interaction">Interaction</a></li>
+                        <li><a data-toggle="tab" href="#AddtionalCalls">Additional Calls</a></li>
+                        <li><a data-toggle="tab" href="#Evaluation">Evaluation</a></li>
+                        @if (Convert.ToBoolean(Session["Marketing"]) == true)
+                        {
+                            <li><a data-toggle="tab" href="#Marketing">Marketing</a></li>
+                        }
+                        <li><a data-toggle="tab" href="#ClientsInterview">Client Interviews</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="Interaction" class="tab-pane fade in active">
+                            <div class="fullresponsivetable">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Interviewed By</th>
+                                            <th>Interview On</th>
+                                            <th>Result</th>
+                                            <th>Notes</th>
+                                            <th>Created By</th>
+                                            <th>Created On</th>
+                                            <th>
+                                                <span class="pull-right">
+                                                    <a href="@Url.Action("ProfileInteraction", new { controller = "Home", Id = Model.pu.PID })" class="btn btn-primary btn-add" title="Click to Add Interaction" data-toggle="tooltip">
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
+                                                </span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.pi)
+                                        {
+                                            <tr>
+                                                <td data-title="Interviewed By">@Html.DisplayFor(modelItem => item.RecruitmentInterviewbyName)</td>
+                                                <td data-title="Interview On">@String.Format("{0:MM/dd/yyyy}", item.RecruitmentInterview_On)</td>
+                                                <td data-title="Result">@Html.DisplayFor(modelItem => item.Results)</td>
+                                                <td data-title="Notes">@Html.DisplayFor(modelItem => item.Notes)</td>
+                                                <td data-title="Created By">@Html.DisplayFor(modelItem => item.CreatedByName)</td>
+                                                <td data-title="Created On">@Html.DisplayFor(modelItem => item.CreatedOn)</td>
+                                                <td></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="AddtionalCalls" class="tab-pane fade">
+                            <div class="fullresponsivetable">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Contacted On</th>
+                                            <th>Contacted By</th>
+                                            <th>Notes</th>
+                                            <th>Created By</th>
+                                            <th>Created On</th>
+                                            <th>
+                                                <span class="pull-right">
+                                                    <a href="@Url.Action("ProfileAddtionalCalls", new { controller = "Home", Id = Model.pu.PID })" class="btn btn-primary btn-add" title="Click to Add Interaction" data-toggle="tooltip">
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
+                                                </span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.pac)
+                                        {
+                                            <tr>
+                                                <td data-title="Contacted On">@String.Format("{0:MM/dd/yyyy}", item.ContactedOn)</td>
+                                                <td data-title="Contacted By">@Html.DisplayFor(modelItem => item.ContactedByName)</td>
+                                                <td data-title="Notes">@Html.DisplayFor(modelItem => item.Notes)</td>
+                                                <td data-title="Created By">@Html.DisplayFor(modelItem => item.CreatedByName)</td>
+                                                <td data-title="Created On">@Html.DisplayFor(modelItem => item.CreatedOn)</td>
+                                                <td></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="Evaluation" class="tab-pane fade">
+                            <div class="card-body" id="bar-parent1">
+                                @if (Model.EvaLoc == null)
+                                {
+                                    <p>Evaluation record not yet entered.</p>
+                                    <a href="@Url.Action("Evaluation", new { controller = "Home", Id = Model.pu.PID })" class="btn btn-primary btn-add" title="Click for Evaluation" data-toggle="tooltip">
+                                        <i class="fa fa-plus"> Enter Now</i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <div class="card-body" id="bar-parent1">
+                                        <form action="#" id="form_sample_1" class="form-horizontal" novalidate>
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">
+                                                        Evaluation On
+                                                    </label>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group">
+                                                            @String.Format("{0:MM/dd/yyyy}", Model.EvaLoc.EvalDate)
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">
+                                                        Appeared in Evaluation
+                                                    </label>
+                                                    <div class="col-md-4">
+                                                        @if (Model.EvaLoc.AppearedInEval == true)
+                                                        {
+                                                            <span>Yes</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>No</span>
+                                                        }
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+
+                                                @if (Model.EvaLoc.AppearedInEval == true)
+                                                {
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">
+                                                            Result
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            @Html.DisplayFor(model => model.EvaLoc.Result)
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">
+                                                            Comments
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            @Html.DisplayFor(model => model.EvaLoc.Comment)
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">
+                                                            Selected
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            @if (Model.EvaLoc.Selected == true)
+                                                            {
+                                                                <span>Yes</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>No</span>
+                                                            }
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+
+                                                    if (Model.EvaLoc.Selected == false)
+                                                    {
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3">
+                                                                Reason for not Selecting
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                @Html.DisplayFor(model => model.EvaLoc.Reason)
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                        </form>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div id="Marketing" class="tab-pane fade">
+                            <div class="fullresponsivetable">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Start Date</th>
+                                            <th>Sales Team</th>
+                                            <th>Final Resume</th>
+                                            <th>Placed</th>
+                                            @if (Session["RolesId"].ToString() == "1")
+                                            {
+                                                <th>Client Name</th>
+                                                <th>Client Location</th>
+                                                <th>Project Start Dt</th>
+                                            }
+                                            <th>
+                                                <span class="pull-right">
+                                                    <a href="@Url.Action("ProfileMartketings", new { controller = "Home", Id = Model.pu.PID, MId = 0 })" class="btn btn-primary btn-add" title="Click to Add Marketing" data-toggle="tooltip">
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
+                                                </span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.pMar)
+                                        {
+                                            <tr>
+                                                <td data-title="Start Date">@String.Format("{0:MM/dd/yyyy}", item.StartDt)</td>
+                                                <td data-title="Sales Team">@Html.DisplayFor(modelItem => item.SalesTeamName)</td>
+                                                <td data-title="Final Resume"><a target='_blank' href='@ViewBag.FileFolderPath@item.FinalResume'>@item.FinalResume</a></td>
+                                                <td data-title="Placed" style="text-align:center">
+                                                    @if (item.Placed == true)
+                                                    {
+                                                        <span>Yes</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No</span>
+                                                    }
+                                                </td>
+                                                @if (Session["RolesId"].ToString() == "1")
+                                                {
+                                                    <td data-title="Client Name">@Html.DisplayFor(modelItem => item.ClientName)</td>
+                                                    <td data-title="Client Location">@Html.DisplayFor(modelItem => item.ClientLocation)</td>
+                                                    <td data-title="Project Start Dt">@String.Format("{0:MM/dd/yyyy}", item.ProjectStartDt)</td>
+                                                }
+                                                <td class="text-right">
+                                                    <a href="@Url.Action("ProfileMartketings", new { controller = "Home", Id = Model.pu.PID, MId = item.MId})" class="btn btn-xs btn-new" title="Click to Edit" data-toggle="tooltip">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div id="ClientsInterview" class="tab-pane fade">
+                            <div class="fullresponsivetable">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Interview Dt</th>
+                                            <th>Client Name</th>
+                                            <th>Notes</th>
+                                            <th>Created On</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.pci)
+                                        {
+                                            <tr>
+                                                <td data-title="Interview Dt">@String.Format("{0:MM/dd/yyyy}", item.InverviewDt)</td>
+                                                <td data-title="Client Name">@Html.DisplayFor(modelItem => item.ClientName)</td>
+                                                <td data-title="Notes">@Html.DisplayFor(modelItem => item.Notes)</td>
+                                                <td data-title="Created On">@String.Format("{0:MM/dd/yyyy}", item.CreatedOn)</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        debugger;
+      $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+           var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").alert();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+
+    });
+</script>

@@ -1,0 +1,126 @@
+﻿@model PagedList.IPagedList<TMS.Models.GetUsersList_Result>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Batch";
+}
+
+<div class="page-content">
+    <div class="page-bar">
+        <div class="page-title-breadcrumb">
+            <div class=" pull-left">
+                <div class="page-title">Users</div>
+            </div>
+            <ol class="breadcrumb page-breadcrumb pull-right">
+                <li>
+                    <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="@Url.Action("Index","WebsiteDashboard")">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+                </li>
+                <li class="active">Users List</li>
+            </ol>
+        </div>
+    </div>
+    <!-- start widget -->
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-head">
+                    <div class="input-group col-md-9" style="margin-top:10px; margin-left:10px">
+                        @using (Ajax.BeginForm("UserSearch", "Home", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "FileForm" }))
+                        {
+                            <div class="input-group">
+                                @Html.TextBox("txtSearch", (string)ViewBag.Search, new { @class = "form-control", placeholder = "Search User" })
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </span>
+                            </div>
+                        }
+                    </div>
+
+                    <span class="pull-right paddingtop">
+                        <a href="@Url.Action("UserSetup", new { controller = "Home", id = 0 })" class="btn btn-primary btn-add" title="Click to Add Profile" data-toggle="tooltip">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </span>
+                </div>
+                <div class="@(Model.Count > 0  ? "PanelShow card-body" : "PanelHide")">
+                    <div class="fullresponsivetable">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Username</th>
+                                    <th>Last Login Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                            {
+                            <tr>
+                                <td data-title="Full Name">@Html.DisplayFor(modelItem => item.FullName)</td>
+                                <td data-title="Email">@Html.DisplayFor(modelItem => item.Email)</td>
+                                <td data-title="Username">@Html.DisplayFor(modelItem => item.username)</td>
+                                <td data-title="Last Login Date">
+                                    @String.Format("{0:MM/dd/yyyy}", item.LastLoginDate)
+                                </td>
+                                <td class="text-right">
+                                    <a href="@Url.Action("UserSetup", new { controller = "Home", id = item.ID})" class="btn btn-xs btn-new" title="Click to Edit" data-toggle="tooltip">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    @if (item.ActiveInactive == true)
+                                        {
+                                        <a href="@Url.Action("ConformUserStatuspopup",  new {  controller = "Home", id = item.ID})" class="modal-link btn btn-xs btn-danger" title="Changes from active to inactive.">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                        }
+                                        else
+                                        {
+                                        <a href="@Url.Action("ConformUserStatuspopup", new {  controller = "Home", id = item.ID})" title="Changes from inactive to active." class="modal-link  btn btn-xs btn-success">
+                                            <i class="fa fa fa-check"></i>
+                                        </a>
+                                        }
+                                </td>
+
+                            </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+                    @Html.PagedListPager(Model, page => Url.Action("UsersList", new { page, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.Search }))
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $("#MessageModal").hide();
+        var MsgSuccess = '@(TempData["ErrorMessage"])';
+        if (MsgSuccess != "" && MsgSuccess != null) {
+           var color = '@(TempData["color"])';
+
+            if (color == "red") {
+                $('#TxtHeaderMessageModal').html('Error!');
+                $('#divAlert').removeClass("alert-success");
+                $('#divAlert').addClass("alert-danger");
+            }
+            else {
+
+                $('#TxtHeaderMessageModal').html('Success!');
+                $('#divAlert').removeClass("alert-danger");
+                $('#divAlert').addClass("alert-success");
+            }
+            $('#TxtMessageModal').html(MsgSuccess);
+            $("#MessageModal").show();
+            $("#MessageModal").fadeTo(8000, 500).fadeOut(2000);
+        }
+
+    });
+</script>

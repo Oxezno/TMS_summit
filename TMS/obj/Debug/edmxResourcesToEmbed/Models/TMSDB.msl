@@ -1,0 +1,723 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TMSModelStoreContainer" CdmEntityContainer="TMSEntities">
+    <FunctionImportMapping FunctionImportName="GetProfileEvaluation" FunctionName="TMSModel.Store.GetProfileEvaluation">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetProfileEvaluation_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="EvalDate" ColumnName="EvalDate" />
+          <ScalarProperty Name="AppearedInEval" ColumnName="AppearedInEval" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="Selected" ColumnName="Selected" />
+          <ScalarProperty Name="reasonForNotSelectingId" ColumnName="reasonForNotSelectingId" />
+          <ScalarProperty Name="Profile_users_PID" ColumnName="Profile_users_PID" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetUsersList" FunctionName="TMSModel.Store.GetUsersList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetUsersList_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="Roles_id" ColumnName="Roles_id" />
+          <ScalarProperty Name="ActiveInactive" ColumnName="ActiveInactive" />
+          <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetPlacementList" FunctionName="TMSModel.Store.GetPlacementList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetPlacementList_Result">
+          <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+          <ScalarProperty Name="PID" ColumnName="PID" />
+          <ScalarProperty Name="PMarketingId" ColumnName="PMarketingId" />
+          <ScalarProperty Name="PFullName" ColumnName="PFullName" />
+          <ScalarProperty Name="StartDt" ColumnName="StartDt" />
+          <ScalarProperty Name="Marketer" ColumnName="Marketer" />
+          <ScalarProperty Name="Technology" ColumnName="Technology" />
+          <ScalarProperty Name="TotalInterviews" ColumnName="TotalInterviews" />
+          <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetPositionList" FunctionName="TMSModel.Store.GetPositionList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetPositionList_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetReasonList" FunctionName="TMSModel.Store.GetReasonList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetReasonList_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getDashBoard" FunctionName="TMSModel.Store.getDashBoard">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.getDashBoard_Result">
+          <ScalarProperty Name="InEval" ColumnName="InEval" />
+          <ScalarProperty Name="SelTrain" ColumnName="SelTrain" />
+          <ScalarProperty Name="ClientPlaced" ColumnName="ClientPlaced" />
+          <ScalarProperty Name="InMarket" ColumnName="InMarket" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getDashBoardTraining" FunctionName="TMSModel.Store.getDashBoardTraining">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.getDashBoardTraining_Result">
+          <ScalarProperty Name="pId" ColumnName="pId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Technology" ColumnName="Technology" />
+          <ScalarProperty Name="StDt" ColumnName="StDt" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getDashBoardMarket" FunctionName="TMSModel.Store.getDashBoardMarket">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.getDashBoardMarket_Result">
+          <ScalarProperty Name="pId" ColumnName="pId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Technology" ColumnName="Technology" />
+          <ScalarProperty Name="StDt" ColumnName="StDt" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetAttendanceReport" FunctionName="TMSModel.Store.GetAttendanceReport">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetAttendanceReport_Result">
+          <ScalarProperty Name="PID" ColumnName="PID" />
+          <ScalarProperty Name="pName" ColumnName="pName" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="BatchStartDt" ColumnName="BatchStartDt" />
+          <ScalarProperty Name="Attended" ColumnName="Attended" />
+          <ScalarProperty Name="NotAttended" ColumnName="NotAttended" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getGrossMarginRpt" FunctionName="TMSModel.Store.getGrossMarginRpt">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.getGrossMarginRpt_Result">
+          <ScalarProperty Name="PID" ColumnName="PID" />
+          <ScalarProperty Name="pName" ColumnName="pName" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="SalStartDt" ColumnName="SalStartDt" />
+          <ScalarProperty Name="MarketingStartDt" ColumnName="MarketingStartDt" />
+          <ScalarProperty Name="MarketingId" ColumnName="MarketingId" />
+          <ScalarProperty Name="ProjectStartDt" ColumnName="ProjectStartDt" />
+          <ScalarProperty Name="TotCompensation" ColumnName="TotCompensation" />
+          <ScalarProperty Name="HourlyRate" ColumnName="HourlyRate" />
+          <ScalarProperty Name="TotconsultingFee" ColumnName="TotconsultingFee" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetBatchesList" FunctionName="TMSModel.Store.GetBatchesList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetBatchesList_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+          <ScalarProperty Name="BatchStartDt" ColumnName="BatchStartDt" />
+          <ScalarProperty Name="EvaluationDt" ColumnName="EvaluationDt" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+          <ScalarProperty Name="TotProfiles" ColumnName="TotProfiles" />
+          <ScalarProperty Name="TotalProfileAccepted" ColumnName="TotalProfileAccepted" />
+          <ScalarProperty Name="TotIn" ColumnName="TotIn" />
+          <ScalarProperty Name="ApperedInEval" ColumnName="ApperedInEval" />
+          <ScalarProperty Name="OfferEval" ColumnName="OfferEval" />
+          <ScalarProperty Name="LeftOffice" ColumnName="LeftOffice" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getProfileList" FunctionName="TMSModel.Store.getProfileList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.getProfileList_Result">
+          <ScalarProperty Name="PID" ColumnName="PID" />
+          <ScalarProperty Name="Fname" ColumnName="Fname" />
+          <ScalarProperty Name="LName" ColumnName="LName" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+          <ScalarProperty Name="attended" ColumnName="attended" />
+          <ScalarProperty Name="SecondDayShowup" ColumnName="SecondDayShowup" />
+          <ScalarProperty Name="ThirdDayShowup" ColumnName="ThirdDayShowup" />
+          <ScalarProperty Name="FouthDayShowup" ColumnName="FouthDayShowup" />
+          <ScalarProperty Name="FifthDayShowup" ColumnName="FifthDayShowup" />
+          <ScalarProperty Name="SixthDayShowup" ColumnName="SixthDayShowup" />
+          <ScalarProperty Name="SeventhDayShowup" ColumnName="SeventhDayShowup" />
+          <ScalarProperty Name="EightDayShowup" ColumnName="EightDayShowup" />
+          <ScalarProperty Name="NinthDayShowup" ColumnName="NinthDayShowup" />
+          <ScalarProperty Name="TenthDayShowup" ColumnName="TenthDayShowup" />
+          <ScalarProperty Name="SalStartDt" ColumnName="SalStartDt" />
+          <ScalarProperty Name="EvalSelected" ColumnName="EvalSelected" />
+          <ScalarProperty Name="LeftOffice" ColumnName="LeftOffice" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="AtteRptbyBatch" FunctionName="TMSModel.Store.AtteRptbyBatch">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.AtteRptbyBatch_Result">
+          <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Education" ColumnName="Education" />
+          <ScalarProperty Name="FirstDayShowup" ColumnName="FirstDayShowup" />
+          <ScalarProperty Name="SecondDayShowup" ColumnName="SecondDayShowup" />
+          <ScalarProperty Name="ThirdDayShowup" ColumnName="ThirdDayShowup" />
+          <ScalarProperty Name="FouthDayShowup" ColumnName="FouthDayShowup" />
+          <ScalarProperty Name="FifthDayShowup" ColumnName="FifthDayShowup" />
+          <ScalarProperty Name="SixthDayShowup" ColumnName="SixthDayShowup" />
+          <ScalarProperty Name="SeventhDayShowup" ColumnName="SeventhDayShowup" />
+          <ScalarProperty Name="EightDayShowup" ColumnName="EightDayShowup" />
+          <ScalarProperty Name="NinthDayShowup" ColumnName="NinthDayShowup" />
+          <ScalarProperty Name="TenthDayShowup" ColumnName="TenthDayShowup" />
+          <ScalarProperty Name="AppreadinEvaluation" ColumnName="AppreadinEvaluation" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="SelectedInEvaluation" ColumnName="SelectedInEvaluation" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="AttendenceAfterEvaluation__Present_" ColumnName="AttendenceAfterEvaluation (Present)" />
+          <ScalarProperty Name="AttendenceAfterEvaluation__Absent_" ColumnName="AttendenceAfterEvaluation (Absent)" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetPayingTrainees" FunctionName="TMSModel.Store.GetPayingTrainees">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetPayingTrainees_Result">
+          <ScalarProperty Name="Batch" ColumnName="Batch" />
+          <ScalarProperty Name="Fname" ColumnName="Fname" />
+          <ScalarProperty Name="LName" ColumnName="LName" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="Companies">
+      <EntityTypeMapping TypeName="TMSModel.Company">
+        <MappingFragment StoreEntitySet="Companies">
+          <ScalarProperty Name="PROFILE_IMG" ColumnName="PROFILE_IMG" />
+          <ScalarProperty Name="CONTENT_TYPE" ColumnName="CONTENT_TYPE" />
+          <ScalarProperty Name="CAPTION" ColumnName="CAPTION" />
+          <ScalarProperty Name="LOGO" ColumnName="LOGO" />
+          <ScalarProperty Name="ZIPCODE" ColumnName="ZIPCODE" />
+          <ScalarProperty Name="CITY" ColumnName="CITY" />
+          <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+          <ScalarProperty Name="MAPS_URL" ColumnName="MAPS_URL" />
+          <ScalarProperty Name="EMAIL1" ColumnName="EMAIL1" />
+          <ScalarProperty Name="PHONE1" ColumnName="PHONE1" />
+          <ScalarProperty Name="COMPANY_NAME" ColumnName="COMPANY_NAME" />
+          <ScalarProperty Name="ID_COMPANY" ColumnName="ID_COMPANY" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GetForms" FunctionName="TMSModel.Store.GetForms">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetForms_Result">
+          <ScalarProperty Name="FormID" ColumnName="FormID" />
+          <ScalarProperty Name="BatchID" ColumnName="BatchID" />
+          <ScalarProperty Name="formName" ColumnName="formName" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="BatchStartDt" ColumnName="BatchStartDt" />
+          <ScalarProperty Name="DateRecord" ColumnName="DateRecord" />
+          <ScalarProperty Name="Responses" ColumnName="Responses" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetRecruiters" FunctionName="TMSModel.Store.GetRecruiters">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetRecruiters_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="FNAME" ColumnName="FNAME" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetBatches" FunctionName="TMSModel.Store.GetBatches">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetBatches_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetCountries" FunctionName="TMSModel.Store.GetCountries">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetCountries_Result">
+          <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetVisaStatus" FunctionName="TMSModel.Store.GetVisaStatus">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetVisaStatus_Result">
+          <ScalarProperty Name="VisaStatusID" ColumnName="VisaStatusID" />
+          <ScalarProperty Name="VisaStatus" ColumnName="VisaStatus" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetBatchCandidates" FunctionName="TMSModel.Store.GetBatchCandidates">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetBatchCandidates_Result">
+          <ScalarProperty Name="Fname" ColumnName="Fname" />
+          <ScalarProperty Name="LName" ColumnName="LName" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Education" ColumnName="Education" />
+          <ScalarProperty Name="Applied_Via" ColumnName="Applied_Via" />
+          <ScalarProperty Name="created_On" ColumnName="created_On" />
+          <ScalarProperty Name="SkypeID" ColumnName="SkypeID" />
+          <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+          <ScalarProperty Name="VisaHelp" ColumnName="VisaHelp" />
+          <ScalarProperty Name="SexTypeID" ColumnName="SexTypeID" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="RecruiterID" ColumnName="RecruiterID" />
+          <ScalarProperty Name="Recruiter" ColumnName="Recruiter" />
+          <ScalarProperty Name="BackgroundCheck" ColumnName="BackgroundCheck" />
+          <ScalarProperty Name="AccommodationHelp" ColumnName="AccommodationHelp" />
+          <ScalarProperty Name="ExperienceYears" ColumnName="ExperienceYears" />
+          <ScalarProperty Name="NationalityStatus" ColumnName="NationalityStatus" />
+          <ScalarProperty Name="CodingExperienceBefore" ColumnName="CodingExperienceBefore" />
+          <ScalarProperty Name="TaughtMyselfCoding" ColumnName="TaughtMyselfCoding" />
+          <ScalarProperty Name="AttendedComputerBootCamp" ColumnName="AttendedComputerBootCamp" />
+          <ScalarProperty Name="StudiedCodingCollege" ColumnName="StudiedCodingCollege" />
+          <ScalarProperty Name="LiberalArtsBackground" ColumnName="LiberalArtsBackground" />
+          <ScalarProperty Name="ScienceBackground" ColumnName="ScienceBackground" />
+          <ScalarProperty Name="StudiedOnlineCodeCamp" ColumnName="StudiedOnlineCodeCamp" />
+          <ScalarProperty Name="StudiedW3Schools" ColumnName="StudiedW3Schools" />
+          <ScalarProperty Name="StudiedYoutubeVideos" ColumnName="StudiedYoutubeVideos" />
+          <ScalarProperty Name="ResearchStackOverFlow" ColumnName="ResearchStackOverFlow" />
+          <ScalarProperty Name="StudiedOnlineUdemy" ColumnName="StudiedOnlineUdemy" />
+          <ScalarProperty Name="PracticedAlgorithms" ColumnName="PracticedAlgorithms" />
+          <ScalarProperty Name="GoogleAnswers" ColumnName="GoogleAnswers" />
+          <ScalarProperty Name="NoExperience" ColumnName="NoExperience" />
+          <ScalarProperty Name="COMPANY_NAME" ColumnName="COMPANY_NAME" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="TrainingMode" ColumnName="TrainingMode" />
+          <ScalarProperty Name="CriminalRecords" ColumnName="CriminalRecords" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="WillingToRelocate" ColumnName="WillingToRelocate" />
+          <ScalarProperty Name="VisaStatus" ColumnName="VisaStatus" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="TrainingResources">
+      <EntityTypeMapping TypeName="TMSModel.TrainingResource">
+        <MappingFragment StoreEntitySet="TrainingResources">
+          <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+          <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+          <ScalarProperty Name="OriginalFileName" ColumnName="OriginalFileName" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="DateRecord" ColumnName="DateRecord" />
+          <ScalarProperty Name="SessionN" ColumnName="SessionN" />
+          <ScalarProperty Name="BackupPath" ColumnName="BackupPath" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+          <ScalarProperty Name="TrainingResourcesID" ColumnName="TrainingResourcesID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingSessions">
+      <EntityTypeMapping TypeName="TMSModel.TrainingSession">
+        <MappingFragment StoreEntitySet="TrainingSession">
+          <ScalarProperty Name="SessionNotesBlob" ColumnName="SessionNotesBlob" />
+          <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+          <ScalarProperty Name="SessionNotes" ColumnName="SessionNotes" />
+          <ScalarProperty Name="SessionTitle" ColumnName="SessionTitle" />
+          <ScalarProperty Name="TrainingSessionID" ColumnName="TrainingSessionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GetTrainingCoursesByName" FunctionName="TMSModel.Store.GetTrainingCoursesByName">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetTrainingCoursesByName_Result">
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+          <ScalarProperty Name="TrainingCourseName" ColumnName="TrainingCourseName" />
+          <ScalarProperty Name="StartDate1" ColumnName="StartDate1" />
+          <ScalarProperty Name="FirstPayment" ColumnName="FirstPayment" />
+          <ScalarProperty Name="SecondPayment" ColumnName="SecondPayment" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ImgName" ColumnName="ImgName" />
+          <ScalarProperty Name="TotalEnrolled" ColumnName="TotalEnrolled" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="WebsiteusersAssignments">
+      <EntityTypeMapping TypeName="TMSModel.WebsiteusersAssignment">
+        <MappingFragment StoreEntitySet="WebsiteusersAssignments">
+          <ScalarProperty Name="File" ColumnName="File" />
+          <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+          <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+          <ScalarProperty Name="OriginalFileName" ColumnName="OriginalFileName" />
+          <ScalarProperty Name="WebsiteUserID" ColumnName="WebsiteUserID" />
+          <ScalarProperty Name="DateRecord" ColumnName="DateRecord" />
+          <ScalarProperty Name="SessionN" ColumnName="SessionN" />
+          <ScalarProperty Name="BackupPath" ColumnName="BackupPath" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+          <ScalarProperty Name="WebsiteusersAssignmentsID" ColumnName="WebsiteusersAssignmentsID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingTrainers">
+      <EntityTypeMapping TypeName="TMSModel.TrainingTrainer">
+        <MappingFragment StoreEntitySet="TrainingTrainer">
+          <ScalarProperty Name="TrainerID" ColumnName="TrainerID" />
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+          <ScalarProperty Name="TrainingTrainerID" ColumnName="TrainingTrainerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingTypes">
+      <EntityTypeMapping TypeName="TMSModel.TrainingType">
+        <MappingFragment StoreEntitySet="TrainingType">
+          <ScalarProperty Name="TrainingType1" ColumnName="TrainingType" />
+          <ScalarProperty Name="TrainingTypeID" ColumnName="TrainingTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GetTrainingCourses" FunctionName="TMSModel.Store.GetTrainingCourses">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TMSModel.GetTrainingCourses_Result">
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+          <ScalarProperty Name="TrainingCourseName" ColumnName="TrainingCourseName" />
+          <ScalarProperty Name="TrainingType" ColumnName="TrainingType" />
+          <ScalarProperty Name="StartDate1" ColumnName="StartDate1" />
+          <ScalarProperty Name="FirstPayment" ColumnName="FirstPayment" />
+          <ScalarProperty Name="SecondPayment" ColumnName="SecondPayment" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ImgName" ColumnName="ImgName" />
+          <ScalarProperty Name="TotalEnrolled" ColumnName="TotalEnrolled" />
+          <ScalarProperty Name="TrainingCourseDate" ColumnName="TrainingCourseDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="WebsiteUserDetails">
+      <EntityTypeMapping TypeName="TMSModel.WebsiteUserDetail">
+        <MappingFragment StoreEntitySet="WebsiteUserDetails">
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+          <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="OpenToRelocate" ColumnName="OpenToRelocate" />
+          <ScalarProperty Name="ZIPCode" ColumnName="ZIPCode" />
+          <ScalarProperty Name="StateID" ColumnName="StateID" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="VisaStatus" ColumnName="VisaStatus" />
+          <ScalarProperty Name="AuthorizedWorkUSA" ColumnName="AuthorizedWorkUSA" />
+          <ScalarProperty Name="CurrentlyEmployed" ColumnName="CurrentlyEmployed" />
+          <ScalarProperty Name="WorkExperienceNonIT" ColumnName="WorkExperienceNonIT" />
+          <ScalarProperty Name="WorkExperienceIT" ColumnName="WorkExperienceIT" />
+          <ScalarProperty Name="CompletionYear" ColumnName="CompletionYear" />
+          <ScalarProperty Name="HighestEducation" ColumnName="HighestEducation" />
+          <ScalarProperty Name="WebsiteUserID" ColumnName="WebsiteUserID" />
+          <ScalarProperty Name="WebsiteUserDetailsID" ColumnName="WebsiteUserDetailsID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WebsiteUsers">
+      <EntityTypeMapping TypeName="TMSModel.WebsiteUser">
+        <MappingFragment StoreEntitySet="WebsiteUsers">
+          <ScalarProperty Name="SignedContract" ColumnName="SignedContract" />
+          <ScalarProperty Name="RecruiterName" ColumnName="RecruiterName" />
+          <ScalarProperty Name="EvaluationStatus" ColumnName="EvaluationStatus" />
+          <ScalarProperty Name="TakeEvaluation" ColumnName="TakeEvaluation" />
+          <ScalarProperty Name="Ready4Resume" ColumnName="Ready4Resume" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="RecoveryCode" ColumnName="RecoveryCode" />
+          <ScalarProperty Name="Token" ColumnName="Token" />
+          <ScalarProperty Name="ConfirmedEmail" ColumnName="ConfirmedEmail" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ProfilePic" ColumnName="ProfilePic" />
+          <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="ReceiveUpdates" ColumnName="ReceiveUpdates" />
+          <ScalarProperty Name="AcceptPP" ColumnName="AcceptPP" />
+          <ScalarProperty Name="WhyInterested" ColumnName="WhyInterested" />
+          <ScalarProperty Name="AboutUs" ColumnName="AboutUs" />
+          <ScalarProperty Name="SkypeID" ColumnName="SkypeID" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="LName" ColumnName="LName" />
+          <ScalarProperty Name="FName" ColumnName="FName" />
+          <ScalarProperty Name="WebsiteUserID" ColumnName="WebsiteUserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WebsiteUserAttendances">
+      <EntityTypeMapping TypeName="TMSModel.WebsiteUserAttendance">
+        <MappingFragment StoreEntitySet="WebsiteUserAttendance">
+          <ScalarProperty Name="TrainingGroup" ColumnName="TrainingGroup" />
+          <ScalarProperty Name="Attended" ColumnName="Attended" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+          <ScalarProperty Name="DateRecord" ColumnName="DateRecord" />
+          <ScalarProperty Name="Day" ColumnName="Day" />
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+          <ScalarProperty Name="WebsiteUserID" ColumnName="WebsiteUserID" />
+          <ScalarProperty Name="WebsiteUserAttendanceID" ColumnName="WebsiteUserAttendanceID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Recruiters">
+      <EntityTypeMapping TypeName="TMSModel.Recruiter">
+        <MappingFragment StoreEntitySet="Recruiters">
+          <ScalarProperty Name="ID_COMPANY" ColumnName="ID_COMPANY" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MockInterviews">
+      <EntityTypeMapping TypeName="TMSModel.MockInterview">
+        <MappingFragment StoreEntitySet="MockInterviews">
+          <ScalarProperty Name="InterviewedBy3" ColumnName="InterviewedBy3" />
+          <ScalarProperty Name="InterviewedBy2" ColumnName="InterviewedBy2" />
+          <ScalarProperty Name="Technology" ColumnName="Technology" />
+          <ScalarProperty Name="WebsiteUserID" ColumnName="WebsiteUserID" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="Performance" ColumnName="Performance" />
+          <ScalarProperty Name="InterviewedBy" ColumnName="InterviewedBy" />
+          <ScalarProperty Name="InterviewDate" ColumnName="InterviewDate" />
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+          <ScalarProperty Name="MockInterviewID" ColumnName="MockInterviewID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="TMSModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="RecoveryCode" ColumnName="RecoveryCode" />
+          <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+          <ScalarProperty Name="ActiveInactive" ColumnName="ActiveInactive" />
+          <ScalarProperty Name="Roles_id" ColumnName="Roles_id" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TrainingCourses">
+      <EntityTypeMapping TypeName="TMSModel.TrainingCours">
+        <MappingFragment StoreEntitySet="TrainingCourses">
+          <ScalarProperty Name="TrainingTypeID" ColumnName="TrainingTypeID" />
+          <ScalarProperty Name="MaxDiscountTotalPayment" ColumnName="MaxDiscountTotalPayment" />
+          <ScalarProperty Name="MaxDiscountPayment1" ColumnName="MaxDiscountPayment1" />
+          <ScalarProperty Name="DiscountCoupon5" ColumnName="DiscountCoupon5" />
+          <ScalarProperty Name="DiscountCoupon4" ColumnName="DiscountCoupon4" />
+          <ScalarProperty Name="DiscountCoupon3" ColumnName="DiscountCoupon3" />
+          <ScalarProperty Name="Coupon5" ColumnName="Coupon5" />
+          <ScalarProperty Name="Coupon4" ColumnName="Coupon4" />
+          <ScalarProperty Name="Coupon3" ColumnName="Coupon3" />
+          <ScalarProperty Name="SpecialAnnouncementsBlob" ColumnName="SpecialAnnouncementsBlob" />
+          <ScalarProperty Name="SpecialAnnouncements" ColumnName="SpecialAnnouncements" />
+          <ScalarProperty Name="MeetingDetailsBlob" ColumnName="MeetingDetailsBlob" />
+          <ScalarProperty Name="Sessions" ColumnName="Sessions" />
+          <ScalarProperty Name="MeetingDetails" ColumnName="MeetingDetails" />
+          <ScalarProperty Name="SKU" ColumnName="SKU" />
+          <ScalarProperty Name="LimitFullPaymentDate" ColumnName="LimitFullPaymentDate" />
+          <ScalarProperty Name="PriceFullPayment" ColumnName="PriceFullPayment" />
+          <ScalarProperty Name="FullDescriptionBlob" ColumnName="FullDescriptionBlob" />
+          <ScalarProperty Name="FullDescription" ColumnName="FullDescription" />
+          <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
+          <ScalarProperty Name="ImgName" ColumnName="ImgName" />
+          <ScalarProperty Name="KeyWords" ColumnName="KeyWords" />
+          <ScalarProperty Name="DiscountCoupon2" ColumnName="DiscountCoupon2" />
+          <ScalarProperty Name="DiscountCoupon1" ColumnName="DiscountCoupon1" />
+          <ScalarProperty Name="Coupon2" ColumnName="Coupon2" />
+          <ScalarProperty Name="Coupon1" ColumnName="Coupon1" />
+          <ScalarProperty Name="SecondPayment" ColumnName="SecondPayment" />
+          <ScalarProperty Name="FirstPayment" ColumnName="FirstPayment" />
+          <ScalarProperty Name="DiscountDate2" ColumnName="DiscountDate2" />
+          <ScalarProperty Name="DiscountDate1" ColumnName="DiscountDate1" />
+          <ScalarProperty Name="EndDate2" ColumnName="EndDate2" />
+          <ScalarProperty Name="StartDate2" ColumnName="StartDate2" />
+          <ScalarProperty Name="EndDate1" ColumnName="EndDate1" />
+          <ScalarProperty Name="StartDate1" ColumnName="StartDate1" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="TrainingImage" ColumnName="TrainingImage" />
+          <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ShortDescription" ColumnName="ShortDescription" />
+          <ScalarProperty Name="TrainingCourseName" ColumnName="TrainingCourseName" />
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WebsiteUserTrainings">
+      <EntityTypeMapping TypeName="TMSModel.WebsiteUserTraining">
+        <MappingFragment StoreEntitySet="WebsiteUserTraining">
+          <ScalarProperty Name="TrainingGroup" ColumnName="TrainingGroup" />
+          <ScalarProperty Name="UserInvoiceID" ColumnName="UserInvoiceID" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+          <ScalarProperty Name="payerID" ColumnName="payerID" />
+          <ScalarProperty Name="GUID" ColumnName="GUID" />
+          <ScalarProperty Name="TrainingStatus" ColumnName="TrainingStatus" />
+          <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+          <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="PayPalID" ColumnName="PayPalID" />
+          <ScalarProperty Name="WebsiteUserID" ColumnName="WebsiteUserID" />
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+          <ScalarProperty Name="WebsiteUserTrainingID" ColumnName="WebsiteUserTrainingID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WebsiteInvoices">
+      <EntityTypeMapping TypeName="TMSModel.WebsiteInvoice">
+        <MappingFragment StoreEntitySet="WebsiteInvoice">
+          <ScalarProperty Name="SKU" ColumnName="SKU" />
+          <ScalarProperty Name="UserInvoiceID" ColumnName="UserInvoiceID" />
+          <ScalarProperty Name="BusinessAddress" ColumnName="BusinessAddress" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="RealAmount" ColumnName="RealAmount" />
+          <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+          <ScalarProperty Name="PayPalID" ColumnName="PayPalID" />
+          <ScalarProperty Name="PayPalInvoiceID" ColumnName="PayPalInvoiceID" />
+          <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+          <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+          <ScalarProperty Name="WebsiteUserID" ColumnName="WebsiteUserID" />
+          <ScalarProperty Name="Terms" ColumnName="Terms" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="Currency" ColumnName="Currency" />
+          <ScalarProperty Name="ShippingValue" ColumnName="ShippingValue" />
+          <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
+          <ScalarProperty Name="BusinessPhoneNumber" ColumnName="BusinessPhoneNumber" />
+          <ScalarProperty Name="BusinessPhoneCode" ColumnName="BusinessPhoneCode" />
+          <ScalarProperty Name="BusinessLName" ColumnName="BusinessLName" />
+          <ScalarProperty Name="BusinessFName" ColumnName="BusinessFName" />
+          <ScalarProperty Name="BusinessEmail" ColumnName="BusinessEmail" />
+          <ScalarProperty Name="BusinessName" ColumnName="BusinessName" />
+          <ScalarProperty Name="WebsiteInvoiceID" ColumnName="WebsiteInvoiceID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RolePermissions">
+      <EntityTypeMapping TypeName="TMSModel.RolePermission">
+        <MappingFragment StoreEntitySet="RolePermissions">
+          <ScalarProperty Name="WebsiteDashboard" ColumnName="WebsiteDashboard" />
+          <ScalarProperty Name="AdminWebsite" ColumnName="AdminWebsite" />
+          <ScalarProperty Name="Settings" ColumnName="Settings" />
+          <ScalarProperty Name="Role" ColumnName="Role" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CountryStates">
+      <EntityTypeMapping TypeName="TMSModel.CountryState">
+        <MappingFragment StoreEntitySet="CountryStates">
+          <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="StateID" ColumnName="StateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ResumeSendApprovals">
+      <EntityTypeMapping TypeName="TMSModel.ResumeSendApproval">
+        <MappingFragment StoreEntitySet="ResumeSendApproval">
+          <ScalarProperty Name="DateApproved" ColumnName="DateApproved" />
+          <ScalarProperty Name="SubmitedFrom" ColumnName="SubmitedFrom" />
+          <ScalarProperty Name="Approved" ColumnName="Approved" />
+          <ScalarProperty Name="SubmitedTo" ColumnName="SubmitedTo" />
+          <ScalarProperty Name="DateSubmited" ColumnName="DateSubmited" />
+          <ScalarProperty Name="WebsiteUserID" ColumnName="WebsiteUserID" />
+          <ScalarProperty Name="ResumeID" ColumnName="ResumeID" />
+          <ScalarProperty Name="ResumeSendApprovalID" ColumnName="ResumeSendApprovalID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ContractTemplates">
+      <EntityTypeMapping TypeName="TMSModel.ContractTemplate">
+        <MappingFragment StoreEntitySet="ContractTemplate">
+          <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="DateRecord" ColumnName="DateRecord" />
+          <ScalarProperty Name="TemplateContentBlob" ColumnName="TemplateContentBlob" />
+          <ScalarProperty Name="TemplateContent" ColumnName="TemplateContent" />
+          <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+          <ScalarProperty Name="ContractTemplateID" ColumnName="ContractTemplateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WebsiteUserResumes">
+      <EntityTypeMapping TypeName="TMSModel.WebsiteUserResume">
+        <MappingFragment StoreEntitySet="WebsiteUserResume">
+          <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+          <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+          <ScalarProperty Name="Send" ColumnName="Send" />
+          <ScalarProperty Name="SendToID" ColumnName="SendToID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="UserCreate" ColumnName="UserCreate" />
+          <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+          <ScalarProperty Name="WebsiteUserID" ColumnName="WebsiteUserID" />
+          <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="ResumeID" ColumnName="ResumeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Schedules">
+      <EntityTypeMapping TypeName="TMSModel.Schedule">
+        <MappingFragment StoreEntitySet="Schedule">
+          <ScalarProperty Name="IsFullDay" ColumnName="IsFullDay" />
+          <ScalarProperty Name="ThemeColor" ColumnName="ThemeColor" />
+          <ScalarProperty Name="Subject" ColumnName="Subject" />
+          <ScalarProperty Name="TrainingCourseID" ColumnName="TrainingCourseID" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="WebsiteUserID" ColumnName="WebsiteUserID" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
